@@ -92,7 +92,12 @@ class Enum(numbers.Number):
         return Enum.generate(n)
 
     def __str__(self):
-        s = '{}{}'.format(round(self.value, 1), d_FACTOR_SYMBOL[self.factor])
+        symbol = ''
+        if self.factor in d_FACTOR_SYMBOL:
+            symbol = d_FACTOR_SYMBOL[self.factor]
+            s = '{}{}'.format(round(self.value, 1), symbol)
+        else:
+            s = str(self.num)
         return s
 
 # >>> math.log(2)
@@ -191,6 +196,7 @@ if __name__ == '__main__':
 
     print()
 
+    #208 大文字小文字をそのうち直す。
     m3_3 = Enum(3.3, MEGA)
     print('3.3 MEGA =', m3_3)
     k47 = Enum(47, KILO)
@@ -208,6 +214,22 @@ if __name__ == '__main__':
     print('10.9 =', m3_3 * mcr3_3)
     print('155.1 MILI =', k47 * mcr3_3)
     print('155.1 KILO =', m3_3 * mili47)
+
+    # TOO BIG
+    T10 = Enum(10, TERA)
+    G40 = Enum(40, GIGA)
+    BIG400 = T10 * G40
+    print('T10 =', T10)
+    print('G40 =', G40)
+    print('BIG400 =', BIG400)
+
+    # too small
+    m1 = Enum(1, MICRO)
+    n4 = Enum(4, NANO)
+    small4 = m1 * n4
+    print('m1 =', m1, m1.num)
+    print('n4 =', n4, n4.num)
+    print('small4 =', small4, small4.num)
 
 '''
 手持ちの抵抗は最大で 10M R
