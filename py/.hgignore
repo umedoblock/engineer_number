@@ -1,0 +1,12 @@
+syntax: glob
+*.o
+*.swp
+*.so
+*.pyc
+tag
+tags
+*.tag
+*.tags
+a.out
+core
+*.pickle
