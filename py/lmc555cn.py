@@ -87,9 +87,44 @@ class Enum(numbers.Number):
         self.factor = factor
         self.num = self.value * self.factor
 
+    def __add__(self, other):
+        n = self.num + other.num
+        return Enum.generate(n)
+
+    def __sub__(self, other):
+        n = self.num - other.num
+        return Enum.generate(n)
+
     def __mul__(self, other):
         n = self.num * other.num
         return Enum.generate(n)
+
+    def __floordiv__(self, other):
+        n = self.num // other.num
+        return Enum.generate(n)
+
+    def __truediv__(self, other):
+        n = self.num / other.num
+        return Enum.generate(n)
+
+    def __mod__(self, other):
+        n = self.num % other.num
+        return Enum.generate(n)
+
+    def __divmod__(self, other):
+        div, mod = divmod(self.num, other.num)
+        return (Enum.generate(div), Enum.generate(mod))
+
+    def __pow__(self, other):
+        n = pow(self.num, other.num)
+        print('pow(self={}, other={}'.format(self, other))
+        print('pow(self.num={}, other.num={}'.format(self.num, other.num))
+        print('n={}'.format(n))
+        return Enum.generate(n)
+
+    def __repr__(self):
+        # for Enum in tuple.
+        return str(self)
 
     def __str__(self):
         symbol = ''
@@ -230,6 +265,19 @@ if __name__ == '__main__':
     print('m1 =', m1, m1.num)
     print('n4 =', n4, n4.num)
     print('small4 =', small4, small4.num)
+
+    print('--')
+    print(m1 + n4)
+    print(m1 - n4)
+    print(m1 / n4)
+    print(m1 // n4)
+    print(m1 % n4)
+    print(divmod(m1, n4))
+    div, mod = divmod(m1, n4)
+    print('div, mod =', div, mod)
+    print('0.9999999447379593 =', pow(m1, n4))
+    print('0.9999806632154822 =', pow(n4, m1))
+#   m1 + 10
 
 '''
 手持ちの抵抗は最大で 10M R
