@@ -71,33 +71,37 @@ LMC555 CMOS タイマ
 def look_for_optimized_Hz(Hz, c=Number(0.1, MICRO)):
     #                         k                    M
     factor_big = (1, 10, 100, 1000, 10000, 100000, 1000000)
+    Rs = []
+    for factor in factor_big:
+        for n in E12:
+            r = factor * n
+            Rs.append(r)
+    Rs.append(10 * MEGA)
     combination = len(E12) ** 2 * len(factor_big)
     print('combination =', combination)
-    combination = len(E12) ** 2 * len(factor_big) ** 2
+    combination = (len(E12) * len(factor_big) + 1) ** 2
     print('combination =', combination)
     tf = []
     condition = False
-    for factor2 in factor_big:
-        for factor1 in factor_big:
-            for r2 in E12:
-                for r1 in E12:
-                    rb = Number(r2, factor2)
-                    ra = Number(r1, factor1)
-                    tL, tH, t, f = lmc555(ra, rb, c)
-                    condition = 1 or t == f and t == 1
-                    tup = (tL, tH, t, f, ra, rb, c) # sort() x index refer here.
-                    tf.append(tup)
-                  # if condition:
-                  #     print('--')
-                  #     print('ra = {:.3e}'.format(ra))
-                  #     print('rb = {:.3e}'.format(rb))
-                  #     print('c = {:.3e}'.format(c))
-                  #     print()
+    for r2 in Rs:
+        for r1 in Rs:
+            rb = Number(r2, ONE)
+            ra = Number(r1, ONE)
+            tL, tH, t, f = lmc555(ra, rb, c)
+            condition = 1 or t == f and t == 1
+            tup = (tL, tH, t, f, ra, rb, c) # sort() x index refer here.
+            tf.append(tup)
+          # if condition:
+          #     print('--')
+          #     print('ra = {:.3e}'.format(ra))
+          #     print('rb = {:.3e}'.format(rb))
+          #     print('c = {:.3e}'.format(c))
+          #     print()
 
-                  #     print('tL = {:.3e}'.format(tL))
-                  #     print('tH = {:.3e}'.format(tH))
-                  #     print('t = {:.3e}'.format(t))
-                  #     print('f = {:.3e}'.format(f))
+          #     print('tL = {:.3e}'.format(tL))
+          #     print('tH = {:.3e}'.format(tH))
+          #     print('t = {:.3e}'.format(t))
+          #     print('f = {:.3e}'.format(f))
 
     # Hz を優先して sort。
     tf.sort(key=lambda x: math.fabs(Hz - x[3]))
