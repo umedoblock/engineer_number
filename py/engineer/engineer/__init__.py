@@ -7,9 +7,6 @@ from constants import *
 class Number(object):
 
     def __init__(self, value, factor=ONE):
-        if not factor in FACTORS:
-            print('value={}, warning: '.format(value), end='')
-            print(Warning('factor={:.3e} not in FACTORS={}'.format(factor, FACTORS)))
         self.num = value * factor
         self._normalize()
 
@@ -99,7 +96,7 @@ class Number(object):
         raise RuntimeError('no meaning: convert to integer.')
 
     def __float__(self):
-        return self.num
+        return float(self.num)
 
     def __radd__(self, other):
         n = other + self.num

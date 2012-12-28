@@ -94,32 +94,40 @@ if __name__ == '__main__':
     print('f = {}'.format(f))
     print()
 
+    c = Number(0.1, MICRO)
+    factor_big = (1, 10, 100, 1000, 10000, 100000, 1000000)
+    combination = len(E12) ** 2 * len(factor_big)
+    print('combination =', combination)
+    combination = len(E12) ** 2 * len(factor_big) ** 2
+    print('combination =', combination)
     tf = []
     condition = False
-    for r2 in E12:
-        for r1 in E12:
-            rb = Number(r2 * 10, KILO)
-            ra = Number(r1 * 10, KILO)
-            tL, tH, t, f = lmc555(ra, rb, c)
-            condition = 1 or t == f and t == 1
-            tup = (t, f, ra, rb, c)
-            tf.append(tup)
-          # if condition:
-          #     print('--')
-          #     print('ra = {:.3e}'.format(ra))
-          #     print('rb = {:.3e}'.format(rb))
-          #     print('c = {:.3e}'.format(c))
-          #     print()
+    for factor2 in factor_big:
+        for factor1 in factor_big:
+            for r2 in E12:
+                for r1 in E12:
+                    rb = Number(r2, factor2)
+                    ra = Number(r1, factor1)
+                    tL, tH, t, f = lmc555(ra, rb, c)
+                    condition = 1 or t == f and t == 1
+                    tup = (tL, tH, t, f, ra, rb, c)
+                    tf.append(tup)
+                  # if condition:
+                  #     print('--')
+                  #     print('ra = {:.3e}'.format(ra))
+                  #     print('rb = {:.3e}'.format(rb))
+                  #     print('c = {:.3e}'.format(c))
+                  #     print()
 
-          #     print('tL = {:.3e}'.format(tL))
-          #     print('tH = {:.3e}'.format(tH))
-          #     print('t = {:.3e}'.format(t))
-          #     print('f = {:.3e}'.format(f))
+                  #     print('tL = {:.3e}'.format(tL))
+                  #     print('tH = {:.3e}'.format(tH))
+                  #     print('t = {:.3e}'.format(t))
+                  #     print('f = {:.3e}'.format(f))
 
-    tf.sort(key=lambda x: math.fabs(1 - x[0]))
-#   print('len(tf)=', len(tf))
-    top = 3
-    for t, f, ra, rb, c in tf[:top]:
-        print(t, f, ra, rb, c)
-        print('t={}, f ={}, ra={}, rb={}'.format(t, f, ra, rb))
-        print()
+    # 1 Hz を優先して sort。
+    tf.sort(key=lambda x: math.fabs(1 - x[2]))
+    print('len(tf)=', len(tf))
+    print()
+    top = 10
+    for tL, tH, t, f, ra, rb, c in tf[:top]:
+        print('tL={}, tH={}, t={}, f ={}, ra={}, rb={}'.format(tL, tH, t, f, ra, rb))
