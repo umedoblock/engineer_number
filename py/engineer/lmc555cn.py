@@ -69,6 +69,7 @@ LMC555 CMOS タイマ
 '''
 
 def look_for_optimized_Hz(Hz, c=Number(0.1, MICRO)):
+    #                         k                    M
     factor_big = (1, 10, 100, 1000, 10000, 100000, 1000000)
     combination = len(E12) ** 2 * len(factor_big)
     print('combination =', combination)
