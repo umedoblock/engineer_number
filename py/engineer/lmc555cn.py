@@ -114,7 +114,7 @@ def parse_args():
                        type=int, nargs='?', default=1000,
                        help='frequency')
     parser.add_argument('--capacita', metavar='N', dest='c',
-                       type=int, nargs='?', default=Number(0.1, MICRO),
+                       type=float, nargs='?', default=Number(0.1, MICRO),
                        help='capacita')
     args = parser.parse_args()
     return args
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     print()
 
     c = Number(0.1, MICRO)
-    c = args.c
+    c = Number(args.c)
     Hz = args.Hz
 #   tf = look_for_optimized_Hz(1, c)
 #   tf = look_for_optimized_Hz(10000, c)
@@ -159,4 +159,4 @@ if __name__ == '__main__':
     print()
     top = 10
     for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}'.format(tL, tH, t, f, ra, rb))
+        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'.format(tL, tH, t, f, ra, rb, c))

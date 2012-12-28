@@ -118,6 +118,8 @@ class TestEngineer(unittest.TestCase):
         self.assertEqual('2.286M', str(16 / Number(7, MICRO)))
         self.assertEqual('2.286M', str(Number(16, MEGA) / 7))
 
+        self.assertEqual('1.000u', str(Number(u1)))
+
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)
     unittest.main()

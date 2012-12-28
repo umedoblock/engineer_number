@@ -12,6 +12,8 @@ class Number(object):
 
     def _normalize(self):
         num = self.num
+        while isinstance(num, Number):
+            num = num.num
         if num == 0:
             self.value = 0
             self.factor = 1
