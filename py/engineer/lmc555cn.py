@@ -1,7 +1,10 @@
+import os
+import sys
 import math
 
-import engineer
-from constants import *
+sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer'))
+from engineer import *
+from engineer.constants import *
 
 # >>> math.log(2)
 # 0.6931471805599453
@@ -33,7 +36,7 @@ CONST = math.log(2, math.e)
 # 0.481 * 10 ** -6
 # 0.481 * MICRO
 
-def lmc555(Ra, Rb, C=0.1*MICRO):
+def lmc555(Ra, Rb, C=Number(0.1*MICRO)):
     _c2gnd = 0.1 * MICRO
     tH = CONST * (Ra + Rb) * C
     tL = CONST * Rb * C
@@ -65,37 +68,38 @@ LMC555 CMOS タイマ
 '''
 
 if __name__ == '__main__':
-    c = 0.1 * MICRO
-    ra = 10 * MEGA
-    rb = 1 * KILO
+    c = Number(0.1, MICRO)
+    ra = Number(10, MEGA)
+    rb = Number(1, KILO)
 
-    ra = 1 * engineer.KILO
-    rb = 10 * MEGA
+    ra = Number(1, KILO)
+    rb = Number(10, MEGA)
 
-    ra = 220 * KILO
-    rb = 390 * KILO
+    ra = Number(220, KILO)
+    rb = Number(390, KILO)
 
     # 剣菱
-    c = 10 * MICRO
-    ra = rb = 48 * KILO
+    c = Number(10, MICRO)
+    ra = rb = Number(48, KILO)
 
-    print('ra = {:.3e}'.format(ra))
-    print('rb = {:.3e}'.format(rb))
-    print('c = {:.3e}'.format(c))
+    print('ra = {}'.format(ra))
+    print('rb = {}'.format(rb))
+    print('c = {}'.format(c))
     print()
 
     tL, tH, t, f = lmc555(ra, rb, c)
-    print('tL = {:.3e}'.format(tL))
-    print('tH = {:.3e}'.format(tH))
-    print('t = {:.3e}'.format(t))
-    print('f = {:.3e}'.format(f))
+    print('tL = {}'.format(tL))
+    print('tH = {}'.format(tH))
+    print('t = {}'.format(t))
+    print('f = {}'.format(f))
+    print()
 
     tf = []
     condition = False
     for r2 in E12:
         for r1 in E12:
-            rb = r2 * 10 * KILO
-            ra = r1 * 10 * KILO
+            rb = Number(r2 * 10, KILO)
+            ra = Number(r1 * 10, KILO)
             tL, tH, t, f = lmc555(ra, rb, c)
             condition = 1 or t == f and t == 1
             tup = (t, f, ra, rb, c)
@@ -113,7 +117,9 @@ if __name__ == '__main__':
           #     print('f = {:.3e}'.format(f))
 
     tf.sort(key=lambda x: math.fabs(1 - x[0]))
-    print('len(tf)=', len(tf))
+#   print('len(tf)=', len(tf))
     top = 3
     for t, f, ra, rb, c in tf[:top]:
-        print('t={:.3f}, f ={:.3f}, ra={:.1e}, rb={:.1e}'.format(t, f, ra, rb))
+        print(t, f, ra, rb, c)
+        print('t={}, f ={}, ra={}, rb={}'.format(t, f, ra, rb))
+        print()

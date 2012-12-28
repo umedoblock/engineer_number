@@ -95,46 +95,49 @@ class Number(object):
         n = pow(self.num, other.num)
         return Number(n)
 
-###############################################################################
+    def __int__(self):
+        raise RuntimeError('no meaning: convert to integer.')
+
+    def __float__(self):
+        return self.num
 
     def __radd__(self, other):
-        n = self.num + other
+        n = other + self.num
         return Number(n)
 
     def __rsub__(self, other):
-        n = self.num - other
+        n = other - self.num
         return Number(n)
 
     def __rmul__(self, other):
       # print('self=', type(self))
       # print('other=', type(other))
-        n = self.num * other
+        n = other * self.num
         return Number(n)
 
     def __rfloordiv__(self, other):
-        n = self.num // other
+        n = other // self.num
       # print('self.num={} // other={}, n={}'.format(self.num, other, n))
         return Number(n)
 
     def __rtruediv__(self, other):
       # print('self=', type(self))
       # print('other=', type(other))
-        n = self.num / other
+        n = other / self.num
         return Number(n)
 
     def __rmod__(self, other):
-        n = self.num % other
+        n = other % self.num
         return Number(n)
 
     def __rdivmod__(self, other):
-        div, mod = divmod(self.num, other)
+        div, mod = divmod(other, self.num)
         return (Number(div), Number(mod))
 
     def __rpow__(self, other):
-        n = pow(self.num, other)
+        n = pow(other, self.num)
         return Number(n)
 
-#########################################################3
     def __repr__(self):
         # for Number in tuple.
         return str(self)

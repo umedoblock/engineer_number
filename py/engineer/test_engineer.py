@@ -7,7 +7,7 @@ from engineer import *
 from engineer.constants import *
 
 class TestEngineer(unittest.TestCase):
-    def test_simple(self):
+    def test_simple_but_too_long(self):
         M3_3 = Number(3.3, MEGA)
         # kilo must be 'k'. K means kelbin.
         k47 = Number(47, KILO)
@@ -88,17 +88,35 @@ class TestEngineer(unittest.TestCase):
         self.assertEqual('-1.000', str(neg1))
 
         self.assertEqual('0.000', str(Number(0)))
-        10 // u1
-        u1 // 10
-        10 / u1
-        u1 / 10
-        10 * u1
-        u1 * 10
-        u1 + u1
-        10 + u1
-        u1 + 10
-        10 - u1
-        u1 - 10
+        math.fabs(u1)
+        with self.assertRaises(RuntimeError) as raiz:
+            int(u1)
+        self.assertEqual('no meaning: convert to integer.',
+                          raiz.exception.args[0])
+
+        self.assertEqual('2.000', str(Number(16) % Number(7)))
+        self.assertEqual('2.000', str(16 % Number(7)))
+        self.assertEqual('2.000', str(Number(16) % 7))
+
+        self.assertEqual('9.000', str(Number(16) - Number(7)))
+        self.assertEqual('9.000', str(16 - Number(7)))
+        self.assertEqual('9.000', str(Number(16) - 7))
+
+        self.assertEqual('128.000', str(Number(2) ** Number(7)))
+        self.assertEqual('128.000', str(2 ** Number(7)))
+        self.assertEqual('128.000', str(Number(2) ** 7))
+
+        self.assertEqual('2.286', str(Number(16) / Number(7)))
+        self.assertEqual('2.286', str(16 / Number(7)))
+        self.assertEqual('2.286', str(Number(16) / 7))
+
+        self.assertEqual('2.000', str(Number(16) // Number(7)))
+        self.assertEqual('2.000', str(16 // Number(7)))
+        self.assertEqual('2.000', str(Number(16) // 7))
+
+        self.assertEqual('2.286M', str(Number(16, MEGA) / Number(7)))
+        self.assertEqual('2.286M', str(16 / Number(7, MICRO)))
+        self.assertEqual('2.286M', str(Number(16, MEGA) / 7))
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)
