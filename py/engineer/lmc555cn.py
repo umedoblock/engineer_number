@@ -1,6 +1,7 @@
 import os
 import sys
 import math
+import argparse
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer'))
 from engineer import *
@@ -101,7 +102,21 @@ def look_for_optimized_Hz(Hz, c=Number(0.1, MICRO)):
     tf.sort(key=lambda x: math.fabs(Hz - x[3]))
     return tf
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='look for optimized Hz.')
+
+    parser.add_argument('--Hz', metavar='N', dest='Hz',
+                       type=int, nargs='?', default=1000,
+                       help='frequency')
+    parser.add_argument('--capacita', metavar='N', dest='c',
+                       type=int, nargs='?', default=Number(0.1, MICRO),
+                       help='capacita')
+    args = parser.parse_args()
+    return args
+
 if __name__ == '__main__':
+    args = parse_args()
+
     c = Number(0.1, MICRO)
     ra = Number(10, MEGA)
     rb = Number(1, KILO)
@@ -129,9 +144,11 @@ if __name__ == '__main__':
     print()
 
     c = Number(0.1, MICRO)
+    c = args.c
+    Hz = args.Hz
 #   tf = look_for_optimized_Hz(1, c)
 #   tf = look_for_optimized_Hz(10000, c)
-    tf = look_for_optimized_Hz(30000, c)
+    tf = look_for_optimized_Hz(Hz, c)
 
     print('len(tf)=', len(tf))
     print()
