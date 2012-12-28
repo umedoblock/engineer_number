@@ -154,4 +154,4 @@ if __name__ == '__main__':
     print()
     top = 10
     for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print('tL={}, tH={}, t={}, f ={}, ra={}, rb={}'.format(tL, tH, t, f, ra, rb))
+        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}'.format(tL, tH, t, f, ra, rb))
