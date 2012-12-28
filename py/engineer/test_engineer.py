@@ -2,8 +2,9 @@ import os
 import sys
 import unittest
 
+sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer'))
 from engineer import *
-from constants import *
+from engineer.constants import *
 
 class TestEngineer(unittest.TestCase):
     def test_simple(self):
@@ -86,7 +87,18 @@ class TestEngineer(unittest.TestCase):
         neg1 = Number(-1, ONE)
         self.assertEqual('-1.000', str(neg1))
 
-    #   u1 + 10
+        self.assertEqual('0.000', str(Number(0)))
+        10 // u1
+        u1 // 10
+        10 / u1
+        u1 / 10
+        10 * u1
+        u1 * 10
+        u1 + u1
+        10 + u1
+        u1 + 10
+        10 - u1
+        u1 - 10
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)
