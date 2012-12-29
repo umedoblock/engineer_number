@@ -11,6 +11,13 @@ class Number(numbers.Real):
 
     @classmethod
     def make(cls, ss):
+        value, factor = Number._parse_string(ss)
+      # print('value =', value, 'factor =', factor)
+        number = Number(value, factor)
+        return number
+
+    @classmethod
+    def _parse_string(cls, ss):
         si_prifixes = ''.join(d_FACTOR_SYMBOL.values())
       # print('si_prifixes =', si_prifixes)
       # print('ss =', ss)
@@ -22,9 +29,8 @@ class Number(numbers.Real):
       # print('si =', si, 'value =', value)
         factor_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
         factor = tuple(d_FACTOR_SYMBOL.keys())[factor_index]
-      # print('value =', value, 'factor =', factor)
-        number = Number(value, factor)
-        return number
+
+        return (value, factor)
 
     def __init__(self, value, factor=ONE):
         self.num = value * factor
