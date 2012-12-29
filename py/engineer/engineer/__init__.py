@@ -7,7 +7,7 @@ from constants import *
 
 class EngineerNumber(numbers.Real):
 
-    ndigits = 3
+    round_ndigits = 3
 
     @classmethod
     def _parse_string(cls, ss):
@@ -167,7 +167,7 @@ class EngineerNumber(numbers.Real):
       # # so repeated copy and paste.
       # while isinstance(other, EngineerNumber):
       #     other = other.num
-      # return round(self) == round(other, EngineerNumber.ndigits)
+      # return round(self) == round(other, EngineerNumber.round_ndigits)
 
         if not isinstance(other, EngineerNumber):
             other = EngineerNumber(other, ONE)
@@ -214,7 +214,7 @@ class EngineerNumber(numbers.Real):
         if self._factor in d_FACTOR_SYMBOL:
             symbol = d_FACTOR_SYMBOL[self._factor]
 #           s = '{:.3f}{}'
-            fmt = ':.{}f'.format(EngineerNumber.ndigits)
+            fmt = ':.{}f'.format(EngineerNumber.round_ndigits)
             fmt = '{' + fmt + '}{}'
             s = fmt.format(round(self), symbol)
         else:
@@ -235,7 +235,7 @@ class EngineerNumber(numbers.Real):
 
     def __round__(self, ndigits=None):
         if ndigits is None:
-            ndigits = EngineerNumber.ndigits
+            ndigits = EngineerNumber.round_ndigits
       # print('__round__()')
         return round(self._value, ndigits=ndigits)
 
