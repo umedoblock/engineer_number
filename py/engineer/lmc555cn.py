@@ -80,6 +80,22 @@ def _make_all_combination(series='E12'):
             combination.append(r)
     return combination
 
+def check_Hz_in_range(r_min, r_max, c):
+    tf = []
+    ra = EngineerNumber(r_min)
+    rb = EngineerNumber(r_max)
+
+    tL, tH, t, f = lmc555(ra, rb, c)
+    tup = (tL, tH, t, f, ra, rb, c)
+    tf.append(tup)
+
+    ra, rb = rb, ra
+    tL, tH, t, f = lmc555(ra, rb, c)
+    tup = (tL, tH, t, f, ra, rb, c)
+    tf.append(tup)
+
+    return tf
+
 def look_for_optimized_Hz(Hz, c=EngineerNumber(0.1, MICRO)):
     Rs = _make_all_combination('E12')
     Rs.append(10 * MEGA)
@@ -127,6 +143,10 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def view_tf(tf, top=-1):
+    for tL, tH, t, f, ra, rb, c in tf[:top]:
+        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'.format(tL, tH, t, f, ra, rb, c))
+
 if __name__ == '__main__':
     args = parse_args()
 
@@ -153,5 +173,10 @@ if __name__ == '__main__':
     print('len(tf)=', len(tf))
     print()
     top = args.top
-    for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'.format(tL, tH, t, f, ra, rb, c))
+    view_tf(tf, top)
+    print()
+
+    tf = check_Hz_in_range(0, EngineerNumber('4k'), c)
+    print("check_Hz_in_range(0, EngineerNumber('4k'))")
+    view_tf(tf, top)
+    print()
