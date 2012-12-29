@@ -116,6 +116,9 @@ def parse_args():
     parser.add_argument('--capacita', metavar='N', dest='c',
                        type=float, nargs='?', default=Number(0.1, MICRO),
                        help='capacita')
+    parser.add_argument('--top', metavar='N', dest='top',
+                       type=int, nargs='?', default=10,
+                       help='ranking')
     args = parser.parse_args()
     return args
 
@@ -157,6 +160,6 @@ if __name__ == '__main__':
 
     print('len(tf)=', len(tf))
     print()
-    top = 10
+    top = args.top
     for tL, tH, t, f, ra, rb, c in tf[:top]:
         print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'.format(tL, tH, t, f, ra, rb, c))
