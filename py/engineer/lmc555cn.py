@@ -68,19 +68,24 @@ LMC555 CMOS タイマ
 ■ 出力は5V 電源で、TTL、CMOS ロジックと完全互換
 '''
 
-def look_for_optimized_Hz(Hz, c=EngineerNumber(0.1, MICRO)):
+def _make_all_combination(series='E12'):
+    if series != 'E12':
+        raise ValueError('series must be "E12".')
     #                         k                    M
     factor_big = (1, 10, 100, 1000, 10000, 100000, 1000000)
-    Rs = []
+    combination = []
     for factor in factor_big:
         for n in E12:
             r = factor * n
-            Rs.append(r)
+            combination.append(r)
+    return combination
+
+def look_for_optimized_Hz(Hz, c=EngineerNumber(0.1, MICRO)):
+    Rs = _make_all_combination('E12')
     Rs.append(10 * MEGA)
-    combination = len(E12) ** 2 * len(factor_big)
-    print('combination =', combination)
-    combination = (len(E12) * len(factor_big) + 1) ** 2
-    print('combination =', combination)
+    len_combination = len(Rs) ** 2
+    print('len_combination =', len_combination)
+
     tf = []
     condition = False
     for r2 in Rs:
@@ -125,37 +130,24 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
-    c = EngineerNumber(0.1, MICRO)
-    ra = EngineerNumber(10, MEGA)
-    rb = EngineerNumber(1, KILO)
+  # # 剣菱
+  # c = EngineerNumber(10, MICRO)
+  # ra = rb = EngineerNumber(48, KILO)
 
-    ra = EngineerNumber(1, KILO)
-    rb = EngineerNumber(10, MEGA)
+  # print('ra = {}'.format(ra))
+  # print('rb = {}'.format(rb))
+  # print('c = {}'.format(c))
+  # print()
 
-    ra = EngineerNumber(220, KILO)
-    rb = EngineerNumber(390, KILO)
+  # tL, tH, t, f = lmc555(ra, rb, c)
+  # print('tL = {}'.format(tL))
+  # print('tH = {}'.format(tH))
+  # print('t = {}'.format(t))
+  # print('f = {}'.format(f))
+  # print()
 
-    # 剣菱
-    c = EngineerNumber(10, MICRO)
-    ra = rb = EngineerNumber(48, KILO)
-
-    print('ra = {}'.format(ra))
-    print('rb = {}'.format(rb))
-    print('c = {}'.format(c))
-    print()
-
-    tL, tH, t, f = lmc555(ra, rb, c)
-    print('tL = {}'.format(tL))
-    print('tH = {}'.format(tH))
-    print('t = {}'.format(t))
-    print('f = {}'.format(f))
-    print()
-
-    c = EngineerNumber(0.1, MICRO)
-    c = EngineerNumber.make(args.c_str)
+    c = EngineerNumber(args.c_str)
     Hz = args.Hz
-#   tf = look_for_optimized_Hz(1, c)
-#   tf = look_for_optimized_Hz(10000, c)
     tf = look_for_optimized_Hz(Hz, c)
 
     print('len(tf)=', len(tf))
