@@ -120,12 +120,12 @@ class TestEngineerNumber(unittest.TestCase):
 
         self.assertEqual('1.000u', str(EngineerNumber(u1)))
 
-        self.assertEqual('121.484m', str(EngineerNumber.make('121.484m')))
-        self.assertEqual(121.484, EngineerNumber.make('121.484').num)
-        self.assertEqual(121.484, EngineerNumber.make('121.484'))
-        self.assertEqual(EngineerNumber.make('121.484'), 121.484)
-        self.assertEqual('121.484', str(EngineerNumber.make('121.484')))
-        self.assertEqual('121.484E', str(EngineerNumber.make('121.484E')))
+        self.assertEqual('121.484m', str(EngineerNumber('121.484m')))
+        self.assertEqual(121.484, EngineerNumber('121.484').num)
+        self.assertEqual(121.484, EngineerNumber('121.484'))
+        self.assertEqual(EngineerNumber('121.484'), 121.484)
+        self.assertEqual('121.484', str(EngineerNumber('121.484')))
+        self.assertEqual('121.484E', str(EngineerNumber('121.484E')))
 
         self.assertEqual('121.488p', str(EngineerNumber(121.488, PICO)))
         self.assertEqual('121.488p', str(EngineerNumber(0.121488, NANO)))
@@ -138,42 +138,42 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual(str(EngineerNumber(121.488, PICO)), str(EngineerNumber(0.121488, NANO)))
 
     def test_equal_with_number(self):
-        self.assertEqual(121484000000000000000, EngineerNumber.make('121.484E').num)
-        self.assertEqual(121484000000000000000, EngineerNumber.make('121.484E'))
+        self.assertEqual(121484000000000000000, EngineerNumber('121.484E').num)
+        self.assertEqual(121484000000000000000, EngineerNumber('121.484E'))
 
     def test_compare_with_same_instance(self):
-        self.assertGreater(EngineerNumber.make('1.000'), EngineerNumber.make('0.999'))
-        self.assertGreaterEqual(EngineerNumber.make('1.000'), EngineerNumber.make('0.999'))
-        self.assertGreaterEqual(EngineerNumber.make('1.000'), EngineerNumber.make('1.000'))
+        self.assertGreater(EngineerNumber('1.000'), EngineerNumber('0.999'))
+        self.assertGreaterEqual(EngineerNumber('1.000'), EngineerNumber('0.999'))
+        self.assertGreaterEqual(EngineerNumber('1.000'), EngineerNumber('1.000'))
 
-        self.assertLess(EngineerNumber.make('0.999'), EngineerNumber.make('1.000'))
-        self.assertLessEqual(EngineerNumber.make('0.999'), EngineerNumber.make('0.999'))
-        self.assertLessEqual(EngineerNumber.make('1'), EngineerNumber.make('1.000'))
+        self.assertLess(EngineerNumber('0.999'), EngineerNumber('1.000'))
+        self.assertLessEqual(EngineerNumber('0.999'), EngineerNumber('0.999'))
+        self.assertLessEqual(EngineerNumber('1'), EngineerNumber('1.000'))
 
     def test_compare_with_number(self):
         # swap
-        self.assertGreater(EngineerNumber.make('1.000'), 0.999)
-        self.assertGreaterEqual(EngineerNumber.make('1.000'), 0.999)
-        self.assertGreaterEqual(EngineerNumber.make('1.000'), 1.000)
-        self.assertGreater(1.0, EngineerNumber.make('0.999'))
-        self.assertGreaterEqual(1.0, EngineerNumber.make('0.999'))
-        self.assertGreaterEqual(1.0, EngineerNumber.make('1.000'))
-        self.assertGreater(EngineerNumber.make('1.000'), 0)
-        self.assertGreaterEqual(EngineerNumber.make('1.000'), 0)
-        self.assertGreaterEqual(EngineerNumber.make('1.000'), 1)
-        self.assertGreater(1, EngineerNumber.make('0.999'))
-        self.assertGreaterEqual(1, EngineerNumber.make('0.999'))
-        self.assertGreaterEqual(1, EngineerNumber.make('1.000'))
+        self.assertGreater(EngineerNumber('1.000'), 0.999)
+        self.assertGreaterEqual(EngineerNumber('1.000'), 0.999)
+        self.assertGreaterEqual(EngineerNumber('1.000'), 1.000)
+        self.assertGreater(1.0, EngineerNumber('0.999'))
+        self.assertGreaterEqual(1.0, EngineerNumber('0.999'))
+        self.assertGreaterEqual(1.0, EngineerNumber('1.000'))
+        self.assertGreater(EngineerNumber('1.000'), 0)
+        self.assertGreaterEqual(EngineerNumber('1.000'), 0)
+        self.assertGreaterEqual(EngineerNumber('1.000'), 1)
+        self.assertGreater(1, EngineerNumber('0.999'))
+        self.assertGreaterEqual(1, EngineerNumber('0.999'))
+        self.assertGreaterEqual(1, EngineerNumber('1.000'))
 
-        self.assertLess(0.999, EngineerNumber.make('1.000'))
-        self.assertLessEqual(0.999, EngineerNumber.make('0.999'))
-        self.assertLessEqual(1, EngineerNumber.make('1.000'))
+        self.assertLess(0.999, EngineerNumber('1.000'))
+        self.assertLessEqual(0.999, EngineerNumber('0.999'))
+        self.assertLessEqual(1, EngineerNumber('1.000'))
 
     def test_bool(self):
-        self.assertTrue(EngineerNumber.make('1.000'))
-        self.assertTrue(EngineerNumber.make('1.000p'))
+        self.assertTrue(EngineerNumber('1.000'))
+        self.assertTrue(EngineerNumber('1.000p'))
         self.assertTrue(EngineerNumber(1, PICO))
-        self.assertFalse(EngineerNumber.make('0.000'))
+        self.assertFalse(EngineerNumber('0.000'))
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)

@@ -10,13 +10,6 @@ class EngineerNumber(numbers.Real):
     ndigits = 3
 
     @classmethod
-    def make(cls, ss):
-        value, factor = EngineerNumber._parse_string(ss)
-      # print('value =', value, 'factor =', factor)
-        number = EngineerNumber(value, factor)
-        return number
-
-    @classmethod
     def _parse_string(cls, ss):
         si_prifixes = ''.join(d_FACTOR_SYMBOL.values())
       # print('si_prifixes =', si_prifixes)
@@ -33,6 +26,8 @@ class EngineerNumber(numbers.Real):
         return (value, factor)
 
     def __init__(self, value, factor=ONE):
+        if isinstance(value, str):
+            value, factor = EngineerNumber._parse_string(value)
         self.num = value * factor
         self._normalize()
 
@@ -72,10 +67,7 @@ class EngineerNumber(numbers.Real):
     def __add__(self, other):
         if not isinstance(other, EngineerNumber):
             other = EngineerNumber(other)
-        if isinstance(other, EngineerNumber):
-            n = self.num + other.num
-        else:
-            n = self.num + other
+        n = self.num + other.num
         return EngineerNumber(n)
 
     def __sub__(self, other):
