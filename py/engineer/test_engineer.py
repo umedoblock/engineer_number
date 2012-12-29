@@ -169,6 +169,12 @@ class TestEngineer(unittest.TestCase):
         self.assertLessEqual(0.999, Number.make('0.999'))
         self.assertLessEqual(1, Number.make('1.000'))
 
+    def test_bool(self):
+        self.assertTrue(Number.make('1.000'))
+        self.assertTrue(Number.make('1.000p'))
+        self.assertTrue(Number(1, PICO))
+        self.assertFalse(Number.make('0.000'))
+
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)
     unittest.main()

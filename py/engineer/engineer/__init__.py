@@ -187,7 +187,7 @@ class Number(numbers.Real):
                round(self) == round(other)
 
     def __ne__(self, other):
-        return not self.eq(other)
+        return not self == other
 
     def __gt__(self, other):
         self_num = self._get_num()
