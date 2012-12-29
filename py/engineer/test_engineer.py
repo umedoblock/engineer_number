@@ -120,6 +120,55 @@ class TestEngineer(unittest.TestCase):
 
         self.assertEqual('1.000u', str(Number(u1)))
 
+        self.assertEqual('121.484m', str(Number.make('121.484m')))
+        self.assertEqual(121.484, Number.make('121.484').num)
+        self.assertEqual(121.484, Number.make('121.484'))
+        self.assertEqual(Number.make('121.484'), 121.484)
+        self.assertEqual('121.484', str(Number.make('121.484')))
+        self.assertEqual('121.484E', str(Number.make('121.484E')))
+
+        self.assertEqual('121.488p', str(Number(121.488, PICO)))
+        self.assertEqual('121.488p', str(Number(0.121488, NANO)))
+
+    def test_equal_different_value_and_factor(self):
+        self.assertEqual(Number(121.484, KILO), Number(0.121484, MEGA))
+        self.assertEqual(Number(121.484, MILLI), Number(0.121484, ONE))
+        self.assertEqual(Number(121.484, PICO), Number(0.121484, NANO))
+      # print(str(Number(121.488, PICO)), str(Number(0.121486, NANO)))
+        self.assertEqual(str(Number(121.488, PICO)), str(Number(0.121488, NANO)))
+
+    def test_equal_with_number(self):
+        self.assertEqual(121484000000000000000, Number.make('121.484E').num)
+        self.assertEqual(121484000000000000000, Number.make('121.484E'))
+
+    def test_compare_with_same_instance(self):
+        self.assertGreater(Number.make('1.000'), Number.make('0.999'))
+        self.assertGreaterEqual(Number.make('1.000'), Number.make('0.999'))
+        self.assertGreaterEqual(Number.make('1.000'), Number.make('1.000'))
+
+        self.assertLess(Number.make('0.999'), Number.make('1.000'))
+        self.assertLessEqual(Number.make('0.999'), Number.make('0.999'))
+        self.assertLessEqual(Number.make('1'), Number.make('1.000'))
+
+    def test_compare_with_number(self):
+        # swap
+        self.assertGreater(Number.make('1.000'), 0.999)
+        self.assertGreaterEqual(Number.make('1.000'), 0.999)
+        self.assertGreaterEqual(Number.make('1.000'), 1.000)
+        self.assertGreater(1.0, Number.make('0.999'))
+        self.assertGreaterEqual(1.0, Number.make('0.999'))
+        self.assertGreaterEqual(1.0, Number.make('1.000'))
+        self.assertGreater(Number.make('1.000'), 0)
+        self.assertGreaterEqual(Number.make('1.000'), 0)
+        self.assertGreaterEqual(Number.make('1.000'), 1)
+        self.assertGreater(1, Number.make('0.999'))
+        self.assertGreaterEqual(1, Number.make('0.999'))
+        self.assertGreaterEqual(1, Number.make('1.000'))
+
+        self.assertLess(0.999, Number.make('1.000'))
+        self.assertLessEqual(0.999, Number.make('0.999'))
+        self.assertLessEqual(1, Number.make('1.000'))
+
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)
     unittest.main()

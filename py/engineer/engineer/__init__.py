@@ -1,10 +1,30 @@
 import os
 import sys
 import math
+import numbers
 
 from constants import *
 
-class Number(object):
+class Number(numbers.Real):
+
+    ndigits = 3
+
+    @classmethod
+    def make(cls, ss):
+        si_prifixes = ''.join(d_FACTOR_SYMBOL.values())
+      # print('si_prifixes =', si_prifixes)
+      # print('ss =', ss)
+        if ss[-1].isalpha():
+            si = ss[-1]
+        else:
+            si = ''
+        value = float(ss.replace(si, ''))
+      # print('si =', si, 'value =', value)
+        factor_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
+        factor = tuple(d_FACTOR_SYMBOL.keys())[factor_index]
+      # print('value =', value, 'factor =', factor)
+        number = Number(value, factor)
+        return number
 
     def __init__(self, value, factor=ONE):
         self.num = value * factor
@@ -15,10 +35,10 @@ class Number(object):
         while isinstance(num, Number):
             num = num.num
         if num == 0:
-            self.value = 0
-            self.factor = 1
+            self._value = 0
+            self._factor = 1
             return
-        if num >= 0:
+        elif num > 0:
             sign_num = 1
         else:
             sign_num = -1
@@ -39,8 +59,8 @@ class Number(object):
       # print('num={:.3e}'.format(num))
       # print('exponent10={}, exponent={}, factor={}, value={}'.format(exponent10, exponent, factor, value))
       # print('=========================')
-        self.value = value
-        self.factor = factor
+        self._value = value
+        self._factor = factor
         return self
 
     def __add__(self, other):
@@ -137,15 +157,92 @@ class Number(object):
         n = pow(other, self.num)
         return Number(n)
 
+    def _get_num(self):
+        self_num = self.num
+        while isinstance(self_num, Number):
+            self_num = self_num.num
+        return self_num
+
+    def __eq__(self, other):
+      # self_num = self._get_num()
+      # # cannot determine that other is Number instance.
+      # # so repeated copy and paste.
+      # while isinstance(other, Number):
+      #     other = other.num
+      # return round(self) == round(other, Number.ndigits)
+
+        if not isinstance(other, Number):
+            other = Number(other, ONE)
+      # print('self._value =', self._value)
+      # print('other._value =', other._value)
+      # print('self._factor =', self._factor)
+      # print('other._factor =', other._factor)
+        return self._factor == other._factor and \
+               round(self) == round(other)
+
+    def __ne__(self, other):
+        return not self.eq(other)
+
+    def __gt__(self, other):
+        self_num = self._get_num()
+        # cannot determine that other is Number instance.
+        # so repeated copy and paste.
+        while isinstance(other, Number):
+            other = other.num
+        return self_num > other
+
+    def __ge__(self, other):
+      # print(dir(1.0))
+      # print(dir(self))
+        return self > other or self == other
+
+    def __lt__(self, other):
+        self_num = self._get_num()
+        # cannot determine that other is Number instance.
+        # so repeated copy and paste.
+        while isinstance(other, Number):
+            other = other.num
+        return self_num < other
+
+    def __le__(self, other):
+        return self < other or self == other
+
     def __repr__(self):
         # for Number in tuple.
         return str(self)
 
     def __str__(self):
         symbol = ''
-        if self.factor in d_FACTOR_SYMBOL:
-            symbol = d_FACTOR_SYMBOL[self.factor]
-            s = '{:.3f}{}'.format(round(self.value, 3), symbol)
+        if self._factor in d_FACTOR_SYMBOL:
+            symbol = d_FACTOR_SYMBOL[self._factor]
+#           s = '{:.3f}{}'
+            fmt = ':.{}f'.format(Number.ndigits)
+            fmt = '{' + fmt + '}{}'
+            s = fmt.format(round(self), symbol)
         else:
             s = str(self.num)
         return s
+
+    def __abs__(self):
+        return abs(self.num)
+
+    def __pos__(self):
+        return +self.num
+
+    def __neg__(self):
+        return -self.num
+
+    def __ceil__(self):
+        return math.ceil(self.num)
+
+    def __round__(self, ndigits=None):
+        if ndigits is None:
+            ndigits = Number.ndigits
+      # print('__round__()')
+        return round(self._value, ndigits=ndigits)
+
+    def __floor__(self):
+        return math.floor(self.num)
+
+    def __trunc__(self):
+        return math.trunc(self.num)
