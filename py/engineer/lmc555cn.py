@@ -37,7 +37,7 @@ CONST = math.log(2, math.e)
 # 0.481 * 10 ** -6
 # 0.481 * MICRO
 
-def lmc555(Ra, Rb, C=Number(0.1*MICRO)):
+def lmc555(Ra, Rb, C=EngineerNumber(0.1*MICRO)):
     _c2gnd = 0.1 * MICRO
     tH = CONST * (Ra + Rb) * C
     tL = CONST * Rb * C
@@ -68,7 +68,7 @@ LMC555 CMOS タイマ
 ■ 出力は5V 電源で、TTL、CMOS ロジックと完全互換
 '''
 
-def look_for_optimized_Hz(Hz, c=Number(0.1, MICRO)):
+def look_for_optimized_Hz(Hz, c=EngineerNumber(0.1, MICRO)):
     #                         k                    M
     factor_big = (1, 10, 100, 1000, 10000, 100000, 1000000)
     Rs = []
@@ -85,8 +85,8 @@ def look_for_optimized_Hz(Hz, c=Number(0.1, MICRO)):
     condition = False
     for r2 in Rs:
         for r1 in Rs:
-            rb = Number(r2, ONE)
-            ra = Number(r1, ONE)
+            rb = EngineerNumber(r2, ONE)
+            ra = EngineerNumber(r1, ONE)
             tL, tH, t, f = lmc555(ra, rb, c)
             condition = 1 or t == f and t == 1
             tup = (tL, tH, t, f, ra, rb, c) # sort() x index refer here.
@@ -125,19 +125,19 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
-    c = Number(0.1, MICRO)
-    ra = Number(10, MEGA)
-    rb = Number(1, KILO)
+    c = EngineerNumber(0.1, MICRO)
+    ra = EngineerNumber(10, MEGA)
+    rb = EngineerNumber(1, KILO)
 
-    ra = Number(1, KILO)
-    rb = Number(10, MEGA)
+    ra = EngineerNumber(1, KILO)
+    rb = EngineerNumber(10, MEGA)
 
-    ra = Number(220, KILO)
-    rb = Number(390, KILO)
+    ra = EngineerNumber(220, KILO)
+    rb = EngineerNumber(390, KILO)
 
     # 剣菱
-    c = Number(10, MICRO)
-    ra = rb = Number(48, KILO)
+    c = EngineerNumber(10, MICRO)
+    ra = rb = EngineerNumber(48, KILO)
 
     print('ra = {}'.format(ra))
     print('rb = {}'.format(rb))
@@ -151,8 +151,8 @@ if __name__ == '__main__':
     print('f = {}'.format(f))
     print()
 
-    c = Number(0.1, MICRO)
-    c = Number.make(args.c_str)
+    c = EngineerNumber(0.1, MICRO)
+    c = EngineerNumber.make(args.c_str)
     Hz = args.Hz
 #   tf = look_for_optimized_Hz(1, c)
 #   tf = look_for_optimized_Hz(10000, c)

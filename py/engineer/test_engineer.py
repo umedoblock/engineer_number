@@ -6,13 +6,13 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer'))
 from engineer import *
 from engineer.constants import *
 
-class TestEngineer(unittest.TestCase):
+class TestEngineerNumber(unittest.TestCase):
     def test_simple_but_too_long(self):
-        M3_3 = Number(3.3, MEGA)
+        M3_3 = EngineerNumber(3.3, MEGA)
         # kilo must be 'k'. K means kelbin.
-        k47 = Number(47, KILO)
-        mili47 = Number(47, MILLI)
-        mcr3_3 = Number(3.3, MICRO)
+        k47 = EngineerNumber(47, KILO)
+        mili47 = EngineerNumber(47, MILLI)
+        mcr3_3 = EngineerNumber(3.3, MICRO)
 
         # __str__()
         self.assertEqual('3.300M', str(M3_3))
@@ -37,8 +37,8 @@ class TestEngineer(unittest.TestCase):
         self.assertEqual('3.300M', str(M3_3 + mili47))
 
         # TOO BIG
-        T10 = Number(10, TERA)
-        G40 = Number(40, GIGA)
+        T10 = EngineerNumber(10, TERA)
+        G40 = EngineerNumber(40, GIGA)
         self.assertEqual('10.000T', str(T10))
         self.assertEqual('40.000G', str(G40))
         BIG400 = T10 * G40
@@ -46,30 +46,30 @@ class TestEngineer(unittest.TestCase):
 
         # 'over ekusa'
         #                   10 ** 9, 10 ** 18
-        over_ekusa = Number(1000000000, EXA)
+        over_ekusa = EngineerNumber(1000000000, EXA)
         self.assertEqual('1000000000000000000000000000', str(over_ekusa))
 
         # too small
-        u1 = Number(1, MICRO)
-        n4 = Number(4, NANO)
+        u1 = EngineerNumber(1, MICRO)
+        n4 = EngineerNumber(4, NANO)
         self.assertEqual('1.000u', str(u1))
         self.assertEqual('4.000n', str(n4))
         small4 = u1 * n4
         self.assertEqual('4e-15', str(small4))
 
-        self.assertEqual('987.000m', str(Number(0.987)))
-        self.assertEqual('1.000k', str(Number(1000, ONE)))
-        self.assertEqual('1.040k', str(Number(1040, ONE)))
-        self.assertEqual('999.000', str(Number(999, ONE)))
-        self.assertEqual('999.200', str(Number(999.2, ONE)))
-        self.assertEqual('2.000', str(Number(2, ONE)))
-        self.assertEqual('1.001', str(Number(1.001, ONE)))
-        self.assertEqual('1.000', str(Number(1, ONE)))
+        self.assertEqual('987.000m', str(EngineerNumber(0.987)))
+        self.assertEqual('1.000k', str(EngineerNumber(1000, ONE)))
+        self.assertEqual('1.040k', str(EngineerNumber(1040, ONE)))
+        self.assertEqual('999.000', str(EngineerNumber(999, ONE)))
+        self.assertEqual('999.200', str(EngineerNumber(999.2, ONE)))
+        self.assertEqual('2.000', str(EngineerNumber(2, ONE)))
+        self.assertEqual('1.001', str(EngineerNumber(1.001, ONE)))
+        self.assertEqual('1.000', str(EngineerNumber(1, ONE)))
 
         # same result
-        self.assertEqual('1.000m', str(Number(0.001, ONE)))
-        self.assertEqual('1.000m', str(Number(1, MILLI)))
-        self.assertEqual('1.000m', str(Number(1000, MICRO)))
+        self.assertEqual('1.000m', str(EngineerNumber(0.001, ONE)))
+        self.assertEqual('1.000m', str(EngineerNumber(1, MILLI)))
+        self.assertEqual('1.000m', str(EngineerNumber(1000, MICRO)))
 
         self.assertRaises
         self.assertEqual('1.004u', str(u1 + n4))
@@ -84,96 +84,96 @@ class TestEngineer(unittest.TestCase):
         self.assertEqual('1000.000m', str(pow(u1, n4))) # 0.9999999447379593
         self.assertEqual('999.981m', str(pow(n4, u1))) # 0.9999806632154822
         self.assertEqual(0.9999999447379593, pow(u1.num, n4.num))
-        neg1 = Number(-1, ONE)
+        neg1 = EngineerNumber(-1, ONE)
         self.assertEqual('-1.000', str(neg1))
 
-        self.assertEqual('0.000', str(Number(0)))
+        self.assertEqual('0.000', str(EngineerNumber(0)))
         math.fabs(u1)
         with self.assertRaises(RuntimeError) as raiz:
             int(u1)
         self.assertEqual('no meaning: convert to integer.',
                           raiz.exception.args[0])
 
-        self.assertEqual('2.000', str(Number(16) % Number(7)))
-        self.assertEqual('2.000', str(16 % Number(7)))
-        self.assertEqual('2.000', str(Number(16) % 7))
+        self.assertEqual('2.000', str(EngineerNumber(16) % EngineerNumber(7)))
+        self.assertEqual('2.000', str(16 % EngineerNumber(7)))
+        self.assertEqual('2.000', str(EngineerNumber(16) % 7))
 
-        self.assertEqual('9.000', str(Number(16) - Number(7)))
-        self.assertEqual('9.000', str(16 - Number(7)))
-        self.assertEqual('9.000', str(Number(16) - 7))
+        self.assertEqual('9.000', str(EngineerNumber(16) - EngineerNumber(7)))
+        self.assertEqual('9.000', str(16 - EngineerNumber(7)))
+        self.assertEqual('9.000', str(EngineerNumber(16) - 7))
 
-        self.assertEqual('128.000', str(Number(2) ** Number(7)))
-        self.assertEqual('128.000', str(2 ** Number(7)))
-        self.assertEqual('128.000', str(Number(2) ** 7))
+        self.assertEqual('128.000', str(EngineerNumber(2) ** EngineerNumber(7)))
+        self.assertEqual('128.000', str(2 ** EngineerNumber(7)))
+        self.assertEqual('128.000', str(EngineerNumber(2) ** 7))
 
-        self.assertEqual('2.286', str(Number(16) / Number(7)))
-        self.assertEqual('2.286', str(16 / Number(7)))
-        self.assertEqual('2.286', str(Number(16) / 7))
+        self.assertEqual('2.286', str(EngineerNumber(16) / EngineerNumber(7)))
+        self.assertEqual('2.286', str(16 / EngineerNumber(7)))
+        self.assertEqual('2.286', str(EngineerNumber(16) / 7))
 
-        self.assertEqual('2.000', str(Number(16) // Number(7)))
-        self.assertEqual('2.000', str(16 // Number(7)))
-        self.assertEqual('2.000', str(Number(16) // 7))
+        self.assertEqual('2.000', str(EngineerNumber(16) // EngineerNumber(7)))
+        self.assertEqual('2.000', str(16 // EngineerNumber(7)))
+        self.assertEqual('2.000', str(EngineerNumber(16) // 7))
 
-        self.assertEqual('2.286M', str(Number(16, MEGA) / Number(7)))
-        self.assertEqual('2.286M', str(16 / Number(7, MICRO)))
-        self.assertEqual('2.286M', str(Number(16, MEGA) / 7))
+        self.assertEqual('2.286M', str(EngineerNumber(16, MEGA) / EngineerNumber(7)))
+        self.assertEqual('2.286M', str(16 / EngineerNumber(7, MICRO)))
+        self.assertEqual('2.286M', str(EngineerNumber(16, MEGA) / 7))
 
-        self.assertEqual('1.000u', str(Number(u1)))
+        self.assertEqual('1.000u', str(EngineerNumber(u1)))
 
-        self.assertEqual('121.484m', str(Number.make('121.484m')))
-        self.assertEqual(121.484, Number.make('121.484').num)
-        self.assertEqual(121.484, Number.make('121.484'))
-        self.assertEqual(Number.make('121.484'), 121.484)
-        self.assertEqual('121.484', str(Number.make('121.484')))
-        self.assertEqual('121.484E', str(Number.make('121.484E')))
+        self.assertEqual('121.484m', str(EngineerNumber.make('121.484m')))
+        self.assertEqual(121.484, EngineerNumber.make('121.484').num)
+        self.assertEqual(121.484, EngineerNumber.make('121.484'))
+        self.assertEqual(EngineerNumber.make('121.484'), 121.484)
+        self.assertEqual('121.484', str(EngineerNumber.make('121.484')))
+        self.assertEqual('121.484E', str(EngineerNumber.make('121.484E')))
 
-        self.assertEqual('121.488p', str(Number(121.488, PICO)))
-        self.assertEqual('121.488p', str(Number(0.121488, NANO)))
+        self.assertEqual('121.488p', str(EngineerNumber(121.488, PICO)))
+        self.assertEqual('121.488p', str(EngineerNumber(0.121488, NANO)))
 
     def test_equal_different_value_and_factor(self):
-        self.assertEqual(Number(121.484, KILO), Number(0.121484, MEGA))
-        self.assertEqual(Number(121.484, MILLI), Number(0.121484, ONE))
-        self.assertEqual(Number(121.484, PICO), Number(0.121484, NANO))
-      # print(str(Number(121.488, PICO)), str(Number(0.121486, NANO)))
-        self.assertEqual(str(Number(121.488, PICO)), str(Number(0.121488, NANO)))
+        self.assertEqual(EngineerNumber(121.484, KILO), EngineerNumber(0.121484, MEGA))
+        self.assertEqual(EngineerNumber(121.484, MILLI), EngineerNumber(0.121484, ONE))
+        self.assertEqual(EngineerNumber(121.484, PICO), EngineerNumber(0.121484, NANO))
+      # print(str(EngineerNumber(121.488, PICO)), str(EngineerNumber(0.121486, NANO)))
+        self.assertEqual(str(EngineerNumber(121.488, PICO)), str(EngineerNumber(0.121488, NANO)))
 
     def test_equal_with_number(self):
-        self.assertEqual(121484000000000000000, Number.make('121.484E').num)
-        self.assertEqual(121484000000000000000, Number.make('121.484E'))
+        self.assertEqual(121484000000000000000, EngineerNumber.make('121.484E').num)
+        self.assertEqual(121484000000000000000, EngineerNumber.make('121.484E'))
 
     def test_compare_with_same_instance(self):
-        self.assertGreater(Number.make('1.000'), Number.make('0.999'))
-        self.assertGreaterEqual(Number.make('1.000'), Number.make('0.999'))
-        self.assertGreaterEqual(Number.make('1.000'), Number.make('1.000'))
+        self.assertGreater(EngineerNumber.make('1.000'), EngineerNumber.make('0.999'))
+        self.assertGreaterEqual(EngineerNumber.make('1.000'), EngineerNumber.make('0.999'))
+        self.assertGreaterEqual(EngineerNumber.make('1.000'), EngineerNumber.make('1.000'))
 
-        self.assertLess(Number.make('0.999'), Number.make('1.000'))
-        self.assertLessEqual(Number.make('0.999'), Number.make('0.999'))
-        self.assertLessEqual(Number.make('1'), Number.make('1.000'))
+        self.assertLess(EngineerNumber.make('0.999'), EngineerNumber.make('1.000'))
+        self.assertLessEqual(EngineerNumber.make('0.999'), EngineerNumber.make('0.999'))
+        self.assertLessEqual(EngineerNumber.make('1'), EngineerNumber.make('1.000'))
 
     def test_compare_with_number(self):
         # swap
-        self.assertGreater(Number.make('1.000'), 0.999)
-        self.assertGreaterEqual(Number.make('1.000'), 0.999)
-        self.assertGreaterEqual(Number.make('1.000'), 1.000)
-        self.assertGreater(1.0, Number.make('0.999'))
-        self.assertGreaterEqual(1.0, Number.make('0.999'))
-        self.assertGreaterEqual(1.0, Number.make('1.000'))
-        self.assertGreater(Number.make('1.000'), 0)
-        self.assertGreaterEqual(Number.make('1.000'), 0)
-        self.assertGreaterEqual(Number.make('1.000'), 1)
-        self.assertGreater(1, Number.make('0.999'))
-        self.assertGreaterEqual(1, Number.make('0.999'))
-        self.assertGreaterEqual(1, Number.make('1.000'))
+        self.assertGreater(EngineerNumber.make('1.000'), 0.999)
+        self.assertGreaterEqual(EngineerNumber.make('1.000'), 0.999)
+        self.assertGreaterEqual(EngineerNumber.make('1.000'), 1.000)
+        self.assertGreater(1.0, EngineerNumber.make('0.999'))
+        self.assertGreaterEqual(1.0, EngineerNumber.make('0.999'))
+        self.assertGreaterEqual(1.0, EngineerNumber.make('1.000'))
+        self.assertGreater(EngineerNumber.make('1.000'), 0)
+        self.assertGreaterEqual(EngineerNumber.make('1.000'), 0)
+        self.assertGreaterEqual(EngineerNumber.make('1.000'), 1)
+        self.assertGreater(1, EngineerNumber.make('0.999'))
+        self.assertGreaterEqual(1, EngineerNumber.make('0.999'))
+        self.assertGreaterEqual(1, EngineerNumber.make('1.000'))
 
-        self.assertLess(0.999, Number.make('1.000'))
-        self.assertLessEqual(0.999, Number.make('0.999'))
-        self.assertLessEqual(1, Number.make('1.000'))
+        self.assertLess(0.999, EngineerNumber.make('1.000'))
+        self.assertLessEqual(0.999, EngineerNumber.make('0.999'))
+        self.assertLessEqual(1, EngineerNumber.make('1.000'))
 
     def test_bool(self):
-        self.assertTrue(Number.make('1.000'))
-        self.assertTrue(Number.make('1.000p'))
-        self.assertTrue(Number(1, PICO))
-        self.assertFalse(Number.make('0.000'))
+        self.assertTrue(EngineerNumber.make('1.000'))
+        self.assertTrue(EngineerNumber.make('1.000p'))
+        self.assertTrue(EngineerNumber(1, PICO))
+        self.assertFalse(EngineerNumber.make('0.000'))
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)

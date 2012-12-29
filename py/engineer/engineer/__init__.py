@@ -5,15 +5,15 @@ import numbers
 
 from constants import *
 
-class Number(numbers.Real):
+class EngineerNumber(numbers.Real):
 
     ndigits = 3
 
     @classmethod
     def make(cls, ss):
-        value, factor = Number._parse_string(ss)
+        value, factor = EngineerNumber._parse_string(ss)
       # print('value =', value, 'factor =', factor)
-        number = Number(value, factor)
+        number = EngineerNumber(value, factor)
         return number
 
     @classmethod
@@ -38,7 +38,7 @@ class Number(numbers.Real):
 
     def _normalize(self):
         num = self.num
-        while isinstance(num, Number):
+        while isinstance(num, EngineerNumber):
             num = num.num
         if num == 0:
             self._value = 0
@@ -70,55 +70,55 @@ class Number(numbers.Real):
         return self
 
     def __add__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
-        if isinstance(other, Number):
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
+        if isinstance(other, EngineerNumber):
             n = self.num + other.num
         else:
             n = self.num + other
-        return Number(n)
+        return EngineerNumber(n)
 
     def __sub__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
         n = self.num - other.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __mul__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
         n = self.num * other.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __floordiv__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
         n = self.num // other.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __truediv__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
         n = self.num / other.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __mod__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
         n = self.num % other.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __divmod__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
         div, mod = divmod(self.num, other.num)
-        return (Number(div), Number(mod))
+        return (EngineerNumber(div), EngineerNumber(mod))
 
     def __pow__(self, other):
-        if not isinstance(other, Number):
-            other = Number(other)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other)
         n = pow(self.num, other.num)
-        return Number(n)
+        return EngineerNumber(n)
 
     def __int__(self):
         raise RuntimeError('no meaning: convert to integer.')
@@ -128,57 +128,57 @@ class Number(numbers.Real):
 
     def __radd__(self, other):
         n = other + self.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __rsub__(self, other):
         n = other - self.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __rmul__(self, other):
       # print('self=', type(self))
       # print('other=', type(other))
         n = other * self.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __rfloordiv__(self, other):
         n = other // self.num
       # print('self.num={} // other={}, n={}'.format(self.num, other, n))
-        return Number(n)
+        return EngineerNumber(n)
 
     def __rtruediv__(self, other):
       # print('self=', type(self))
       # print('other=', type(other))
         n = other / self.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __rmod__(self, other):
         n = other % self.num
-        return Number(n)
+        return EngineerNumber(n)
 
     def __rdivmod__(self, other):
         div, mod = divmod(other, self.num)
-        return (Number(div), Number(mod))
+        return (EngineerNumber(div), EngineerNumber(mod))
 
     def __rpow__(self, other):
         n = pow(other, self.num)
-        return Number(n)
+        return EngineerNumber(n)
 
     def _get_num(self):
         self_num = self.num
-        while isinstance(self_num, Number):
+        while isinstance(self_num, EngineerNumber):
             self_num = self_num.num
         return self_num
 
     def __eq__(self, other):
       # self_num = self._get_num()
-      # # cannot determine that other is Number instance.
+      # # cannot determine that other is EngineerNumber instance.
       # # so repeated copy and paste.
-      # while isinstance(other, Number):
+      # while isinstance(other, EngineerNumber):
       #     other = other.num
-      # return round(self) == round(other, Number.ndigits)
+      # return round(self) == round(other, EngineerNumber.ndigits)
 
-        if not isinstance(other, Number):
-            other = Number(other, ONE)
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other, ONE)
       # print('self._value =', self._value)
       # print('other._value =', other._value)
       # print('self._factor =', self._factor)
@@ -191,9 +191,9 @@ class Number(numbers.Real):
 
     def __gt__(self, other):
         self_num = self._get_num()
-        # cannot determine that other is Number instance.
+        # cannot determine that other is EngineerNumber instance.
         # so repeated copy and paste.
-        while isinstance(other, Number):
+        while isinstance(other, EngineerNumber):
             other = other.num
         return self_num > other
 
@@ -204,9 +204,9 @@ class Number(numbers.Real):
 
     def __lt__(self, other):
         self_num = self._get_num()
-        # cannot determine that other is Number instance.
+        # cannot determine that other is EngineerNumber instance.
         # so repeated copy and paste.
-        while isinstance(other, Number):
+        while isinstance(other, EngineerNumber):
             other = other.num
         return self_num < other
 
@@ -214,7 +214,7 @@ class Number(numbers.Real):
         return self < other or self == other
 
     def __repr__(self):
-        # for Number in tuple.
+        # for EngineerNumber in tuple.
         return str(self)
 
     def __str__(self):
@@ -222,7 +222,7 @@ class Number(numbers.Real):
         if self._factor in d_FACTOR_SYMBOL:
             symbol = d_FACTOR_SYMBOL[self._factor]
 #           s = '{:.3f}{}'
-            fmt = ':.{}f'.format(Number.ndigits)
+            fmt = ':.{}f'.format(EngineerNumber.ndigits)
             fmt = '{' + fmt + '}{}'
             s = fmt.format(round(self), symbol)
         else:
@@ -243,7 +243,7 @@ class Number(numbers.Real):
 
     def __round__(self, ndigits=None):
         if ndigits is None:
-            ndigits = Number.ndigits
+            ndigits = EngineerNumber.ndigits
       # print('__round__()')
         return round(self._value, ndigits=ndigits)
 
