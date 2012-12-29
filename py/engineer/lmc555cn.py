@@ -113,8 +113,8 @@ def parse_args():
     parser.add_argument('--Hz', metavar='N', dest='Hz',
                        type=int, nargs='?', default=1000,
                        help='frequency')
-    parser.add_argument('--capacita', metavar='N', dest='c',
-                       type=float, nargs='?', default=Number(0.1, MICRO),
+    parser.add_argument('--capacita', metavar='N', dest='c_str',
+                       nargs='?', default='0.100m',
                        help='capacita')
     parser.add_argument('--top', metavar='N', dest='top',
                        type=int, nargs='?', default=10,
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     print()
 
     c = Number(0.1, MICRO)
-    c = Number(args.c)
+    c = Number.make(args.c_str)
     Hz = args.Hz
 #   tf = look_for_optimized_Hz(1, c)
 #   tf = look_for_optimized_Hz(10000, c)
