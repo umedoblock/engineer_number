@@ -61,6 +61,15 @@ class EngineerNumber(numbers.Real):
         self.num = value * factor
         self._normalize()
 
+    def __getitem__(self, key):
+        return self.force(key)
+
+    def force(self, si=''):
+        factor = EngineerNumber._si2factor(si)
+        ratio = self._factor / factor
+        value = ratio * self._value
+        return '{}{}'.format(round(value, EngineerNumber.round_ndigits), si)
+
     def _normalize(self):
         num = self.num
         while isinstance(num, EngineerNumber):

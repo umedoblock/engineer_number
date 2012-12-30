@@ -209,6 +209,24 @@ class TestEngineerNumber(unittest.TestCase):
                    '単位記号だからです。')
         self.assertEqual(message, raiz.exception.args[0])
 
+    def test_force(self):
+        one = EngineerNumber('1')
+        self.assertEqual('1.000', str(one))
+        self.assertEqual('1000.0m', one.force('m'))
+        self.assertEqual('0.001k', one.force('k'))
+        self.assertEqual('1000.0m', one['m'])
+        self.assertEqual('0.001k', one['k'])
+
+        m1 = EngineerNumber('1m')
+        self.assertEqual('1.000m', str(m1))
+        self.assertEqual('1000.0u', m1.force('u'))
+        self.assertEqual('1000.0u', m1['u'])
+
+        m1234567 = EngineerNumber('1.234567m')
+        self.assertEqual('1.235m', str(m1234567))
+        self.assertEqual('1234.567u', m1234567.force('u'))
+        self.assertEqual('1234.567u', m1234567['u'])
+
     def test_warning(self):
         n1 = EngineerNumber('0.1m')
       # message = 'number\(={}\) in range\(0, 1\) convert to int.'.format(n1)
