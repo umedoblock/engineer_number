@@ -82,7 +82,7 @@ class TestEngineerNumber(unittest.TestCase):
 
         self.assertEqual('1000.000m', str(pow(u1, n4))) # 0.9999999447379593
         self.assertEqual('999.981m', str(pow(n4, u1))) # 0.9999806632154822
-        self.assertEqual(0.9999999447379593, pow(u1.num, n4.num))
+        self.assertEqual(0.9999999447379593, pow(u1, n4.num))
         neg1 = EngineerNumber(-1, ONE)
         self.assertEqual('-1.000', str(neg1))
 
@@ -261,6 +261,15 @@ class TestEngineerNumber(unittest.TestCase):
       # with support.captured_stderr() as stderr_:
       #     int(n2)
       # self.assertEqual(message, stderr_.getvalue())
+
+    def test_math(self):
+        two = EngineerNumber('2')
+        root2 = math.sqrt(2)
+
+        sqrt2 = two.sqrt()
+        self.assertEqual(2, two)
+        self.assertEqual(root2, sqrt2)
+        self.assertIsInstance(sqrt2, EngineerNumber)
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)

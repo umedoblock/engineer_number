@@ -105,6 +105,10 @@ class EngineerNumber(numbers.Real):
         self._factor = factor
         return self
 
+    def sqrt(self):
+        root = math.sqrt(self)
+        return EngineerNumber(root)
+
     def __add__(self, other):
         if not isinstance(other, EngineerNumber):
             other = EngineerNumber(other)
