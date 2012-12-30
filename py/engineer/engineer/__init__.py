@@ -238,6 +238,12 @@ class EngineerNumber(numbers.Real):
         # for EngineerNumber in tuple.
         return str(self)
 
+    def detail(self):
+        print(self)
+        print('_factor =', self._factor)
+        print(' _value =', self._value)
+        print('    num =', self.num)
+
     def __str__(self):
         symbol = ''
         if self._factor in d_FACTOR_SYMBOL:

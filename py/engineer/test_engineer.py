@@ -45,11 +45,6 @@ class TestEngineerNumber(unittest.TestCase):
         BIG400 = T10 * G40
         self.assertEqual('400000000000000000000000', str(BIG400))
 
-        # 'over ekusa'
-        #                   10 ** 9, 10 ** 18
-        over_ekusa = EngineerNumber(1000000000, EXA)
-        self.assertEqual('1000000000000000000000000000', str(over_ekusa))
-
         # too small
         u1 = EngineerNumber(1, MICRO)
         n4 = EngineerNumber(4, NANO)
@@ -147,6 +142,31 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertLess(EngineerNumber('0.999'), EngineerNumber('1.000'))
         self.assertLessEqual(EngineerNumber('0.999'), EngineerNumber('0.999'))
         self.assertLessEqual(EngineerNumber('1'), EngineerNumber('1.000'))
+
+    def test_around_exa(self):
+        exa999999 = EngineerNumber('999.999E')
+      # print('e999999 =')
+      # exa999999.detail()
+      # print()
+        self.assertEqual('999.999E', str(exa999999))
+
+        # over exa a little
+        exa = EngineerNumber(1, EXA)
+        self.assertEqual('1.000E', str(exa))
+        exa1 = exa + 1
+        self.assertEqual('1.000E', str(exa1))
+        self.assertEqual('1000000000000000001', str(exa1.num))
+
+        # in zetta
+        zetta = exa * 1000
+        self.assertEqual('1000000000000000000000', str(zetta))
+        zetta1 = zetta + 1
+        self.assertEqual('1000000000000000000001', str(zetta1))
+
+      # zetta_1 = zetta - 1
+      # print('zetta - 1 =')
+      # zetta_1.detail()
+      # print()
 
     def test_compare_with_number(self):
         # swap
