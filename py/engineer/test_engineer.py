@@ -223,6 +223,12 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('1000.000u', m1._force('u'))
         self.assertEqual('1000.000u', m1['u'])
         self.assertEqual('0.001', m1[''])
+        self.assertEqual('1000000.000n', m1['n'])
+
+        k1 = EngineerNumber('123.456k')
+        self.assertEqual('123.456k', k1['k'])
+        self.assertEqual('123456.000', k1[''])
+        self.assertEqual('123456000000000000.000p', k1['p'])
 
         m1234567 = EngineerNumber('1.234567m')
         self.assertEqual('1.235m', str(m1234567))
