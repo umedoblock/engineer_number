@@ -4,7 +4,7 @@ import math
 import numbers
 import warnings
 
-from constants import *
+from .constants import *
 
 class EngineerNumber(numbers.Real):
 
@@ -51,7 +51,8 @@ class EngineerNumber(numbers.Real):
 
     def __init__(self, value, factor=ONE):
         if isinstance(value, str):
-            value, factor = EngineerNumber._parse_string(value)
+            value, factor_parsed = EngineerNumber._parse_string(value)
+            factor *= factor_parsed
         self.num = value * factor
         self._normalize()
 

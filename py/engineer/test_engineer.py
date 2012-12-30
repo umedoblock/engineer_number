@@ -29,6 +29,9 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('155.100m', str(k47 * mcr3_3))
         self.assertEqual('155.100k', str(M3_3 * mili47))
 
+        self.assertEqual('100.000n', EngineerNumber('10p') * 10 ** 4)
+        self.assertEqual('100.000n', EngineerNumber('10p', 10 ** 4))
+
         # add, sub
         self.assertEqual('3.347M', str(M3_3 + k47))
         self.assertEqual('3.253M', str(M3_3 - k47))
