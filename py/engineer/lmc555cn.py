@@ -176,7 +176,14 @@ if __name__ == '__main__':
     view_tf(tf, top)
     print()
 
-    tf = check_Hz_in_range(0, EngineerNumber('4k'), c)
-    print("check_Hz_in_range(0, EngineerNumber('4k'))")
+    ra = EngineerNumber('0.0k')
+    rb = EngineerNumber('8k')
+    ravg = (ra + rb) / 2
+    tf = check_Hz_in_range(ra, rb, c)
+    print("check_Hz_in_range({}, {})".format(ra, rb))
+    view_tf(tf, top)
+    print()
+    tf = check_Hz_in_range(ravg, ravg, c)
+    print("check_Hz_in_range({}, {})".format(ravg, ravg))
     view_tf(tf, top)
     print()
