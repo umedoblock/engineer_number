@@ -32,6 +32,12 @@ class EngineerNumber(numbers.Real):
 
         value = float(ss.replace(si, ''))
       # print('si =', si, 'value =', value)
+        factor = cls._si2factor(si)
+
+        return (value, factor)
+
+    @classmethod
+    def _si2factor(cls, si):
         try:
             factor_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
         except ValueError as raiz:
@@ -46,8 +52,7 @@ class EngineerNumber(numbers.Real):
             else:
                 raise raiz
         factor = tuple(d_FACTOR_SYMBOL.keys())[factor_index]
-
-        return (value, factor)
+        return factor
 
     def __init__(self, value, factor=ONE):
         if isinstance(value, str):
