@@ -113,7 +113,7 @@ class EngineerNumber(numbers.Real):
         return EngineerNumber(n)
 
     def __int__(self):
-        raise RuntimeError('no meaning: convert to integer.')
+        return int(self.num)
 
     def __float__(self):
         return float(self.num)
