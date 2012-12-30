@@ -2,6 +2,7 @@ import os
 import sys
 import math
 import numbers
+import warnings
 
 from constants import *
 
@@ -18,9 +19,32 @@ class EngineerNumber(numbers.Real):
             si = ss[-1]
         else:
             si = ''
+        if si == 'K':
+          # message = ('cannot accept "K" as SI prefix symbol. '
+          #            'please use "k" as prefix if you hope to describe kilo.'
+          #            'Because "K" means Kelbin celcius.')
+            message = ('"K" を SI 接頭辞の記号として使用することは出来ません。'
+                       'kilo を表現したい場合、 "K" ではなく、小文字の "k" を'
+                       'お使い下さい。'
+                       'なぜならば、"K" は、Kelvin 温度を表現するための'
+                       '単位記号だからです。')
+            raise ValueError(message)
+
         value = float(ss.replace(si, ''))
       # print('si =', si, 'value =', value)
-        factor_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
+        try:
+            factor_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
+        except ValueError as raiz:
+            if raiz.args[0] == 'tuple.index(x): x not in tuple':
+              # message = \
+              #     ('SI prefix symbol must be in '
+              #      '{}'.format(ordered_FACTOR_SYMBOL)
+                message = \
+                    ('SI 接頭辞の記号は、次のいずれかでなければなりません。'
+                     '{}'.format(ordered_FACTOR_SYMBOL))
+                raise ValueError(message)
+            else:
+                raise raiz
         factor = tuple(d_FACTOR_SYMBOL.keys())[factor_index]
 
         return (value, factor)
@@ -113,6 +137,11 @@ class EngineerNumber(numbers.Real):
         return EngineerNumber(n)
 
     def __int__(self):
+        if self._factor < 1:
+          # message = 'number(={}) in range(0, 1) convert to int.'.format(self)
+            message = ('0 < number(={}) < 1 を満たす数字を '
+                       'int に変換しようとしました。'.format(self))
+            warnings.warn('{}'.format(message), UserWarning)
         return int(self.num)
 
     def __float__(self):

@@ -1,6 +1,7 @@
 import os
 import sys
 import unittest
+from test import support
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer'))
 from engineer import *
@@ -88,11 +89,8 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('-1.000', str(neg1))
 
         self.assertEqual('0.000', str(EngineerNumber(0)))
-        math.fabs(u1)
-        with self.assertRaises(RuntimeError) as raiz:
-            int(u1)
-        self.assertEqual('no meaning: convert to integer.',
-                          raiz.exception.args[0])
+        self.assertEqual(-0.000001, -u1)
+        self.assertEqual(0.000001, math.fabs(-u1))
 
         self.assertEqual('2.000', str(EngineerNumber(16) % EngineerNumber(7)))
         self.assertEqual('2.000', str(16 % EngineerNumber(7)))
@@ -174,6 +172,39 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertTrue(EngineerNumber('1.000p'))
         self.assertTrue(EngineerNumber(1, PICO))
         self.assertFalse(EngineerNumber('0.000'))
+
+    def test_si_prefix_symbol_error(self):
+        with self.assertRaises(ValueError) as raiz:
+            EngineerNumber('100K')
+      # message = ('cannot accept "K" as SI prefix symbol. '
+      #            'please use "k" as prefix if you hope to describe kilo.'
+      #            'Because "K" means Kelbin celcius.')
+        message = ('"K" を SI 接頭辞の記号として使用することは出来ません。'
+                   'kilo を表現したい場合、 "K" ではなく、小文字の "k" を'
+                   'お使い下さい。'
+                   'なぜならば、"K" は、Kelvin 温度を表現するための'
+                   '単位記号だからです。')
+        self.assertEqual(message, raiz.exception.args[0])
+
+    def test_warning(self):
+        n1 = EngineerNumber('0.1m')
+      # message = 'number\(={}\) in range\(0, 1\) convert to int.'.format(n1)
+        message = (r'0 < number\(={}\) < 1 を満たす数字を '
+                    'int に変換しようとしました。'.format(n1))
+
+        with self.assertWarnsRegex(UserWarning, message) as warn:
+            int(n1)
+
+        n2 = EngineerNumber('-0.1m')
+      # message = 'number\(={}\) in range\(0, 1\) convert to int.'.format(n2)
+        message = (r'0 < number\(={}\) < 1 を満たす数字を '
+                    'int に変換しようとしました。'.format(n2))
+        with self.assertWarnsRegex(UserWarning, message) as warn:
+            int(n2)
+
+      # with support.captured_stderr() as stderr_:
+      #     int(n2)
+      # self.assertEqual(message, stderr_.getvalue())
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)
