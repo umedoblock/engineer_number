@@ -216,16 +216,25 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('0.001k', one._force('k'))
         self.assertEqual('1000.000m', one['m'])
         self.assertEqual('0.001k', one['k'])
+        self.assertEqual('1.000', one[''])
 
         m1 = EngineerNumber('1m')
         self.assertEqual('1.000m', str(m1))
         self.assertEqual('1000.000u', m1._force('u'))
         self.assertEqual('1000.000u', m1['u'])
+        self.assertEqual('0.001', m1[''])
 
         m1234567 = EngineerNumber('1.234567m')
         self.assertEqual('1.235m', str(m1234567))
         self.assertEqual('1234.567u', m1234567._force('u'))
         self.assertEqual('1234.567u', m1234567['u'])
+        self.assertEqual('0.001', m1234567[''])
+
+        m1534567 = EngineerNumber('1.534567m')
+        self.assertEqual('0.002', m1534567[''])
+      # self.assertEqual('1.535m', str(m1534567))
+      # self.assertEqual('1534.567u', m1534567._force('u'))
+      # self.assertEqual('1534.567u', m1534567['u'])
 
     def test_warning(self):
         n1 = EngineerNumber('0.1m')
