@@ -79,6 +79,7 @@ class EngineerNumber(numbers.Real):
         if num == 0:
             self._value = 0
             self._factor = 1
+            self._exponent_floor = 0
             return
         elif num > 0:
             sign_num = 1
@@ -103,6 +104,7 @@ class EngineerNumber(numbers.Real):
       # print('=========================')
         self._value = value
         self._factor = factor
+        self._exponent_floor = math.floor(exponent)
         return self
 
     def sqrt(self):
@@ -205,52 +207,27 @@ class EngineerNumber(numbers.Real):
         n = pow(other, self.num)
         return EngineerNumber(n)
 
-    def _get_num(self):
-        self_num = self.num
-        while isinstance(self_num, EngineerNumber):
-            self_num = self_num.num
-        return self_num
-
     def __eq__(self, other):
-      # self_num = self._get_num()
-      # # cannot determine that other is EngineerNumber instance.
-      # # so repeated copy and paste.
-      # while isinstance(other, EngineerNumber):
-      #     other = other.num
-      # return round(self) == round(other, EngineerNumber.round_ndigits)
-
         if not isinstance(other, EngineerNumber):
             other = EngineerNumber(other, ONE)
-      # print('self._value =', self._value)
-      # print('other._value =', other._value)
-      # print('self._factor =', self._factor)
-      # print('other._factor =', other._factor)
-        return self._factor == other._factor and \
+        return self._exponent_floor == other._exponent_floor and \
                round(self) == round(other)
 
     def __ne__(self, other):
         return not self == other
 
     def __gt__(self, other):
-        self_num = self._get_num()
-        # cannot determine that other is EngineerNumber instance.
-        # so repeated copy and paste.
-        while isinstance(other, EngineerNumber):
-            other = other.num
-        return self_num > other
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other, ONE)
+        return round(self) > round(other)
 
     def __ge__(self, other):
-      # print(dir(1.0))
-      # print(dir(self))
         return self > other or self == other
 
     def __lt__(self, other):
-        self_num = self._get_num()
-        # cannot determine that other is EngineerNumber instance.
-        # so repeated copy and paste.
-        while isinstance(other, EngineerNumber):
-            other = other.num
-        return self_num < other
+        if not isinstance(other, EngineerNumber):
+            other = EngineerNumber(other, ONE)
+        return round(self) < round(other)
 
     def __le__(self, other):
         return self < other or self == other
@@ -261,9 +238,10 @@ class EngineerNumber(numbers.Real):
 
     def detail(self):
         print(self)
-        print('_factor =', self._factor)
-        print(' _value =', self._value)
-        print('    num =', self.num)
+        print('  _factor =', self._factor)
+        print('   _value =', self._value)
+        print('      num =', self.num)
+      # print('_exponent_floor =', self._exponent_floor)
 
     def __str__(self):
         symbol = ''
@@ -272,7 +250,9 @@ class EngineerNumber(numbers.Real):
 #           s = '{:.3f}{}'
             fmt = ':.{}f'.format(EngineerNumber.round_ndigits)
             fmt = '{' + fmt + '}{}'
-            s = fmt.format(round(self), symbol)
+            round_value = \
+                round(self._value, EngineerNumber.round_ndigits)
+            s = fmt.format(round_value, symbol)
         else:
             s = str(self.num)
         return s
@@ -293,7 +273,9 @@ class EngineerNumber(numbers.Real):
         if ndigits is None:
             ndigits = EngineerNumber.round_ndigits
       # print('__round__()')
-        return round(self._value, ndigits=ndigits)
+        if self._exponent_floor < 0:
+            ndigits += abs(self._exponent_floor)
+        return round(self.num, ndigits)
 
     def __floor__(self):
         return math.floor(self.num)
