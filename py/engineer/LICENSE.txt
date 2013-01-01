@@ -1,4 +1,4 @@
-New BSD License
+BSD License
 Copyright (c) 2012, 梅どぶろく(umedoblock)
 All rights reserved.
 
