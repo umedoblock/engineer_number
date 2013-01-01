@@ -3,7 +3,7 @@ import sys
 import unittest
 from test import support
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from engineer import *
 from engineer.constants import *
 
