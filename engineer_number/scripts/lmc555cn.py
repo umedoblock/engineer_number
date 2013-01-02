@@ -75,13 +75,13 @@ def parse_args():
 
     parser.add_argument('--Hz', metavar='N', dest='Hz',
                        type=int, nargs='?', default=1000,
-                       help='frequency')
+                       help='frequency default: 1000')
     parser.add_argument('--capacita', metavar='N', dest='c_str',
-                       nargs='?', default='0.100m',
-                       help='capacita')
+                       nargs='?', default='0.1u',
+                       help='capacita default: 0.1u')
     parser.add_argument('--top', metavar='N', dest='top',
                        type=int, nargs='?', default=10,
-                       help='ranking')
+                       help='ranking default: 10')
     args = parser.parse_args()
     return args
 

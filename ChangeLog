@@ -1,5 +1,6 @@
 Changes in 1.0.2 (2 Jan 2013)
 - added test/test_engineer_number.py, scripts/lmc555cn.py
+- write default to scripts/lmc555cn.py.
 
 Changes in 1.0.1 (2 Jan 2013)
 - changed interface to EngineerNumber(value, exponent10=0)
