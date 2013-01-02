@@ -3,9 +3,9 @@ import sys
 import math
 import argparse
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer'))
-from engineer import *
-from engineer.constants import *
+sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer_number'))
+from engineer_number import *
+from engineer_number.constants import *
 
 # >>> math.log(2)
 # 0.6931471805599453
@@ -150,22 +150,6 @@ def view_tf(tf, top=-1):
 if __name__ == '__main__':
     args = parse_args()
 
-  # # 剣菱
-  # c = EngineerNumber(10, MICRO)
-  # ra = rb = EngineerNumber(48, KILO)
-
-  # print('ra = {}'.format(ra))
-  # print('rb = {}'.format(rb))
-  # print('c = {}'.format(c))
-  # print()
-
-  # tL, tH, t, f = lmc555(ra, rb, c)
-  # print('tL = {}'.format(tL))
-  # print('tH = {}'.format(tH))
-  # print('t = {}'.format(t))
-  # print('f = {}'.format(f))
-  # print()
-
     c = EngineerNumber(args.c_str)
     Hz = args.Hz
     tf = look_for_optimized_Hz(Hz, c)
@@ -173,17 +157,5 @@ if __name__ == '__main__':
     print('len(tf)=', len(tf))
     print()
     top = args.top
-    view_tf(tf, top)
-    print()
-
-    ra = EngineerNumber('0.0k')
-    rb = EngineerNumber('8k')
-    ravg = (ra + rb) / 2
-    tf = check_Hz_in_range(ra, rb, c)
-    print("check_Hz_in_range({}, {})".format(ra, rb))
-    view_tf(tf, top)
-    print()
-    tf = check_Hz_in_range(ravg, ravg, c)
-    print("check_Hz_in_range({}, {})".format(ravg, ravg))
     view_tf(tf, top)
     print()

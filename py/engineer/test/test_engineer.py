@@ -4,8 +4,8 @@ import unittest
 from test import support
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from engineer import *
-from engineer.constants import *
+from engineer_number import *
+from engineer_number.constants import *
 
 class TestEngineerNumber(unittest.TestCase):
     def test_simple_but_too_long(self):
