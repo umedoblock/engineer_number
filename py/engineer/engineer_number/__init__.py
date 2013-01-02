@@ -32,14 +32,14 @@ class EngineerNumber(numbers.Real):
 
         value = float(ss.replace(si, ''))
       # print('si =', si, 'value =', value)
-        factor = cls._si2factor(si)
+        exponent_floor = cls._si2exponent10(si)
 
-        return (value, factor)
+        return (value, exponent_floor)
 
     @classmethod
-    def _si2factor(cls, si):
+    def _si2exponent10(cls, si):
         try:
-            factor_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
+            exponent10_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
         except ValueError as raiz:
             if raiz.args[0] == 'tuple.index(x): x not in tuple':
               # message = \
@@ -51,22 +51,24 @@ class EngineerNumber(numbers.Real):
                 raise ValueError(message)
             else:
                 raise raiz
-        factor = tuple(d_FACTOR_SYMBOL.keys())[factor_index]
-        return factor
+        exponent10 = tuple(d_FACTOR_SYMBOL.keys())[exponent10_index]
+        return exponent10
 
-    def __init__(self, value, factor=ONE):
+    def __init__(self, value, exponent10=0):
         if isinstance(value, str):
-            value, factor_parsed = EngineerNumber._parse_string(value)
-            factor *= factor_parsed
-        self.num = value * factor
+            value, parsed_exponent10 = EngineerNumber._parse_string(value)
+            exponent10 += parsed_exponent10
+        self.num = value * (10 ** exponent10)
+        # >>> 10 ** 0
+        # 1
         self._normalize()
 
     def __getitem__(self, key):
         return self._force(key)
 
     def _force(self, si=''):
-        ratio = EngineerNumber._si2factor(si)
-        value = self.num / ratio
+        exponent10 = EngineerNumber._si2exponent10(si)
+        value = self.num / (10 ** exponent10)
         fmt = ':.{}f'.format(EngineerNumber.round_ndigits)
         fmt = '{' + fmt + '}{}'
         s = fmt.format(round(value, EngineerNumber.round_ndigits), si)
@@ -80,6 +82,7 @@ class EngineerNumber(numbers.Real):
             self._value = 0
             self._factor = 1
             self._exponent_floor = 0
+            self._exponent10 = 0
             return
         elif num > 0:
             sign_num = 1
@@ -93,18 +96,16 @@ class EngineerNumber(numbers.Real):
         else:
             sign_exponent = -1
         div, mod = divmod(exponent, 3)
+        div = int(div)
         exponent *= sign_exponent
         exponent10 = div * 3
         factor = 10 ** exponent10
         value = num / factor
         value *= sign_num
-      # print('=========================')
-      # print('num={:.3e}'.format(num))
-      # print('exponent10={}, exponent={}, factor={}, value={}'.format(exponent10, exponent, factor, value))
-      # print('=========================')
         self._value = value
         self._factor = factor
         self._exponent_floor = math.floor(exponent)
+        self._exponent10 = exponent10
         return self
 
     def sqrt(self):
@@ -245,8 +246,9 @@ class EngineerNumber(numbers.Real):
 
     def __str__(self):
         symbol = ''
-        if self._factor in d_FACTOR_SYMBOL:
-            symbol = d_FACTOR_SYMBOL[self._factor]
+      # print('_exponent_floor =', self._exponent_floor)
+        if self._exponent10 in d_FACTOR_SYMBOL:
+            symbol = d_FACTOR_SYMBOL[self._exponent10]
 #           s = '{:.3f}{}'
             fmt = ':.{}f'.format(EngineerNumber.round_ndigits)
             fmt = '{' + fmt + '}{}'
@@ -272,9 +274,8 @@ class EngineerNumber(numbers.Real):
     def __round__(self, ndigits=None):
         if ndigits is None:
             ndigits = EngineerNumber.round_ndigits
-      # print('__round__()')
-        if self._exponent_floor < 0:
-            ndigits += abs(self._exponent_floor)
+        if self._exponent10 < 0:
+            ndigits += abs(self._exponent10)
         return round(self.num, ndigits)
 
     def __floor__(self):

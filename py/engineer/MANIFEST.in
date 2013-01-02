@@ -1,2 +1,2 @@
-include lmc555cn.py
+include lmc555cn.py ChangeLog
 include LICENSE.ja.txt LICENSE.txt

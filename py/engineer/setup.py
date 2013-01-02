@@ -5,7 +5,7 @@ from distutils.core import setup
 setup(
     name='engineer_number',
     packages=['engineer_number'],
-    version='1.0.0',
+    version='1.0.1',
     description='Engineer Number calculate',
     author='梅どぶろく(umedoblock)',
     author_email='umedoblock@gmail.com',
@@ -42,7 +42,7 @@ setup(
 | This module can easily calculate Engineer Number.
 | 
 | This version requires Python 3 or later.
-| Python 2 version  may be available but no support Python 2 version.
+| Python 2 version may be available but no support Python 2 version.
 | 
 | for example.
 | 
@@ -58,6 +58,7 @@ setup(
 | 
 | 2.
 | >>> c104 = EngineerNumber('10p') * 10 ** 4
+| >>> c104 = EngineerNumber('10p', 4) # equal to above line
 | >>> c104['u']
 | '0.100u'
 | >>> c104['n']
@@ -85,5 +86,12 @@ setup(
 | 15.000m
 | >>> Io['']
 | '0.015'
+| 
+| 5.
+| >>> kx = EngineerNumber('47', 2)
+| >>> kx
+| 4.700k
+| >>> kx['']
+| '4700.000'
 ''',
      )

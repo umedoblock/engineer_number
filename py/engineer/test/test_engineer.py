@@ -8,7 +8,7 @@ from engineer_number import *
 from engineer_number.constants import *
 
 class TestEngineerNumber(unittest.TestCase):
-    def test_simple_but_too_long(self):
+    def test_simple(self):
         M3_3 = EngineerNumber(3.3, MEGA)
         # kilo must be 'k'. K means kelbin.
         k47 = EngineerNumber(47, KILO)
@@ -17,6 +17,8 @@ class TestEngineerNumber(unittest.TestCase):
 
         # __str__()
         self.assertEqual('3.300M', str(M3_3))
+        self.assertEqual(3, k47._exponent10)
+        self.assertEqual(4, k47._exponent_floor)
         self.assertEqual('47.000k', str(k47))
         self.assertEqual('47.000m', str(mili47))
         self.assertEqual('3.300u', str(mcr3_3))
@@ -30,7 +32,7 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('155.100k', str(M3_3 * mili47))
 
         self.assertEqual('100.000n', EngineerNumber('10p') * 10 ** 4)
-        self.assertEqual('100.000n', EngineerNumber('10p', 10 ** 4))
+        self.assertEqual('100.000n', EngineerNumber('10p', 4))
 
         # add, sub
         self.assertEqual('3.347M', str(M3_3 + k47))
@@ -40,6 +42,7 @@ class TestEngineerNumber(unittest.TestCase):
         # big and small, ignored small
         self.assertEqual('3.300M', str(M3_3 + mili47))
 
+    def test_over_range(self):
         # TOO BIG
         T10 = EngineerNumber(10, TERA)
         G40 = EngineerNumber(40, GIGA)
@@ -56,6 +59,7 @@ class TestEngineerNumber(unittest.TestCase):
         small4 = u1 * n4
         self.assertEqual('4e-15', str(small4))
 
+    def test_honest_convert(self):
         self.assertEqual('987.000m', str(EngineerNumber(0.987)))
         self.assertEqual('1.000k', str(EngineerNumber(1000, ONE)))
         self.assertEqual('1.040k', str(EngineerNumber(1040, ONE)))
@@ -65,11 +69,15 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('1.001', str(EngineerNumber(1.001, ONE)))
         self.assertEqual('1.000', str(EngineerNumber(1, ONE)))
 
+    def test_same_value_different_argument(self):
         # same result
         self.assertEqual('1.000m', str(EngineerNumber(0.001, ONE)))
         self.assertEqual('1.000m', str(EngineerNumber(1, MILLI)))
         self.assertEqual('1.000m', str(EngineerNumber(1000, MICRO)))
 
+    def test_as_number(self):
+        u1 = EngineerNumber(1, MICRO)
+        n4 = EngineerNumber(4, NANO)
         self.assertRaises
         self.assertEqual('1.004u', str(u1 + n4))
         self.assertEqual('996.000n', str(u1 - n4))
@@ -80,16 +88,29 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('249.000', str(div))
         self.assertEqual('4.000n', str(mod))
 
+    def test_round(self):
+        u1 = EngineerNumber(1, MICRO)
+        n4 = EngineerNumber(4, NANO)
+        self.assertEqual('999.999m', EngineerNumber('0.9999994'))  # 0.9999994
+                                                                   #      123
+        self.assertEqual('1000.000m', EngineerNumber('0.9999995')) # 0.9999995
+
         self.assertEqual('1000.000m', str(pow(u1, n4))) # 0.9999999447379593
-        self.assertEqual('999.981m', str(pow(n4, u1))) # 0.9999806632154822
+        self.assertEqual('999.981m', str(pow(n4, u1)))  # 0.9999806632154822
         self.assertEqual(0.9999999447379593, pow(u1, n4.num))
         neg1 = EngineerNumber(-1, ONE)
         self.assertEqual('-1.000', str(neg1))
 
+    def test_zero_neg_pos(self):
+        self.assertEqual(0, EngineerNumber('0'))
+
+        u1 = EngineerNumber(1, MICRO)
         self.assertEqual('0.000', str(EngineerNumber(0)))
         self.assertEqual(-0.000001, -u1)
         self.assertEqual(0.000001, math.fabs(-u1))
 
+    def test_basic_calc(self):
+        u1 = EngineerNumber(1, MICRO)
         self.assertEqual('2.000', str(EngineerNumber(16) % EngineerNumber(7)))
         self.assertEqual('2.000', str(16 % EngineerNumber(7)))
         self.assertEqual('2.000', str(EngineerNumber(16) % 7))
@@ -116,6 +137,7 @@ class TestEngineerNumber(unittest.TestCase):
 
         self.assertEqual('1.000u', str(EngineerNumber(u1)))
 
+    def test_121_484(self):
         self.assertEqual('121.484m', str(EngineerNumber('121.484m')))
         self.assertEqual(121.484, EngineerNumber('121.484').num)
         self.assertEqual(121.484, EngineerNumber('121.484'))
@@ -238,11 +260,13 @@ class TestEngineerNumber(unittest.TestCase):
 
         m1534567 = EngineerNumber('1.534567m')
         self.assertEqual('0.002', m1534567[''])
-      # self.assertEqual('1.535m', str(m1534567))
-      # self.assertEqual('1534.567u', m1534567._force('u'))
-      # self.assertEqual('1534.567u', m1534567['u'])
+        self.assertEqual('1.535m', str(m1534567))
+        self.assertEqual('1534.567u', m1534567._force('u'))
+        self.assertEqual('1534.567u', m1534567['u'])
 
-    def test_warning(self):
+    def test_error_and_warning(self):
+        self.assertRaises(IndexError, EngineerNumber, '')
+
         n1 = EngineerNumber('0.1m')
       # message = 'number\(={}\) in range\(0, 1\) convert to int.'.format(n1)
         message = (r'0 < number\(={}\) < 1 を満たす数字を '

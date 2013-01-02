@@ -1,14 +1,14 @@
-EXA = 10 ** 18
-PETA = 10 ** 15
-TERA = 10 ** 12
-GIGA = 10 ** 9
-MEGA = 10 ** 6
-KILO = 10 ** 3
-ONE = 10 ** 0
-MILLI = 10 ** -3
-MICRO = 10 ** -6
-NANO = 10 ** -9
-PICO = 10 ** -12
+EXA = 18 # means 10 ** 18
+PETA = 15
+TERA = 12
+GIGA = 9
+MEGA = 6
+KILO = 3
+ONE = 0
+MILLI = -3
+MICRO = -6
+NANO = -9
+PICO = -12
 
 FACTOR_BIG = (EXA, PETA, TERA, GIGA, MEGA, KILO)
 FACTOR_SMALL = (MILLI, MICRO, NANO, PICO)
