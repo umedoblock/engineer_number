@@ -267,16 +267,16 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertRaises(IndexError, EngineerNumber, '')
 
         n1 = EngineerNumber('0.1m')
-      # message = 'number\(={}\) in range\(0, 1\) convert to int.'.format(n1)
-        message = (r'0 < number\(={}\) < 1 を満たす数字を '
+      # message = 'abs\(number\(={}\)\) in range\(0, 1\) convert to int.'.format(n1)
+        message = (r'0 < abs\(number\(={}\)\) < 1 を満たす数字を '
                     'int に変換しようとしました。'.format(n1))
 
         with self.assertWarnsRegex(UserWarning, message) as warn:
             int(n1)
 
         n2 = EngineerNumber('-0.1m')
-      # message = 'number\(={}\) in range\(0, 1\) convert to int.'.format(n2)
-        message = (r'0 < number\(={}\) < 1 を満たす数字を '
+      # message = 'abs\(number\(={}\)\) in range\(0, 1\) convert to int.'.format(n2)
+        message = (r'0 < abs\(number\(={}\)\) < 1 を満たす数字を '
                     'int に変換しようとしました。'.format(n2))
         with self.assertWarnsRegex(UserWarning, message) as warn:
             int(n2)

@@ -101,8 +101,8 @@ class EngineerNumber(numbers.Real):
         factor = 10 ** exponent10
         value = num / factor
         value *= sign_num
+
         self._value = value
-        self._factor = factor
         self._exponent10 = exponent10
         return self
 
@@ -159,9 +159,9 @@ class EngineerNumber(numbers.Real):
         return EngineerNumber(n)
 
     def __int__(self):
-        if self._factor < 1:
-          # message = 'number(={}) in range(0, 1) convert to int.'.format(self)
-            message = ('0 < number(={}) < 1 を満たす数字を '
+        if self._exponent10 < 0:
+          # message = 'abs(number(={})) in range(0, 1) convert to int.'.format(self)
+            message = ('0 < abs(number(={})) < 1 を満たす数字を '
                        'int に変換しようとしました。'.format(self))
             warnings.warn('{}'.format(message), UserWarning)
         return int(self.num)
@@ -237,9 +237,9 @@ class EngineerNumber(numbers.Real):
 
     def detail(self):
         print(self)
-        print('  _factor =', self._factor)
-        print('   _value =', self._value)
-        print('      num =', self.num)
+        print('        num =', self.num)
+        print('     _value =', self._value)
+        print('_exponent10 =', self._exponent10)
 
     def __str__(self):
         symbol = ''
