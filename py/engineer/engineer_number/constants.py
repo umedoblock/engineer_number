@@ -10,11 +10,11 @@ MICRO = -6
 NANO = -9
 PICO = -12
 
-FACTOR_BIG = (EXA, PETA, TERA, GIGA, MEGA, KILO)
-FACTOR_SMALL = (MILLI, MICRO, NANO, PICO)
-FACTORS = FACTOR_BIG + (ONE,) + FACTOR_SMALL
+EXPONENT_BIG = (EXA, PETA, TERA, GIGA, MEGA, KILO)
+EXPONENT_SMALL = (MILLI, MICRO, NANO, PICO)
+EXPONENTS = EXPONENT_BIG + (ONE,) + EXPONENT_SMALL
 
-d_FACTOR_SYMBOL = {
+d_EXPONENT_SYMBOL = {
     EXA:   'E',
     PETA:  'P',
     TERA:  'T',
@@ -29,9 +29,9 @@ d_FACTOR_SYMBOL = {
 }
 
 # ordered
-ordered_FACTOR_SYMBOL = ('E', 'P', 'T', 'G', 'M', 'k', 'm', 'u', 'n', 'p')
+ordered_EXPONENT_SYMBOL = ('E', 'P', 'T', 'G', 'M', 'k', 'm', 'u', 'n', 'p')
 
-if set(d_FACTOR_SYMBOL.values()) != set(ordered_FACTOR_SYMBOL + ('',)):
+if set(d_EXPONENT_SYMBOL.values()) != set(ordered_EXPONENT_SYMBOL + ('',)):
     raise RuntimeError('bug: SI prefix symbol unmatch.')
 
 E6 =  (1.0,                1.5,                2.2,
@@ -52,14 +52,14 @@ E24 = (1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7,
 # 78
 
 # combination
-# for FACTOR_SMALL
+# for EXPONENT_SMALL
 # >>> (13 * 2) ** 2
 # 676
 
-# for FACTOR_BIG
+# for EXPONENT_BIG
 # >>> (13 * 4) ** 2
 # 2704
 
-# for FACTORS
+# for EXPONENTS
 # >>> (13 * 6) ** 2
 # 6084

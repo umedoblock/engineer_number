@@ -12,7 +12,7 @@ class EngineerNumber(numbers.Real):
 
     @classmethod
     def _parse_string(cls, ss):
-        si_prifixes = ''.join(d_FACTOR_SYMBOL.values())
+        si_prifixes = ''.join(d_EXPONENT_SYMBOL.values())
       # print('si_prifixes =', si_prifixes)
       # print('ss =', ss)
         if ss[-1].isalpha():
@@ -39,19 +39,19 @@ class EngineerNumber(numbers.Real):
     @classmethod
     def _si2exponent10(cls, si):
         try:
-            exponent10_index = tuple(d_FACTOR_SYMBOL.values()).index(si)
+            exponent10_index = tuple(d_EXPONENT_SYMBOL.values()).index(si)
         except ValueError as raiz:
             if raiz.args[0] == 'tuple.index(x): x not in tuple':
               # message = \
               #     ('SI prefix symbol must be in '
-              #      '{}'.format(ordered_FACTOR_SYMBOL)
+              #      '{}'.format(ordered_EXPONENT_SYMBOL)
                 message = \
                     ('SI 接頭辞の記号は、次のいずれかでなければなりません。'
-                     '{}'.format(ordered_FACTOR_SYMBOL))
+                     '{}'.format(ordered_EXPONENT_SYMBOL))
                 raise ValueError(message)
             else:
                 raise raiz
-        exponent10 = tuple(d_FACTOR_SYMBOL.keys())[exponent10_index]
+        exponent10 = tuple(d_EXPONENT_SYMBOL.keys())[exponent10_index]
         return exponent10
 
     def __init__(self, value, exponent10=0):
@@ -247,8 +247,8 @@ class EngineerNumber(numbers.Real):
     def __str__(self):
         symbol = ''
       # print('_exponent_floor =', self._exponent_floor)
-        if self._exponent10 in d_FACTOR_SYMBOL:
-            symbol = d_FACTOR_SYMBOL[self._exponent10]
+        if self._exponent10 in d_EXPONENT_SYMBOL:
+            symbol = d_EXPONENT_SYMBOL[self._exponent10]
 #           s = '{:.3f}{}'
             fmt = ':.{}f'.format(EngineerNumber.round_ndigits)
             fmt = '{' + fmt + '}{}'
