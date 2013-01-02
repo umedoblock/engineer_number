@@ -81,7 +81,6 @@ class EngineerNumber(numbers.Real):
         if num == 0:
             self._value = 0
             self._factor = 1
-            self._exponent_floor = 0
             self._exponent10 = 0
             return
         elif num > 0:
@@ -104,7 +103,6 @@ class EngineerNumber(numbers.Real):
         value *= sign_num
         self._value = value
         self._factor = factor
-        self._exponent_floor = math.floor(exponent)
         self._exponent10 = exponent10
         return self
 
@@ -211,7 +209,7 @@ class EngineerNumber(numbers.Real):
     def __eq__(self, other):
         if not isinstance(other, EngineerNumber):
             other = EngineerNumber(other, ONE)
-        return self._exponent_floor == other._exponent_floor and \
+        return self._exponent10 == other._exponent10 and \
                round(self) == round(other)
 
     def __ne__(self, other):
@@ -242,11 +240,9 @@ class EngineerNumber(numbers.Real):
         print('  _factor =', self._factor)
         print('   _value =', self._value)
         print('      num =', self.num)
-      # print('_exponent_floor =', self._exponent_floor)
 
     def __str__(self):
         symbol = ''
-      # print('_exponent_floor =', self._exponent_floor)
         if self._exponent10 in d_EXPONENT_SYMBOL:
             symbol = d_EXPONENT_SYMBOL[self._exponent10]
 #           s = '{:.3f}{}'

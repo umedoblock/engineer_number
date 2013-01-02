@@ -18,7 +18,6 @@ class TestEngineerNumber(unittest.TestCase):
         # __str__()
         self.assertEqual('3.300M', str(M3_3))
         self.assertEqual(3, k47._exponent10)
-        self.assertEqual(4, k47._exponent_floor)
         self.assertEqual('47.000k', str(k47))
         self.assertEqual('47.000m', str(mili47))
         self.assertEqual('3.300u', str(mcr3_3))
@@ -89,21 +88,21 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('4.000n', str(mod))
 
     def test_round(self):
+        self.assertEqual( '999.999m', str(EngineerNumber('0.9999994')))
+                                                        #      123
+        self.assertEqual('1000.000m', str(EngineerNumber('0.9999995')))
+
         u1 = EngineerNumber(1, MICRO)
         n4 = EngineerNumber(4, NANO)
-        self.assertEqual('999.999m', EngineerNumber('0.9999994'))  # 0.9999994
-                                                                   #      123
-        self.assertEqual('1000.000m', EngineerNumber('0.9999995')) # 0.9999995
-
         self.assertEqual('1000.000m', str(pow(u1, n4))) # 0.9999999447379593
         self.assertEqual('999.981m', str(pow(n4, u1)))  # 0.9999806632154822
         self.assertEqual(0.9999999447379593, pow(u1, n4.num))
-        neg1 = EngineerNumber(-1, ONE)
-        self.assertEqual('-1.000', str(neg1))
 
     def test_zero_neg_pos(self):
         self.assertEqual(0, EngineerNumber('0'))
 
+        neg1 = EngineerNumber(-1, ONE)
+        self.assertEqual('-1.000', str(neg1))
         u1 = EngineerNumber(1, MICRO)
         self.assertEqual('0.000', str(EngineerNumber(0)))
         self.assertEqual(-0.000001, -u1)
