@@ -4,8 +4,8 @@ from distutils.core import setup
 
 setup(
     name='engineer_number',
-    packages=['engineer_number'],
-    version='1.0.1',
+    packages=['engineer_number', 'lmc555cn'],
+    version='1.0.2',
     description='Engineer Number calculate',
     author='梅どぶろく(umedoblock)',
     author_email='umedoblock@gmail.com',
