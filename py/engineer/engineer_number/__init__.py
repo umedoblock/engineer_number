@@ -32,9 +32,9 @@ class EngineerNumber(numbers.Real):
 
         value = float(ss.replace(si, ''))
       # print('si =', si, 'value =', value)
-        exponent_floor = cls._si2exponent10(si)
+        exponent10 = cls._si2exponent10(si)
 
-        return (value, exponent_floor)
+        return (value, exponent10)
 
     @classmethod
     def _si2exponent10(cls, si):
