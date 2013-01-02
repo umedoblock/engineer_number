@@ -3,7 +3,6 @@ import sys
 import math
 import argparse
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'engineer_number'))
 from engineer_number import *
 from engineer_number.constants import *
 

@@ -3,8 +3,11 @@ ChangeLog
 LICENSE.ja.txt
 LICENSE.txt
 README.txt
-lmc555cn.py
 setup.py
 engineer_number/__init__.py
 engineer_number/constants.py
-test/test_engineer.py
+engineer_number/lmc555cn.py
+engineer_number/scripts/__init__.py
+engineer_number/scripts/lmc555cn.py
+engineer_number/test/__init__.py
+engineer_number/test/test_engineer.py

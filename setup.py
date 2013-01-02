@@ -4,7 +4,9 @@ from distutils.core import setup
 
 setup(
     name='engineer_number',
-    packages=['engineer_number', 'lmc555cn'],
+    packages=
+      # ['engineer_number'],
+        ['engineer_number', 'engineer_number.test', 'engineer_number.scripts'],
     version='1.0.2',
     description='Engineer Number calculate',
     author='梅どぶろく(umedoblock)',
