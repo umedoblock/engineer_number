@@ -14,7 +14,7 @@ from engineer_number.constants import *
 # 3.0 # 2 ** 3 = 8, pow(2, 3)
 CONST = math.log(2, math.e)
 
-def lmc555(Ra, Rb, C=EngineerNumber(0.1*MICRO)):
+def lmc555(Ra, Rb, C=EngineerNumber(0.1, MICRO)):
     _c2gnd = 0.1 * MICRO
     tH = CONST * (Ra + Rb) * C
     tL = CONST * Rb * C
