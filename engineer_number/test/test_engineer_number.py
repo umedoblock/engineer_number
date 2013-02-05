@@ -41,22 +41,61 @@ class TestEngineerNumber(unittest.TestCase):
         # big and small, ignored small
         self.assertEqual('3.300M', str(M3_3 + mili47))
 
-    def test_over_range(self):
+    def test_over_range_for_big(self):
         # TOO BIG
+        # in_YOTTA = 4 * 10 ** 26 = 400 * 10 ** 24
+        in_YOTTA = EngineerNumber(4, 16) * EngineerNumber(1, 10)
+        over_YOTTA = in_YOTTA * 10
+
+        self.assertEqual('400.000Y', str(in_YOTTA))
+        self.assertEqual('4' + '0' * 27, str(over_YOTTA))
+
+        # over_YOTTA = 4 * 10 ** 29 = 400 * 10 ** 27
+        over_YOTTA_i = EngineerNumber(4, 5) * EngineerNumber(1, 24)
+        over_YOTTA_f = EngineerNumber(4, 5) * EngineerNumber(1.0, 24)
+
+        self.assertEqual('4' + '0' * 29, str(over_YOTTA_i))
+        self.assertEqual('4e+29', str(over_YOTTA_f))
+
+        # in ZETTA
         T10 = EngineerNumber(10, TERA)
         G40 = EngineerNumber(40, GIGA)
         self.assertEqual('10.000T', str(T10))
         self.assertEqual('40.000G', str(G40))
         BIG400 = T10 * G40
-        self.assertEqual('400000000000000000000000', str(BIG400))
+        self.assertEqual('400.000Z', str(BIG400))
 
+    def test_over_range_for_small(self):
         # too small
-        u1 = EngineerNumber(1, MICRO)
+        # over_yocto = 0.04 * 10 ** -27 = 4 * 10 ** -29
+        over_yocto_i = EngineerNumber(4, -5) * EngineerNumber(1, -24)
+        over_yocto_f = EngineerNumber(4, -5) * EngineerNumber(1.0, -24)
+
+        self.assertEqual('4e-29', str(over_yocto_i))
+        self.assertEqual('4e-29', str(over_yocto_f))
+
+        over_yocto_f *= 10
+        self.assertEqual('4e-28', str(over_yocto_f))
+
+        over_yocto_f *= 10
+        self.assertEqual('4e-27', str(over_yocto_f))
+
+        over_yocto_f *= 10
+        self.assertEqual('4e-26', str(over_yocto_f))
+
+        over_yocto_f *= 10
+        self.assertEqual('4e-25', str(over_yocto_f))
+
+        in_yocto_f = over_yocto_f * 10
+        self.assertEqual('4.000y', str(in_yocto_f))
+
+        # in yocto
+        f1 = EngineerNumber(1, FEMTO)
         n4 = EngineerNumber(4, NANO)
-        self.assertEqual('1.000u', str(u1))
+        self.assertEqual('1.000f', str(f1))
         self.assertEqual('4.000n', str(n4))
-        small4 = u1 * n4
-        self.assertEqual('4e-15', str(small4))
+        small4 = f1 * n4
+        self.assertEqual('4.000y', str(small4))
 
     def test_honest_convert(self):
         self.assertEqual('987.000m', str(EngineerNumber(0.987)))
@@ -167,30 +206,19 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertLessEqual(EngineerNumber('0.999'), EngineerNumber('0.999'))
         self.assertLessEqual(EngineerNumber('1'), EngineerNumber('1.000'))
 
-    def test_around_exa(self):
-        exa999999 = EngineerNumber('999.999E')
+    def test_around_yotta(self):
+        yotta999999 = EngineerNumber('999.999Y')
       # print('e999999 =')
-      # exa999999.detail()
+      # yotta999999.detail()
       # print()
-        self.assertEqual('999.999E', str(exa999999))
+        self.assertEqual('999.999Y', str(yotta999999))
 
-        # over exa a little
-        exa = EngineerNumber(1, EXA)
-        self.assertEqual('1.000E', str(exa))
-        exa1 = exa + 1
-        self.assertEqual('1.000E', str(exa1))
-        self.assertEqual('1000000000000000001', str(exa1.num))
-
-        # in zetta
-        zetta = exa * 1000
-        self.assertEqual('1000000000000000000000', str(zetta))
-        zetta1 = zetta + 1
-        self.assertEqual('1000000000000000000001', str(zetta1))
-
-      # zetta_1 = zetta - 1
-      # print('zetta - 1 =')
-      # zetta_1.detail()
-      # print()
+        # over yotta a little
+        yotta = EngineerNumber(1, YOTTA)
+        self.assertEqual('1.000Y', str(yotta))
+        yotta1 = yotta + 1
+        self.assertEqual('1.000Y', str(yotta1))
+        self.assertEqual('1000000000000000000000001', str(yotta1.num))
 
     def test_compare_with_number(self):
         # swap

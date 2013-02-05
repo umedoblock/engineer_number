@@ -1,3 +1,5 @@
+YOTTA = 24
+ZETTA = 21
 EXA = 18 # means 10 ** 18
 PETA = 15
 TERA = 12
@@ -9,12 +11,18 @@ MILLI = -3
 MICRO = -6
 NANO = -9
 PICO = -12
+FEMTO = -15
+ATTO = -18
+ZEPTO = -21
+YOCTO = -24
 
 EXPONENT_BIG = (EXA, PETA, TERA, GIGA, MEGA, KILO)
 EXPONENT_SMALL = (MILLI, MICRO, NANO, PICO)
 EXPONENTS = EXPONENT_BIG + (ONE,) + EXPONENT_SMALL
 
 d_EXPONENT_SYMBOL = {
+    YOTTA: 'Y',
+    ZETTA: 'Z',
     EXA:   'E',
     PETA:  'P',
     TERA:  'T',
@@ -26,10 +34,15 @@ d_EXPONENT_SYMBOL = {
     MICRO: 'u',
     NANO:  'n',
     PICO:  'p',
+    FEMTO: 'f',
+    ATTO:  'a',
+    ZEPTO: 'z',
+    YOCTO: 'y',
 }
 
 # ordered
-ordered_EXPONENT_SYMBOL = ('E', 'P', 'T', 'G', 'M', 'k', 'm', 'u', 'n', 'p')
+ordered_EXPONENT_SYMBOL = ('Y', 'Z', 'E', 'P', 'T', 'G', 'M', 'k',
+                           'm', 'u', 'n', 'p', 'f', 'a', 'z', 'y')
 
 if set(d_EXPONENT_SYMBOL.values()) != set(ordered_EXPONENT_SYMBOL + ('',)):
     raise RuntimeError('bug: SI prefix symbol unmatch.')
