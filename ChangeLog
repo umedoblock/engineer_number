@@ -1,3 +1,8 @@
+Changes in 1.0.4 (5 Feb 2013)
+- extends range to -24(=yocto) exponent <= 24(=YOTTA).
+- you can write "from engineer.constants import *"
+- i18n
+
 Changes in 1.0.3 (2 Jan 2013)
 - write default to scripts/lmc555cn.py.
 

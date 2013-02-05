@@ -220,6 +220,42 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('1.000Y', str(yotta1))
         self.assertEqual('1000000000000000000000001', str(yotta1.num))
 
+    def test___si2exponent10(self):
+        self.assertEqual(0, EngineerNumber._si2exponent10(''))
+        self.assertEqual(3, EngineerNumber._si2exponent10('k'))
+        self.assertEqual(24, EngineerNumber._si2exponent10('Y'))
+        self.assertEqual(-24, EngineerNumber._si2exponent10('y'))
+
+    def test__si2exponent10_wrong(self):
+        expected_header_en = "SI prefix symbol must be in ("
+        expected_header_ja = \
+            "SI 接頭辞の記号は、次のいずれかでなければなりません。("
+        symbols = (\
+             "'Y', 'Z', 'E', 'P', 'T', 'G', 'M', 'k', "
+             "'', "
+             "'m', 'u', 'n', 'p', 'f', 'a', 'z', 'y')"
+        )
+        expected_message = \
+            expected_header_en + symbols
+        expected_message = \
+            expected_header_ja + symbols
+
+        with self.assertRaises(KeyError) as raiz:
+            EngineerNumber._si2exponent10('Q')
+        self.assertEqual(expected_message, raiz.exception.args[0])
+
+        with self.assertRaises(KeyError) as raiz:
+            EngineerNumber._si2exponent10('K')
+        self.assertEqual(expected_message, raiz.exception.args[0])
+
+        with self.assertRaises(KeyError) as raiz:
+            EngineerNumber._si2exponent10('GG')
+        self.assertEqual(expected_message, raiz.exception.args[0])
+
+        with self.assertRaises(KeyError) as raiz:
+            EngineerNumber._si2exponent10(' ')
+        self.assertEqual(expected_message, raiz.exception.args[0])
+
     def test_compare_with_number(self):
         # swap
         self.assertGreater(EngineerNumber('1.000'), 0.999)
@@ -246,7 +282,7 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertFalse(EngineerNumber('0.000'))
 
     def test_si_prefix_symbol_error(self):
-        with self.assertRaises(ValueError) as raiz:
+        with self.assertRaises(KeyError) as raiz:
             EngineerNumber('100K')
       # message = ('cannot accept "K" as SI prefix symbol. '
       #            'please use "k" as prefix if you hope to describe kilo.'

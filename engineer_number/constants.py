@@ -1,3 +1,13 @@
+import collections
+
+__all__ = [
+    'YOTTA', 'ZETTA', 'EXA', 'PETA', 'TERA', 'GIGA', 'MEGA', 'KILO',
+    'ONE',
+    'MILLI', 'MICRO', 'NANO', 'PICO', 'FEMTO', 'ATTO', 'ZEPTO', 'YOCTO',
+    'd_EXPONENT_SYMBOL', 'd_SYMBOL_EXPONENT', 'EXPONENTS',
+    'E6', 'E12', 'E24',
+]
+
 YOTTA = 24
 ZETTA = 21
 EXA = 18 # means 10 ** 18
@@ -16,36 +26,32 @@ ATTO = -18
 ZEPTO = -21
 YOCTO = -24
 
-EXPONENT_BIG = (EXA, PETA, TERA, GIGA, MEGA, KILO)
-EXPONENT_SMALL = (MILLI, MICRO, NANO, PICO)
+EXPONENT_BIG = (YOTTA, ZETTA, EXA, PETA, TERA, GIGA, MEGA, KILO)
+EXPONENT_SMALL = (MILLI, MICRO, NANO, PICO, FEMTO, ATTO, ZEPTO, YOCTO)
 EXPONENTS = EXPONENT_BIG + (ONE,) + EXPONENT_SMALL
 
-d_EXPONENT_SYMBOL = {
-    YOTTA: 'Y',
-    ZETTA: 'Z',
-    EXA:   'E',
-    PETA:  'P',
-    TERA:  'T',
-    GIGA:  'G',
-    MEGA:  'M',
-    KILO:  'k',
-    ONE:   '',
-    MILLI: 'm',
-    MICRO: 'u',
-    NANO:  'n',
-    PICO:  'p',
-    FEMTO: 'f',
-    ATTO:  'a',
-    ZEPTO: 'z',
-    YOCTO: 'y',
-}
+d_SYMBOL_EXPONENT = collections.OrderedDict((
+    ('Y', YOTTA),
+    ('Z', ZETTA),
+    ('E', EXA),
+    ('P', PETA),
+    ('T', TERA),
+    ('G', GIGA),
+    ('M', MEGA),
+    ('k', KILO),
+     ('', ONE),
+    ('m', MILLI),
+    ('u', MICRO),
+    ('n', NANO),
+    ('p', PICO),
+    ('f', FEMTO),
+    ('a', ATTO),
+    ('z', ZEPTO),
+    ('y', YOCTO),
+))
 
-# ordered
-ordered_EXPONENT_SYMBOL = ('Y', 'Z', 'E', 'P', 'T', 'G', 'M', 'k',
-                           'm', 'u', 'n', 'p', 'f', 'a', 'z', 'y')
-
-if set(d_EXPONENT_SYMBOL.values()) != set(ordered_EXPONENT_SYMBOL + ('',)):
-    raise RuntimeError('bug: SI prefix symbol unmatch.')
+d_EXPONENT_SYMBOL = \
+    dict(zip(d_SYMBOL_EXPONENT.values(), d_SYMBOL_EXPONENT.keys()))
 
 E6 =  (1.0,                1.5,                2.2,
             3.3,                4.7,                6.8)

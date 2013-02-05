@@ -12,9 +12,6 @@ class EngineerNumber(numbers.Real):
 
     @classmethod
     def _parse_string(cls, ss):
-        si_prifixes = ''.join(d_EXPONENT_SYMBOL.values())
-      # print('si_prifixes =', si_prifixes)
-      # print('ss =', ss)
         if ss[-1].isalpha():
             si = ss[-1]
         else:
@@ -28,7 +25,7 @@ class EngineerNumber(numbers.Real):
                        'お使い下さい。'
                        'なぜならば、"K" は、Kelvin 温度を表現するための'
                        '単位記号だからです。')
-            raise ValueError(message)
+            raise KeyError(message)
 
         value = float(ss.replace(si, ''))
       # print('si =', si, 'value =', value)
@@ -39,19 +36,15 @@ class EngineerNumber(numbers.Real):
     @classmethod
     def _si2exponent10(cls, si):
         try:
-            exponent10_index = tuple(d_EXPONENT_SYMBOL.values()).index(si)
-        except ValueError as raiz:
-            if raiz.args[0] == 'tuple.index(x): x not in tuple':
-              # message = \
-              #     ('SI prefix symbol must be in '
-              #      '{}'.format(ordered_EXPONENT_SYMBOL)
-                message = \
-                    ('SI 接頭辞の記号は、次のいずれかでなければなりません。'
-                     '{}'.format(ordered_EXPONENT_SYMBOL))
-                raise ValueError(message)
-            else:
-                raise raiz
-        exponent10 = tuple(d_EXPONENT_SYMBOL.keys())[exponent10_index]
+            exponent10 = d_SYMBOL_EXPONENT[si]
+        except KeyError as raiz:
+            message = \
+                ('SI prefix symbol must be in '
+                 '{}'.format(tuple(d_SYMBOL_EXPONENT)))
+            message = \
+                ('SI 接頭辞の記号は、次のいずれかでなければなりません。'
+                 '{}'.format(tuple(d_SYMBOL_EXPONENT)))
+            raise KeyError(message)
         return exponent10
 
     def __init__(self, value, exponent10=0):
