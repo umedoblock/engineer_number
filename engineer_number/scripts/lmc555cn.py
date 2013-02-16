@@ -87,8 +87,8 @@ def parse_args():
 
 def view_tf(tf, top=-1):
     for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'.
-              ''format(tL, tH, t, f, ra, rb, c))
+        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'
+              ''.format(tL, tH, t, f, ra, rb, c))
 
 if __name__ == '__main__':
     args = parse_args()
