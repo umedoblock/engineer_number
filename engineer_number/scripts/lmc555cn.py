@@ -25,7 +25,7 @@ def lmc555(Ra, Rb, C=EngineerNumber(0.1, MICRO)):
 
 def _make_all_combination(series='E12'):
     if series != 'E12':
-        raise ValueError('series must be "E12".')
+        raise ValueError(_('series must be "E12".'))
     #                         k                    M
     factor_big = (1, 10, 100, 1000, 10000, 100000, 1000000)
     combination = []
@@ -55,7 +55,7 @@ def look_for_optimized_Hz(Hz, c=EngineerNumber(0.1, MICRO)):
     Rs = _make_all_combination('E12')
     Rs.append(10 * MEGA)
     len_combination = len(Rs) ** 2
-    print('len_combination =', len_combination)
+  # print('len_combination =', len_combination)
 
     tf = []
     for r2 in Rs:
@@ -71,7 +71,7 @@ def look_for_optimized_Hz(Hz, c=EngineerNumber(0.1, MICRO)):
     return tf
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='look for optimized Hz.')
+    parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
 
     parser.add_argument('--Hz', metavar='N', dest='Hz',
                        type=int, nargs='?', default=1000,
@@ -87,7 +87,8 @@ def parse_args():
 
 def view_tf(tf, top=-1):
     for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'.format(tL, tH, t, f, ra, rb, c))
+        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'.
+              ''format(tL, tH, t, f, ra, rb, c))
 
 if __name__ == '__main__':
     args = parse_args()
@@ -96,8 +97,8 @@ if __name__ == '__main__':
     Hz = args.Hz
     tf = look_for_optimized_Hz(Hz, c)
 
-    print('len(tf)=', len(tf))
-    print()
+  # print('len(tf)=', len(tf))
+  # print()
     top = args.top
     view_tf(tf, top)
     print()

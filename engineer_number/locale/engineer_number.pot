@@ -14,6 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
+
 #, docstring
 msgid ""
 "EngineerNumber class は、SI接頭辞の変換・異なるSI接頭辞同士の\n"
@@ -337,5 +338,11 @@ msgstr ""
 
 #, docstring
 msgid "math.trunc() の help を読んで。"
+msgstr ""
+
+msgid "series must be \"E12\"."
+msgstr ""
+
+msgid "look for optimized Hz."
 msgstr ""
 

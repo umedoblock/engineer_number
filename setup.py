@@ -7,7 +7,7 @@ setup(
     packages=
       # ['engineer_number'],
         ['engineer_number', 'engineer_number.test', 'engineer_number.scripts'],
-    version='1.0.3',
+    version='1.0.4',
     description='Engineer Number calculate',
     author='梅どぶろく(umedoblock)',
     author_email='umedoblock@gmail.com',
