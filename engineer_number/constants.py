@@ -1,5 +1,8 @@
 import collections
 
+# 見れば分かると思われる為、特に説明はない。
+# xxxEXPONENTxxx は非公開の方が良かったかも。。。
+# もう、今となってはどうしようもないんですぅ〜〜〜。。。
 __all__ = [
     'YOTTA', 'ZETTA', 'EXA', 'PETA', 'TERA', 'GIGA', 'MEGA', 'KILO',
     'ONE',
@@ -53,6 +56,7 @@ d_SYMBOL_EXPONENT = collections.OrderedDict((
 d_EXPONENT_SYMBOL = \
     dict(zip(d_SYMBOL_EXPONENT.values(), d_SYMBOL_EXPONENT.keys()))
 
+# E6, E12, E24 系列。
 E6 =  (1.0,                1.5,                2.2,
             3.3,                4.7,                6.8)
 E12 = (1.0,      1.2,      1.5,      1.8,      2.2,      2.7,

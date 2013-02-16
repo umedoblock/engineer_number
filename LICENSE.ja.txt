@@ -2,7 +2,7 @@
 英語版だけが法律的に有効であることに注意してください。
 
 BSD License
-Copyright (c) 2012, 梅どぶろく(umedoblock)
+Copyright (c) 2012-2013, 梅どぶろく(umedoblock)
 All rights reserved.
 
 ソースコード形式かバイナリ形式か、変更するかしないかを問わず、以下の条件を満た

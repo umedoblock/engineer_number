@@ -287,9 +287,9 @@ class TestEngineerNumber(unittest.TestCase):
       # message = ('cannot accept "K" as SI prefix symbol. '
       #            'please use "k" as prefix if you hope to describe kilo.'
       #            'Because "K" means Kelbin celcius.')
-        message = ('"K" を SI 接頭辞の記号として使用することは出来ません。'
+        message = ('"K" を SI 接頭辞の記号として使用することは出来ません。\n'
                    'kilo を表現したい場合、 "K" ではなく、小文字の "k" を'
-                   'お使い下さい。'
+                   'お使い下さい。\n'
                    'なぜならば、"K" は、Kelvin 温度を表現するための'
                    '単位記号だからです。')
         self.assertEqual(message, raiz.exception.args[0])
