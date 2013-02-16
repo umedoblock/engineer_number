@@ -12,6 +12,7 @@ from .constants import *
 path_ = os.path.join(os.path.dirname(__file__), 'locale')
 # print('path_ =', path_)
 gettext.install('engineer_number', path_)
+del path_
 
 class EngineerNumber(numbers.Real):
     """EngineerNumber class は、SI接頭辞の変換・異なるSI接頭辞同士の
@@ -21,70 +22,90 @@ class EngineerNumber(numbers.Real):
     任意のSI接頭辞を KEY にすることで、
     任意のSI接頭辞に換算した値を知ることが出来ます。
     SI 接頭辞変換結果として返される文字列を EngineerNumber() に渡し、
-    新たな EngineerNumber instance とすることも可能です。
+    新たな EngineerNumber instance を生成出来ます。
 
-    EngineerNumber.num 属性を、数値型 object としています。
-    そして、EngineerNumber class に、__add__() 等の method を定義し、
-    EngineerNumber.num を演算の対象とすることで、
+    EngineerNumber.num 属性は、数値型 object です。
+    EngineerNumber class に、__add__() 等の method を定義し、
+    演算の対象を EngineerNumber.num とすることで、
     EngineerNumber instance は、数値型 object 互換になっています。
-    数値型 object 互換にする方法は、PEP 3141, numbers class 等をご覧下さい。
+    数値型 object 互換にする方法は、
+    PEP 3141, numbers class 等をご覧下さい。
 
     以下、使うための手順を簡単に紹介します。
-    KILO, MEGA, ...等々の SI 接頭辞名を使わない場合、２行目は必要ありません。
     >>> from engineer_number import EngineerNumber
+
+    KILO, MEGA, ...等々の SI 接頭辞名を使わない場合、
+    以下の行は必要ありません。
     >>> from engineer_number.constants import *
 
-    以下の、No.1, 2, 3 では、 10 * 1000 の値を得る３つの方法と、
+    以下の、No.1, 2, 3 では、 10 * 1000 の値を得る方法と、
     SI 接頭辞変換の方法を説明します。
 
-    No.1: 有効値と、SI 接頭辞で 10 kilo の値を得る方法です。
-    次に、10 kilo を Mega で計算する、SI 接頭辞変換を行います。
+    No.1: 有効値の文字列と、SI 接頭辞を連結し、
+    10 kilo の値を得る方法です。
     >>> r1 = EngineerNumber('10k')       # No.1
     >>> r1
     10.000k
+
+    10 kilo を Mega で計算し、SI 接頭辞変換を行います。
     >>> r1['M']
     '0.010M'
 
     No.2: 有効値と、SI 接頭辞名で 10 kilo の値を得る方法です。
-    次に、10 kilo を数値で計算する、SI 接頭辞変換を行います。
-    10 の乗数が 0 の場合、つまり、容量の有効数値に掛ける値が 1 の場合、
-    SI 接頭辞変換時、空文字列を SI 接頭辞としていることに注意して下さい。
     >>> r2 = EngineerNumber(10, KILO)    # No.2
     >>> r2 = EngineerNumber('10', KILO)  # No.2
     >>> r2
     10.000k
+
+    10 kilo に SI 接頭辞変換を行い、数値に変換します。
+    10 の乗数が 0 の場合、
+    空文字列を SI 接頭辞としていることに注意して下さい。
     >>> r2['']
     '10000.000'
 
-    No.3: 有効値と１０の乗数で 10 kilo の値を得る方法です。
-    次に、10 kilo を kilo で計算する、SI 接頭辞変換を行います。
-    抵抗のカラーコードから抵抗値を求める事などを想定しています。
+    No.3: 有効値と 10 の乗数で 10 kilo の値を得る方法です。
+    抵抗のカラーコードから抵抗値を求める事を想定しています。
     >>> r3 = EngineerNumber(10, 3)       # No.3
     >>> r3 = EngineerNumber('10', 3)     # No.3
     >>> r3
     10.000k
+
+    10 kilo を kilo で計算する、なんちゃって SI 接頭辞変換を行います。
+    自分でも必要ないとは思うんですけれど、流れ上、書きました。
     >>> r3['k']
     '10.000k'
 
     以下の、No.4, 5 では、コンデンサ上の表示から、
-    容量値を求める方法を紹介します。
+    コンデンサの容量値を求める方法を紹介します。
     "p" を有効数値の後に付けていることに注意して下さい。
 
     No.4: コンデンサの表示 "104" から容量値を求めます。
     >>> c4 = EngineerNumber('10p', 4)    # No.4
     >>> c4
     100.000n
-    >>> c4['p']
-    '100000.000p'
 
-    No.5: コンデンサの表示 "476" から容量値を求めます。
-    >>> c5 = EngineerNumber('47p', 6)    # No.5
+    マイクロ・ナノ・ピコを計算する時など、
+    よく頭がこんがらがりますよね。
+    >>> c4['u']
+    '0.100u'
+
+    No.5: コンデンサの表示 "202" から容量値を求めます。
+    >>> c5 = EngineerNumber('20p', 2)    # No.5
     >>> c5
-    47.000u
-    >>> c5['p']
-    '47000000.000p'
+    2.000n
 
-    使用例を、もう少し知りたい方は、"README.txt" をご覧下さい。
+    マイクロ・ナノ・ピコを計算する時など、
+    よく頭がこんがらがりますよね。
+    >>> c5['p']
+    '2000.000p'
+
+    ここだけの話：
+    マイクロ・ナノ・ピコの変換が大変でややこしくて、
+    よく間違えて困るので、この EngineerNumber を作成しました。
+    抵抗のカラーコードにも使えると分かった時には、
+    本当に便利だなー。と自分でも思いました
+
+    使用例を、もう少し知りたい方は "README.txt" をご覧下さい。
 
     SI 接頭辞として用意しているのは、以下の通りです。
     ('Y', YOTTA),
@@ -159,10 +180,11 @@ class EngineerNumber(numbers.Real):
         指定する方法です。
 
         exponent10 は、無指定であれば、0 として取り扱います。
-        内部で、以下の計算式により、EngineerNumber.num 属性の値を計算します。
+        以下の計算式により、value, exponent10 の値から、
+        EngineerNumber.num 属性の値を計算します。
         num = value * 10 ** exponent10
 
-        つまり、exponent10 指定しなければ、
+        つまり、exponent10 を指定しなければ、
         num 属性の値として、value の値を、そのまま代入することになります。
         num = value * 10 ** 0 = value * 1 = value
         num 属性の値の範囲は、 -24 <= num <= 24 であり、かつ、
@@ -180,9 +202,9 @@ class EngineerNumber(numbers.Real):
         # 1
         self._normalize()
 
-    def __getitem__(self, key):
-        """key: SI 接頭辞。"""
-        return self._force(key)
+    def __getitem__(self, si_prefix):
+        """self[si_prefix] として、SI 接頭辞変換を行う。"""
+        return self._force(si_prefix)
 
     def _force(self, si=''):
         """SI 接頭辞により有効数字を変換。"""
