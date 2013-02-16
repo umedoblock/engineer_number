@@ -2,9 +2,15 @@ import os
 import sys
 import math
 import argparse
+import gettext
 
 from engineer_number import *
 from engineer_number.constants import *
+
+path_ = os.path.join(os.path.dirname(__file__), '..', 'locale')
+# print('path_ =', path_)
+gettext.install('engineer_number', path_)
+del path_
 
 # >>> math.log(2)
 # 0.6931471805599453
