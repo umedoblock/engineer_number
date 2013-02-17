@@ -5,10 +5,15 @@ from distutils.core import setup
 setup(
     name='engineer_number',
     packages=
-      # ['engineer_number'],
         ['engineer_number', 'engineer_number.test', 'engineer_number.scripts'],
     version='1.0.4',
     description='Engineer Number calculate',
+    package_dir={'engineer_number': 'engineer_number'},
+    package_data={'engineer_number': [
+                        'locale/engineer_number.pot',
+                        'locale/engineer_number.*.po',
+                        'locale/*/LC_MESSAGES/engineer_number.mo'
+                   ]},
     author='梅どぶろく(umedoblock)',
     author_email='umedoblock@gmail.com',
     url='http://pypi.python.org/pypi/engineer_number/',
