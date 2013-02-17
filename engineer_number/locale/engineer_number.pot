@@ -340,6 +340,20 @@ msgstr ""
 msgid "math.trunc() の help を読んで。"
 msgstr ""
 
+#, docstring
+msgid ""
+"attr.__doc__ を gettext() にて翻訳する。\n"
+"\n"
+"    attr() として attr を呼び出し可能であれば、\n"
+"    attr に結び付く __doc__ 属性を msgid とし、\n"
+"    以下を実行する。\n"
+"    msgstr = gettext(msgid)\n"
+"    実行後、attr に結びつく __doc__ 属性の値を、msgstr で上書きする。\n"
+"\n"
+"    attr() として attr を呼び出し可能でない場合、何も実行しない。\n"
+"    "
+msgstr ""
+
 msgid "series must be \"E12\"."
 msgstr ""
 

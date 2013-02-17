@@ -73,3 +73,8 @@ $ pygettext.py -d engineer_number \
     --docstrings --no-location \
     --output-dir=engineer_number/locale \
     `find ./engineer_number -name '*.py'`
+
+how to make mo file.
+$ msgfmt.py \
+    --output-file=engineer_number/locale/zannenenglish/LC_MESSAGES/engineer_number.mo \
+    engineer_number/locale/engineer_number.zannenenglish.po

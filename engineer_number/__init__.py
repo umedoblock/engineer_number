@@ -504,15 +504,24 @@ class EngineerNumber(numbers.Real):
         return math.trunc(self.num)
 
 def I18N(attr):
-    """attr.__doc__ = gettext(attr.__doc__)
-    convert and translate to use gettext()."""
+    """attr.__doc__ を gettext() にて翻訳する。
+
+    attr() として attr を呼び出し可能であれば、
+    attr に結び付く __doc__ 属性を msgid とし、
+    以下を実行する。
+    msgstr = gettext(msgid)
+    実行後、attr に結びつく __doc__ 属性の値を、msgstr で上書きする。
+
+    attr() として attr を呼び出し可能でない場合、何も実行しない。
+    """
 
     if callable(attr):
         msgid = getattr(attr, '__doc__')
         msgstr = _(msgid)
         setattr(attr, '__doc__', msgstr)
 
+I18N(I18N)
 for attr in EngineerNumber.__dict__.values():
     I18N(attr)
 
-del attr, path_, I18N
+del attr, path_
