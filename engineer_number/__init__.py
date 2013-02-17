@@ -9,9 +9,22 @@ import gettext
 
 from .constants import *
 
+def gettext_install(domain,
+                    localedir=None,
+                    languages=[],
+                    codeset=None,
+                    names=None):
+    t = gettext.translation(domain, localedir,
+                            languages=languages,
+                            fallback=True,
+                            codeset=codeset)
+    t.install(names)
+
 path_ = os.path.join(os.path.dirname(__file__), 'locale')
 # print('path_ =', path_)
-gettext.install('engineer_number', path_)
+gettext_install('engineer_number',
+                 path_,
+                 languages=['zannenenglish', 'en', 'ja'])
 
 
 class EngineerNumber(numbers.Real):

@@ -7,6 +7,9 @@ README.txt
 setup.py
 engineer_number/__init__.py
 engineer_number/constants.py
+engineer_number/locale/engineer_number.pot
+engineer_number/locale/engineer_number.zannenenglish.po
+engineer_number/locale/zannenenglish/LC_MESSAGES/engineer_number.mo
 engineer_number/scripts/__init__.py
 engineer_number/scripts/lmc555cn.py
 engineer_number/test/__init__.py
