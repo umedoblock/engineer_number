@@ -5,6 +5,7 @@ Changes in 1.0.4 (16 Feb 2013)
 - 日本語でいくことに決めた。
 - docstring 日本語で書いた。
 - 色々説明書いた。
+- scripts/lmc555cn.py 実行時の出力を csv にした。
 
 Changes in 1.0.3 (2 Jan 2013)
 - write default to scripts/lmc555cn.py.

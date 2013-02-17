@@ -20,8 +20,7 @@ del path_
 # 3.0 # 2 ** 3 = 8, pow(2, 3)
 CONST = math.log(2, math.e)
 
-def lmc555(Ra, Rb, C=EngineerNumber(0.1, MICRO)):
-    _c2gnd = 0.1 * MICRO
+def lmc555(Ra, Rb, C=EngineerNumber('0.1u')):
     tH = CONST * (Ra + Rb) * C
     tL = CONST * Rb * C
     t = tL + tH
@@ -57,7 +56,7 @@ def check_Hz_in_range(r_min, r_max, c):
 
     return tf
 
-def look_for_optimized_Hz(Hz, c=EngineerNumber(0.1, MICRO)):
+def look_for_optimized_Hz(Hz, c=EngineerNumber('0.1u')):
     Rs = _make_all_combination('E12')
     Rs.append(10 * MEGA)
     len_combination = len(Rs) ** 2
@@ -92,9 +91,11 @@ def parse_args():
     return args
 
 def view_tf(tf, top=-1):
+    print('{:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s},'
+          ''.format('tL', ' tH', ' t', ' f', ' ra', ' rb', ' c'))
     for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print('tL={}, tH={}, t={}, f={}, ra={}, rb={}, c={}'
-              ''.format(tL, tH, t, f, ra, rb, c))
+        print('{:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s},'
+              ''.format(tL, tH, t, f, ra, rb, c['u']))
 
 if __name__ == '__main__':
     args = parse_args()
