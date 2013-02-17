@@ -162,6 +162,9 @@ class EngineerNumber(numbers.Real):
     ('y', YOCTO),
     """
 
+    # I18N
+    __doc__ = _(__doc__)
+
     # EngineerNumber instance を __str__() にて
     # 文字列表現した時の、小数点以下の有効桁数。
     round_ndigits = 3
