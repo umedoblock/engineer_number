@@ -67,3 +67,9 @@
 
 ほーら？どうです？
 EngineerNumber() 使いたくなっちゃった〜♪
+
+how to make pot file.
+$ pygettext.py -d engineer_number \
+    --docstrings --no-location \
+    --output-dir=engineer_number/locale \
+    `find ./engineer_number -name '*.py'`

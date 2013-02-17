@@ -12,7 +12,7 @@ from .constants import *
 path_ = os.path.join(os.path.dirname(__file__), 'locale')
 # print('path_ =', path_)
 gettext.install('engineer_number', path_)
-del path_
+
 
 class EngineerNumber(numbers.Real):
     """EngineerNumber class は、SI接頭辞の変換・異なるSI接頭辞同士の
@@ -467,3 +467,17 @@ class EngineerNumber(numbers.Real):
     def __trunc__(self):
         """math.trunc() の help を読んで。"""
         return math.trunc(self.num)
+
+def I18N(attr):
+    """attr.__doc__ = gettext(attr.__doc__)
+    convert and translate to use gettext()."""
+
+    if callable(attr):
+        msgid = getattr(attr, '__doc__')
+        msgstr = _(msgid)
+        setattr(attr, '__doc__', msgstr)
+
+for attr in EngineerNumber.__dict__.values():
+    I18N(attr)
+
+del attr, path_, I18N
