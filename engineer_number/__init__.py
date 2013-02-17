@@ -9,6 +9,28 @@ import gettext
 
 from .constants import *
 
+def get_default_languages():
+    languages = []
+    for language in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
+        env = os.environ.get(language)
+        if not env:
+            continue
+        sp = env.split(':')
+        languages.extend(sp)
+    if not languages:
+        languages.append('C')
+    return languages
+
+def decide_languages_order(hope=[]):
+    # first is overwrited by second.
+    # so should be hope=['lower-important', 'higher-important']
+    languages = get_default_languages()
+    if 'ja' not in languages:
+        languages.insert(0, 'zannenenglish')
+    languages.extend(hope)
+
+    return languages
+
 def gettext_install(domain,
                     localedir=None,
                     languages=[],
@@ -24,7 +46,7 @@ path_ = os.path.join(os.path.dirname(__file__), 'locale')
 # print('path_ =', path_)
 gettext_install('engineer_number',
                  path_,
-                 languages=['zannenenglish', 'en', 'ja'])
+                 languages=decide_languages_order())
 
 
 class EngineerNumber(numbers.Real):
