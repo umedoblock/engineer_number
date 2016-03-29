@@ -457,7 +457,7 @@ class EngineerNumber(numbers.Real):
     def __repr__(self):
         """object.__repr__() の help を読んで。"""
         # for EngineerNumber in tuple.
-        return str(self)
+        return 'EngineerNumber("{}")'.format(str(self))
 
     def __str__(self):
         """object.__str__() の help を読んで。"""
@@ -472,7 +472,7 @@ class EngineerNumber(numbers.Real):
             s = fmt.format(round_value, symbol)
         else:
             s = str(self.num)
-        return s
+        return "{}".format(s)
 
     def __abs__(self):
         """object.__abs__() の help を読んで。"""
