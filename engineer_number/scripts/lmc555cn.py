@@ -91,11 +91,10 @@ def parse_args():
     return args
 
 def view_tf(tf, top=-1):
-    print('{:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s},'
-          ''.format('tL', ' tH', ' t', ' f', ' ra', ' rb', ' c'))
+    fmt = ", ".join(["{!s:>8s}"] * 7)
+    print(fmt.format('tL', 'tH', 't', 'f', 'ra', 'rb', 'c'))
     for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print('{:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s}, {:>8s},'
-              ''.format(tL, tH, t, f, ra, rb, c['u']))
+        print(fmt.format(tL, tH, t, f, ra, rb, c['u']))
 
 if __name__ == '__main__':
     args = parse_args()
