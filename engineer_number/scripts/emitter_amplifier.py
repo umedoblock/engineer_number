@@ -12,7 +12,7 @@ path_ = os.path.join(os.path.dirname(__file__), '..', 'locale')
 gettext.install('engineer_number', path_)
 del path_
 
-def look_for_optimized_gain(amp_n, ic, vcc):
+def look_for_optimized_gain(amp_n, ic, vcc, series="E12"):
     pass
 
 def view_apmlifiered(gaind, top):
@@ -30,6 +30,9 @@ def parse_args():
     parser.add_argument('--ic', metavar='N', dest='ic',
                        type=float, nargs='?', default=0.8,
                        help='collect i default: 0.8')
+    parser.add_argument("--series", metavar="N", dest="series",
+                       nargs="?", default="E12",
+                       help="series default: E12")
     parser.add_argument('--top', metavar='N', dest='top',
                        type=int, nargs='?', default=10,
                        help='ranking default: 10')
