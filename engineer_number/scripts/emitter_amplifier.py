@@ -13,7 +13,12 @@ gettext.install('engineer_number', path_)
 del path_
 
 def look_for_optimized_gain(amp_n, ic, vcc, series="E12"):
-    pass
+    if not series in ("E12",):
+        raise ValueError("series must be in E12, E24, E48, E96 or E192.")
+    print("series =", series)
+
+    for item in getattr(constants, series):
+        print("item =", item)
 
 def view_apmlifiered(gaind, top):
     pass
