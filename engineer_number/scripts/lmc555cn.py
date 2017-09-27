@@ -94,7 +94,7 @@ def view_tf(tf, top=-1):
     fmt = ", ".join(["{!s:>8s}"] * 7)
     print(fmt.format('tL', 'tH', 't', 'f', 'ra', 'rb', 'c'))
     for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print(fmt.format(tL, tH, t, f, ra, rb, c['u']))
+        print(fmt.format(tL, tH, t, f, ra, rb, c))
 
 if __name__ == '__main__':
     args = parse_args()
