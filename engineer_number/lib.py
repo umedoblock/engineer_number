@@ -33,7 +33,9 @@ def close_e_series(value, to, e_series_name, tolerance_error=-1.0):
     else:
         raise ValueError("unknown to={}".format(to))
 
-    return candidate
+    if tolerance_error < 0:
+        return candidate
+
     if value.in_tolerance_error(candidate, tolerance_error):
         return candidate
     else:

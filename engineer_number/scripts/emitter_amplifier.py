@@ -61,8 +61,8 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
         Vcb = Vcc - Vb
         Rb1 = Vcb / ibias # 13
 
-        Rb2_ = close_e_series(Rb2, "up", e_series, TOLERANCE_ERROR) # E12 にあわす
-        Rb1_ = close_e_series(Rb1, "up", e_series, TOLERANCE_ERROR) # E12 にあわす
+        Rb2_ = close_e_series(Rb2, "up", e_series, TOLERANCE_ERROR)
+        Rb1_ = close_e_series(Rb1, "up", e_series, TOLERANCE_ERROR)
         if (not Rb2_) or (not Rb1_):
 #           print("--")
 #           print("Rb2={}, Rb2_={}".format(Rb2, Rb2_))
