@@ -63,24 +63,24 @@ class TestEngineerNumberUtil(unittest.TestCase):
         k50 = EngineerNumber(50, 3)
         k56 = EngineerNumber(56, 3)
 
-        self.assertEqual(k56, close_e_series(k50, "up", "E12", TOLERANCE_ERROR))
-        self.assertEqual(k47, close_e_series(k50, "down", "E12", TOLERANCE_ERROR))
+        self.assertEqual(k56, close_e_series(k50, "up", "E12"))
+        self.assertEqual(k47, close_e_series(k50, "down", "E12"))
 
     def test_close_e_series_transfer_next_exponent(self):
         r83  = EngineerNumber(8.3, 1)
         r100 = EngineerNumber(1.0, 2)
-        self.assertEqual(r100, close_e_series(r83, "up", "E12", TOLERANCE_ERROR))
+        self.assertEqual(r100, close_e_series(r83, "up", "E12"))
 
         k094 = EngineerNumber(0.94, 3)
         r820 = EngineerNumber(8.2,  2)
-        self.assertEqual(r820, close_e_series(k094, "down", "E12", TOLERANCE_ERROR))
+        self.assertEqual(r820, close_e_series(k094, "down", "E12"))
 
     def test_close_e_series_out_of_range(self):
         r900 = EngineerNumber(0.9, ONE)
         M101 = EngineerNumber(10.1, MEGA)
 
-        self.assertIsNone(close_e_series(r900, "down", "E12", TOLERANCE_ERROR))
-        self.assertIsNone(close_e_series(M101, "up", "E12", TOLERANCE_ERROR))
+        self.assertIsNone(close_e_series(r900, "down", "E12"))
+        self.assertIsNone(close_e_series(M101, "up", "E12"))
 
 if __name__ == '__main__':
     unittest.main()
