@@ -374,14 +374,14 @@ class TestEngineerNumber(unittest.TestCase):
         k2000 = EngineerNumber('2.000k')
 
 
-        self.assertTrue(k1000.in_tolerance_error(k1000))
-        self.assertTrue(k1000.in_tolerance_error(k1010))
+        self.assertTrue(k1000.in_tolerance_error(k1000, TOLERANCE_ERROR))
+        self.assertTrue(k1000.in_tolerance_error(k1010, TOLERANCE_ERROR))
 
-        self.assertTrue(k1000.in_tolerance_error(k1050))
+        self.assertTrue(k1000.in_tolerance_error(k1050, TOLERANCE_ERROR))
 
-        self.assertFalse(k1000.in_tolerance_error(k1051))
-        self.assertFalse(k1000.in_tolerance_error(k1100))
-        self.assertFalse(k1000.in_tolerance_error(k2000))
+        self.assertFalse(k1000.in_tolerance_error(k1051, TOLERANCE_ERROR))
+        self.assertFalse(k1000.in_tolerance_error(k1100, TOLERANCE_ERROR))
+        self.assertFalse(k1000.in_tolerance_error(k2000, TOLERANCE_ERROR))
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)

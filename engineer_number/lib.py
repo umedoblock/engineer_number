@@ -1,8 +1,7 @@
 import bisect
 
 from . import EngineerNumber
-from engineer_number import constants
-from .constants import ONE, KILO, MEGA
+from engineer_number.constants import *
 
 def make_all_combinations(e_series_name, exponent10s):
 #   print("make_all_combinations(e_series_name={}, exponent10s={})".format(e_series_name, exponent10s))
@@ -14,16 +13,16 @@ def make_all_combinations(e_series_name, exponent10s):
 #   print("make_all_combinations(adjust={})".format(adjust))
 
     combination = []
-#   print("constants.E_SERIES_VALUES[e_series_name={}] = {}".format(e_series_name, constants.E_SERIES_VALUES[e_series_name]))
+#   print("E_SERIES_VALUES[e_series_name={}] = {}".format(e_series_name, E_SERIES_VALUES[e_series_name]))
     for exponent10 in exponent10s:
-        values = [EngineerNumber(n, exponent10 - adjust) for n in constants.E_SERIES_VALUES[e_series_name]]
+        values = [EngineerNumber(n, exponent10 - adjust) for n in E_SERIES_VALUES[e_series_name]]
         combination.extend(values)
     return combination
 
-def close_e_series(value, to, e_series_name, err=1):
+def close_e_series(value, to, e_series_name, tolerance_error):
     resistors = get_resistors(e_series_name)
     index = bisect.bisect(resistors, value)
-#   print("index={}".format(index))
+#   print("index={} >= len(resistors)={}".format(index, len(resistors)))
     # value < E12[index]
     if to == "up":
         # value is up
@@ -42,7 +41,8 @@ def close_e_series(value, to, e_series_name, err=1):
 #   print("value={}, to={}, index={}, resistors[index-1]={}, resistors[index]={}, resistors[index+1]={}".format(value, to, index,  resistors[index-1], resistors[index], resistors[index+1]))
 
 #   print("value={}, candidate={}, value.error(candidate)={}".format(value, candidate, value.error(candidate)))
-    if value.in_tolerance_error(candidate, err=err):
+    return candidate
+    if value.in_tolerance_error(candidate, tolerance_error):
         return candidate
     else:
         return None
@@ -52,8 +52,8 @@ def _make_resistors():
     if _resistors:
         return _resistors
     # exponent10s must be asc order.
-    exponent10s_ = range(0, MEGA + 1)
-    for e_series_name, values in constants.E_SERIES_VALUES.items():
+    exponent10s_ = range(ONE, MEGA + 1)
+    for e_series_name in E_SERIES_VALUES.keys():
         _resistors[e_series_name] = \
             make_all_combinations(e_series_name, exponent10s_)
         _resistors[e_series_name].append(EngineerNumber("10M"))

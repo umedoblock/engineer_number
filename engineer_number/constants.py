@@ -2,12 +2,17 @@ import collections
 
 # 見れば分かると思われる為、特に説明はない。
 __all__ = [
-    'YOTTA', 'ZETTA', 'EXA', 'PETA', 'TERA', 'GIGA', 'MEGA', 'KILO',
-    'ONE',
-    'MILLI', 'MICRO', 'NANO', 'PICO', 'FEMTO', 'ATTO', 'ZEPTO', 'YOCTO',
-    "EXPONENT_SMALL", "EXPONENT_BIG", 'EXPONENTS',
+    "GROUP_OF_DIGITS", "TOLERANCE_ERROR",
+    "YOTTA", "ZETTA", "EXA", "PETA", "TERA", "GIGA", "MEGA", "KILO",
+    "ONE",
+    "MILLI", "MICRO", "NANO", "PICO", "FEMTO", "ATTO", "ZEPTO", "YOCTO",
+    "EXPONENTS", "d_SYMBOL_EXPONENT", "d_EXPONENT_SYMBOL",
     "E_SERIES_NAMES", "E_SERIES_VALUES",
 ]
+
+GROUP_OF_DIGITS = 3
+
+TOLERANCE_ERROR = 0.05
 
 YOTTA = 24
 ZETTA = 21
@@ -32,23 +37,23 @@ EXPONENT_SMALL = (MILLI, MICRO, NANO, PICO, FEMTO, ATTO, ZEPTO, YOCTO)
 EXPONENTS = EXPONENT_BIG + (ONE,) + EXPONENT_SMALL
 
 d_SYMBOL_EXPONENT = collections.OrderedDict((
-    ('Y', YOTTA),
-    ('Z', ZETTA),
-    ('E', EXA),
-    ('P', PETA),
-    ('T', TERA),
-    ('G', GIGA),
-    ('M', MEGA),
-    ('k', KILO),
-     ('', ONE),
-    ('m', MILLI),
-    ('u', MICRO),
-    ('n', NANO),
-    ('p', PICO),
-    ('f', FEMTO),
-    ('a', ATTO),
-    ('z', ZEPTO),
-    ('y', YOCTO),
+    ("Y", YOTTA),
+    ("Z", ZETTA),
+    ("E", EXA),
+    ("P", PETA),
+    ("T", TERA),
+    ("G", GIGA),
+    ("M", MEGA),
+    ("k", KILO),
+     ("", ONE),
+    ("m", MILLI),
+    ("u", MICRO),
+    ("n", NANO),
+    ("p", PICO),
+    ("f", FEMTO),
+    ("a", ATTO),
+    ("z", ZEPTO),
+    ("y", YOCTO),
 ))
 
 d_EXPONENT_SYMBOL = \
@@ -98,24 +103,3 @@ E_SERIES_VALUES = {
        75.0, 75.9, 76.8, 77.7, 78.7, 79.6, 80.6, 81.6, 82.5, 83.5, 84.5, 85.6,
        86.6, 87.6, 88.7, 89.8, 90.9, 92.0, 93.1, 94.2, 95.3, 96.5, 97.6, 98.8),
 }
-
-# len(E12) = 13
-# >>> 13 * 2
-# 26
-# >>> 13 * 4
-# 52
-# >>> 13 * 6
-# 78
-
-# combination
-# for EXPONENT_SMALL
-# >>> (13 * 2) ** 2
-# 676
-
-# for EXPONENT_BIG
-# >>> (13 * 4) ** 2
-# 2704
-
-# for EXPONENTS
-# >>> (13 * 6) ** 2
-# 6084

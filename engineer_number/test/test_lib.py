@@ -5,13 +5,12 @@ from test import support
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from engineer_number import *
-from engineer_number import constants
-from engineer_number.constants import ONE, MEGA
+from engineer_number.constants import *
 from engineer_number.lib import get_resistors, make_all_combinations, close_e_series
 
 class TestEngineerNumberUtil(unittest.TestCase):
     def test_make_all_combinations(self):
-        exponent10s = range(0, constants.MEGA + 1)
+        exponent10s = range(ONE, MEGA + 1)
         combs = make_all_combinations("E12", exponent10s)
         tup_combs = tuple(str(x) for x in combs)
         expected = (
@@ -64,24 +63,24 @@ class TestEngineerNumberUtil(unittest.TestCase):
         k50 = EngineerNumber(50, 3)
         k56 = EngineerNumber(56, 3)
 
-        self.assertEqual(k56, close_e_series(k50, "up", "E12"))
-        self.assertEqual(k47, close_e_series(k50, "down", "E12"))
+        self.assertEqual(k56, close_e_series(k50, "up", "E12", TOLERANCE_ERROR))
+        self.assertEqual(k47, close_e_series(k50, "down", "E12", TOLERANCE_ERROR))
 
     def test_close_e_series_transfer_next_exponent(self):
         r83  = EngineerNumber(8.3, 1)
         r100 = EngineerNumber(1.0, 2)
-        self.assertEqual(r100, close_e_series(r83, "up", "E12"))
+        self.assertEqual(r100, close_e_series(r83, "up", "E12", TOLERANCE_ERROR))
 
         k094 = EngineerNumber(0.94, 3)
         r820 = EngineerNumber(8.2,  2)
-        self.assertEqual(r820, close_e_series(k094, "down", "E12"))
+        self.assertEqual(r820, close_e_series(k094, "down", "E12", TOLERANCE_ERROR))
 
     def test_close_e_series_out_of_range(self):
         r900 = EngineerNumber(0.9, ONE)
         M101 = EngineerNumber(10.1, MEGA)
 
-        self.assertIsNone(close_e_series(r900, "down", "E12"))
-        self.assertIsNone(close_e_series(M101, "up", "E12"))
+        self.assertIsNone(close_e_series(r900, "down", "E12", TOLERANCE_ERROR))
+        self.assertIsNone(close_e_series(M101, "up", "E12", TOLERANCE_ERROR))
 
 if __name__ == '__main__':
     unittest.main()

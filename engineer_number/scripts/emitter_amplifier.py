@@ -22,7 +22,7 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
         Ve = Vc / gain
         Re = Ve / ie
 
-        Re_ = close_e_series(Re, "up", e_series, EngineerNumber.COMPONENT_ERROR)
+        Re_ = close_e_series(Re, "up", e_series, TOLERANCE_ERROR)
 #       print("Re={}, Re_={}".format(Re, Re_))
 #       if Re_:
 #           print("Re.error(Re_)={}".format(Re.error(Re_)))
@@ -61,8 +61,8 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
         Vcb = Vcc - Vb
         Rb1 = Vcb / ibias # 13
 
-        Rb2_ = close_e_series(Rb2, "up", e_series, EngineerNumber.COMPONENT_ERROR) # E12 にあわす
-        Rb1_ = close_e_series(Rb1, "up", e_series, EngineerNumber.COMPONENT_ERROR) # E12 にあわす
+        Rb2_ = close_e_series(Rb2, "up", e_series, TOLERANCE_ERROR) # E12 にあわす
+        Rb1_ = close_e_series(Rb1, "up", e_series, TOLERANCE_ERROR) # E12 にあわす
         if (not Rb2_) or (not Rb1_):
             print("Rb2={}, Rb2_={}, Rb2.error(Rb2_)={}".format(Rb2, Rb2_, Rb2.error(Rb2_)))
             print("Rb1={}, Rb1_={}, Rb1.error(Rb1_)={}".format(Rb1, Rb1_, Rb1.error(Rb1_)))
