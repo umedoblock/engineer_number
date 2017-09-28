@@ -59,6 +59,8 @@ def look_for_optimized_duty(Hz, c=EngineerNumber('0.1u'), duty=EngineerNumber(0.
     tf.sort(key=lambda x: math.fabs(0.5 - x[0]))
     return tf
 
+NAMES = ("tL", "tH", "t", "f", "ra", "rb", "c")
+
 def look_for_optimized_Hz(Hz, c=EngineerNumber('0.1u')):
     Rs = get_resistors('E12')
     len_combination = len(Rs) ** 2
@@ -67,15 +69,22 @@ def look_for_optimized_Hz(Hz, c=EngineerNumber('0.1u')):
     tf = []
     for r2 in Rs:
         for r1 in Rs:
+            d = {}
             rb = EngineerNumber(r2, ONE)
             ra = EngineerNumber(r1, ONE)
             tL, tH, t, f = lmc555(ra, rb, c)
-            tup = (tL, tH, t, f, ra, rb, c) # sort() x index refer here.
-            tf.append(tup)
+
+            for name in NAMES:
+                d[name] = locals()[name]
+            tf.append(d)
 
     # Hz を優先して sort。
-    tf.sort(key=lambda x: math.fabs(Hz - x[3]))
+    tf.sort(key=_most)
     return tf
+
+Hz=1000
+def _most(d, f=Hz):
+    return math.fabs(f - d["f"])
 
 def parse_args():
     parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
@@ -93,10 +102,12 @@ def parse_args():
     return args
 
 def view_tf(tf, top=-1):
-    fmt = ", ".join(["{!s:>8s}"] * 7)
-    print(fmt.format('tL', 'tH', 't', 'f', 'ra', 'rb', 'c'))
-    for tL, tH, t, f, ra, rb, c in tf[:top]:
-        print(fmt.format(tL, tH, t, f, ra, rb, c))
+    fmt = ", ".join(["{!s:>8s}"] * len(NAMES))
+
+    print(fmt.format(*NAMES))
+    for d in tf[:top]:
+        tup = (d[name] for name in NAMES)
+        print(fmt.format(*tup))
 
 if __name__ == '__main__':
     args = parse_args()
