@@ -1,16 +1,11 @@
-import os
-import sys
-import math
-import argparse
-import gettext
+import os, sys, math
+import argparse, gettext
 
+import lib
+lib.init_engineer_number()
 from engineer_number import *
 from engineer_number.constants import *
-
-path_ = os.path.join(os.path.dirname(__file__), '..', 'locale')
-# print('path_ =', path_)
-gettext.install('engineer_number', path_)
-del path_
+from engineer_number.lib import get_resistors
 
 # >>> math.log(2)
 # 0.6931471805599453
@@ -28,18 +23,6 @@ def lmc555(Ra, Rb, C=EngineerNumber('0.1u')):
 
     return (tL, tH, t, f)
 
-def _make_all_combination(series='E12'):
-    if series != 'E12':
-        raise ValueError(_('series must be "E12".'))
-    #                         k                    M
-    factor_big = (1, 10, 100, 1000, 10000, 100000, 1000000)
-    combination = []
-    for factor in factor_big:
-        for n in E12:
-            r = factor * n
-            combination.append(r)
-    return combination
-
 def check_Hz_in_range(r_min, r_max, c):
     tf = []
     ra = EngineerNumber(r_min)
@@ -56,9 +39,28 @@ def check_Hz_in_range(r_min, r_max, c):
 
     return tf
 
+def look_for_optimized_duty(Hz, c=EngineerNumber('0.1u'), duty=EngineerNumber(0.5)):
+    Rs = get_resistors('E12')
+    len_combination = len(Rs) ** 2
+  # print('len_combination =', len_combination)
+
+    tf = []
+    for r2 in Rs:
+        for r1 in Rs:
+            rb = EngineerNumber(r2, ONE)
+            ra = EngineerNumber(r1, ONE)
+            tL, tH, t, f = lmc555(ra, rb, c)
+            dutyL = tL / t
+            dutyH = tH / t
+            tup = (dutyL, dutyH, t, f, ra, rb, c)
+            tf.append(tup)
+
+    # dutyL を優先して sort。
+    tf.sort(key=lambda x: math.fabs(0.5 - x[0]))
+    return tf
+
 def look_for_optimized_Hz(Hz, c=EngineerNumber('0.1u')):
-    Rs = _make_all_combination('E12')
-    Rs.append(10 * MEGA)
+    Rs = get_resistors('E12')
     len_combination = len(Rs) ** 2
   # print('len_combination =', len_combination)
 
@@ -79,7 +81,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
 
     parser.add_argument('--Hz', metavar='N', dest='Hz',
-                       type=int, nargs='?', default=1000,
+                       nargs='?', default=1000,
                        help='frequency default: 1000')
     parser.add_argument('--capacita', metavar='N', dest='c_str',
                        nargs='?', default='0.1u',
@@ -100,8 +102,9 @@ if __name__ == '__main__':
     args = parse_args()
 
     c = EngineerNumber(args.c_str)
-    Hz = args.Hz
+    Hz = EngineerNumber(args.Hz)
     tf = look_for_optimized_Hz(Hz, c)
+#   tf = look_for_optimized_duty(Hz, c)
 
   # print('len(tf)=', len(tf))
   # print()

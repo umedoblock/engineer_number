@@ -1,15 +1,18 @@
 # coding: utf-8
 
-import os
-import sys
-import math
+import os, sys, math
 import numbers
 import warnings
 import gettext
 
-from .constants import *
+from engineer_number import constants
 
-def get_default_languages():
+__version__ = '0.0.x'
+# __all__ = ["EngineerNumber", "constants"]
+
+__author__ = 'umedoblock <umedoblock@gmail.com>'
+
+def _get_default_languages():
     languages = []
     for language in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
         env = os.environ.get(language)
@@ -21,21 +24,21 @@ def get_default_languages():
         languages.append('C')
     return languages
 
-def decide_languages_order(hope=[]):
+def _decide_languages_order(hope=[]):
     # first is overwrited by second.
     # so should be hope=['lower-important', 'higher-important']
-    languages = get_default_languages()
+    languages = _get_default_languages()
     if 'ja' not in languages:
         languages.insert(0, 'zannenenglish')
     languages.extend(hope)
 
     return languages
 
-def gettext_install(domain,
-                    localedir=None,
-                    languages=[],
-                    codeset=None,
-                    names=None):
+def _gettext_install(domain,
+                     localedir=None,
+                     languages=[],
+                     codeset=None,
+                     names=None):
     t = gettext.translation(domain, localedir,
                             languages=languages,
                             fallback=True,
@@ -44,10 +47,9 @@ def gettext_install(domain,
 
 path_ = os.path.join(os.path.dirname(__file__), 'locale')
 # print('path_ =', path_)
-gettext_install('engineer_number',
-                 path_,
-                 languages=decide_languages_order())
-
+_gettext_install('engineer_number',
+                  path_,
+                  languages=_decide_languages_order())
 
 class EngineerNumber(numbers.Real):
     """EngineerNumber class は、SI接頭辞の変換・異なるSI接頭辞同士の
@@ -169,6 +171,12 @@ class EngineerNumber(numbers.Real):
     # 文字列表現した時の、小数点以下の有効桁数。
     round_ndigits = 3
 
+    # 回路を流れる電流など
+    ELECTRIC_ERROR = 0.05
+
+    # 部品定数
+    COMPONENT_ERROR = 0.30
+
     @classmethod
     def _parse_string(cls, ss):
         "有効数字の数値と 10 の乗数値を、tuple に詰めて返します。"
@@ -199,14 +207,14 @@ class EngineerNumber(numbers.Real):
     def _si2exponent10(cls, si):
         """SI 接頭辞に対応する、10 の乗数値を返します。"""
         try:
-            exponent10 = d_SYMBOL_EXPONENT[si]
+            exponent10 = constants.d_SYMBOL_EXPONENT[si]
         except KeyError as raiz:
           # message = \
           #     ('SI prefix symbol must be in '
           #      '{}'.format(tuple(d_SYMBOL_EXPONENT)))
             message = \
                _('SI 接頭辞の記号は、次のいずれかでなければなりません。'
-                 '{}').format(tuple(d_SYMBOL_EXPONENT))
+                 '{}').format(tuple(constants.d_SYMBOL_EXPONENT))
             raise KeyError(message)
         return exponent10
 
@@ -254,12 +262,12 @@ class EngineerNumber(numbers.Real):
         return s
 
     def _normalize(self):
-        """EngineerNumber.num の値から、_value, _exponent10 を正規化する。
-        num, _value, _exponent10 の計算方法は、簡単に以下の通り。
+        """EngineerNumber.num の値から、_num, _exponent10 を正規化する。
+        num, _num, _exponent10 の計算方法は、簡単に以下の通り。
 
         _exponent10 = log10(num) // 3
-        _value = num // (10 ** _exponent10)
-        num =(大体同じ、approximately equal to) _value * 10 ** _exponent10
+        _num = num // (10 ** _exponent10)
+        num =(大体同じ、approximately equal to) _num * 10 ** _exponent10
 
         _exponent10 は SI 接頭辞と連動するため、
         3 の整数倍になっていることに注意。"""
@@ -268,7 +276,7 @@ class EngineerNumber(numbers.Real):
         while isinstance(num, EngineerNumber):
             num = num.num
         if num == 0:
-            self._value = 0
+            self._num = 0
             self._exponent10 = 0
             return
         elif num > 0:
@@ -290,23 +298,36 @@ class EngineerNumber(numbers.Real):
         value = num / factor
         value *= sign_num
 
-        self._value = value
+        self._num = value
         self._exponent10 = exponent10
         return self
+
+    def error(self, other):
+        # calc error self with other
+        num = abs(self.num - other.num)
+        return EngineerNumber(num / self.num)
+
+    def in_tolerance_error(self, other, err=ELECTRIC_ERROR):
+        if self.error(other) <= err:
+            return True
+        else:
+            return False
 
     def sqrt(self):
         """math.sqrt() の help を読んで。"""
         root = math.sqrt(self)
         return EngineerNumber(root)
 
-    def detail(self):
+    def _detail(self):
         """主に debug 用。
         本当は非公開にしたかったが、公開としてしまった為、
         今更、非公開に出来なくて困っている。
-        出来ることなら、今からでも非公開にしたい。。。"""
+        出来ることなら、今からでも非公開にしたい。。。
+
+        github に移行することを期に，非公開とした。"""
         print(self)
         print('        num =', self.num)
-        print('     _value =', self._value)
+        print('     _num =', self._num)
         print('_exponent10 =', self._exponent10)
 
     def __add__(self, other):
@@ -426,7 +447,7 @@ class EngineerNumber(numbers.Real):
     def __eq__(self, other):
         """object.__eq__() の help を読んで。"""
         if not isinstance(other, EngineerNumber):
-            other = EngineerNumber(other, ONE)
+            other = EngineerNumber(other, constants.ONE)
         return self._exponent10 == other._exponent10 and \
                round(self) == round(other)
 
@@ -437,7 +458,7 @@ class EngineerNumber(numbers.Real):
     def __gt__(self, other):
         """object.__gt__() の help を読んで。"""
         if not isinstance(other, EngineerNumber):
-            other = EngineerNumber(other, ONE)
+            other = EngineerNumber(other, constants.ONE)
         return round(self) > round(other)
 
     def __ge__(self, other):
@@ -447,7 +468,7 @@ class EngineerNumber(numbers.Real):
     def __lt__(self, other):
         """object.__lt__() の help を読んで。"""
         if not isinstance(other, EngineerNumber):
-            other = EngineerNumber(other, ONE)
+            other = EngineerNumber(other, constants.ONE)
         return round(self) < round(other)
 
     def __le__(self, other):
@@ -462,14 +483,14 @@ class EngineerNumber(numbers.Real):
     def __str__(self):
         """object.__str__() の help を読んで。"""
         symbol = ''
-        if self._exponent10 in d_EXPONENT_SYMBOL:
-            symbol = d_EXPONENT_SYMBOL[self._exponent10]
+        if self._exponent10 in constants.d_EXPONENT_SYMBOL:
+            symbol = constants.d_EXPONENT_SYMBOL[self._exponent10]
 #           s = '{:.3f}{}'
             fmt = ':.{}f'.format(EngineerNumber.round_ndigits)
             fmt = '{' + fmt + '}{}'
-            round_value = \
-                round(self._value, EngineerNumber.round_ndigits)
-            s = fmt.format(round_value, symbol)
+            round_num = \
+                round(self._num, EngineerNumber.round_ndigits)
+            s = fmt.format(round_num, symbol)
         else:
             s = str(self.num)
         return "{}".format(s)
@@ -506,7 +527,7 @@ class EngineerNumber(numbers.Real):
         """math.trunc() の help を読んで。"""
         return math.trunc(self.num)
 
-def I18N(attr):
+def _I18N(attr):
     """attr.__doc__ を gettext() にて翻訳する。
 
     attr() として attr を呼び出し可能であれば、
@@ -523,8 +544,8 @@ def I18N(attr):
         msgstr = _(msgid)
         setattr(attr, '__doc__', msgstr)
 
-I18N(I18N)
+_I18N(_I18N)
 for attr in EngineerNumber.__dict__.values():
-    I18N(attr)
+    _I18N(attr)
 
 del attr, path_

@@ -1,5 +1,4 @@
-import os
-import sys
+import os, sys, math
 import unittest
 from test import support
 
@@ -357,6 +356,32 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual(2, two)
         self.assertEqual(root2, sqrt2)
         self.assertIsInstance(sqrt2, EngineerNumber)
+
+    def test_error(self):
+        # base
+        k1000 = EngineerNumber('1.000k')
+
+        # in error
+        k1001 = EngineerNumber('1.001k')
+        k1010 = EngineerNumber('1.010k')
+
+        # eq error
+        k1050 = EngineerNumber('1.050k')
+
+        # out error
+        k1051 = EngineerNumber('1.051k')
+        k1100 = EngineerNumber('1.100k')
+        k2000 = EngineerNumber('2.000k')
+
+
+        self.assertTrue(k1000.in_tolerance_error(k1000))
+        self.assertTrue(k1000.in_tolerance_error(k1010))
+
+        self.assertTrue(k1000.in_tolerance_error(k1050))
+
+        self.assertFalse(k1000.in_tolerance_error(k1051))
+        self.assertFalse(k1000.in_tolerance_error(k1100))
+        self.assertFalse(k1000.in_tolerance_error(k2000))
 
 if __name__ == '__main__':
   # gc.set_debug(gc.DEBUG_LEAK)
