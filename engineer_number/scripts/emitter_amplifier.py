@@ -9,27 +9,26 @@ from engineer_number import EngineerNumber
 from engineer_number.constants import *
 from engineer_number.lib import get_resistors, close_e_series
 
+NAMES = ("Rb1", "Rb2", "Rc", "Re", "gain", "Vcc", "Vcb", "Vb", "Vc", "Ve", "Vce", "ie", "ic", "ib", "ibias", "Pce")
 def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
     resistors = get_resistors(e_series)
 
+    gain_ = gain
     parameters = []
 #   print("resistors =", resistors)
     for Rc in resistors:
-        ie = ic
+        d = {}
         ie = ic + ic / hfe
 
         Vc = Rc * ic   # 6
-        Ve = Vc / gain
-        Re = Ve / ie
+        Re = Rc / gain_
 
-        Re_ = close_e_series(Re, "up", e_series, TOLERANCE_ERROR)
+        Re_ = close_e_series(Re, "up", e_series)
         if not Re_:
             continue
 
         Re = Re_
         Ve = Re * ie
-#       if Vc / Ve < gain:
-#           continue
 
         # 注意
         # must be Vc + Ve <= Vcc
@@ -37,6 +36,8 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
           # raise ValueError("invalid Vc and Ve combination compare Vcc.")
           # print("added(Vc={}, Ve={})={} is greater ghan Vcc={}.".format(Vc, Ve, Vc + Ve, Vcc))
             continue
+
+        gain = Vc / Ve
 
         Vce = Vcc - (Vc + Ve) # 7
 
@@ -46,37 +47,50 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
         # Pce < 400mW(=PD)
 
         Vb = Ve + 0.6 # 9
+        Vcb = Vcc - Vb
+
         # hfe = 200 # 10
         ib = ic / hfe # ?
         ibias = 10 * ib # 11
 
         Rb2 = Vb / ibias # 12
-        Vcb = Vcc - Vb
         Rb1 = Vcb / ibias # 13
-
-        Rb2_ = close_e_series(Rb2, "up", e_series, TOLERANCE_ERROR)
-        Rb1_ = close_e_series(Rb1, "up", e_series, TOLERANCE_ERROR)
-        if (not Rb2_) or (not Rb1_):
+        Rb2_ = close_e_series(Rb2, "up", e_series)
+        Rb1_ = close_e_series(Rb1, "up", e_series)
+        Rb2, Rb1 = Rb2_, Rb1_
+        if (not Rb2) or (not Rb1):
 #           print("--")
 #           print("Rb2={}, Rb2_={}".format(Rb2, Rb2_))
 #           print("Rb1={}, Rb1_={}".format(Rb1, Rb1_))
             continue
-        Radd = Rb1_ + Rb2_
+
+        Radd = Rb1 + Rb2
       # print("Radd =", Radd)
 
-        ibias_ = Vcc / Radd
+        ibias = Vcc / Radd
 
-        tup = (Rb1_, Rb2_, Rc, Re, ic, gain, Vcc, Vc, Ve, Vb, Vce, ib, ibias_, Pce)
-        parameters.append(tup)
+        for name in NAMES:
+            d[name] = locals()[name]
+#       print("d =")
+#       print(d)
+        parameters.append(d)
 
-    parameters.sort(key=lambda x: math.fabs(x[-1]))
+    parameters.sort(key=_most)
+#   print("parameters =")
+#   print(parameters)
     return parameters
 
+def _most(d):
+    return -math.fabs(d["gain"])
+    return math.fabs(d["Pce"])
+
 def view_apmlifiered(gained, top=-1):
-    fmt = ", ".join(["{!s:>8s}"] * 14)
-    print(fmt.format("Rb1_", "Rb2_", "Rc", "Re", "ic", "gain", "Vcc", "Vc", "Ve", "Vb", "Vce", "ib", "ibias", "Pce"))
-    for Rb1_, Rb2_, Rc, Re, ic, gain, Vcc, Vc, Ve, Vb, Vce, ib, ibias, Pce in gained[:top]:
-        print(fmt.format(Rb1_, Rb2_, Rc, Re, ic, gain, Vcc, Vc, Ve, Vb, Vce, ib, ibias, Pce))
+    fmt = ", ".join(["{!s:>8s}"] * len(NAMES))
+
+    print(fmt.format(*NAMES))
+    for d in gained[:top]:
+        tup = (d[name] for name in NAMES)
+        print(fmt.format(*tup))
 
 def parse_args():
     parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
