@@ -23,9 +23,6 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
         Re = Ve / ie
 
         Re_ = close_e_series(Re, "up", e_series, TOLERANCE_ERROR)
-#       print("Re={}, Re_={}".format(Re, Re_))
-#       if Re_:
-#           print("Re.error(Re_)={}".format(Re.error(Re_)))
         if not Re_:
             continue
 
@@ -33,10 +30,6 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
         Ve = Re * ie
 #       if Vc / Ve < gain:
 #           continue
-
-      # Vc = Rc * ic   # 6
-      # Re = Rc / gain # 5
-      # Ve = ie * Re
 
         # 注意
         # must be Vc + Ve <= Vcc
