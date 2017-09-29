@@ -11,8 +11,12 @@ from engineer_number.lib import get_resistors, close_e_series
 
 NAMES = ("Rb1", "Rb2", "Rc", "Re", "gain", "Vcc", "Vcb", "Vb", "Vc", "Ve", "Vce", "ie", "ic", "ib", "ibias", "Pce")
 
+class EmitterCommonAmp(object):
+    def __init__(self, **kwds):
+        for key, value in kwds.items():
+            setattr(self, key, value)
+
 def _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series):
-    d = {}
     ib = ic / hfe # ?
     ie = ic + ib
     Vc = Rc * ic   # 6
@@ -50,11 +54,11 @@ def _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series):
     Radd = Rb1 + Rb2
     ibias = Vcc / Radd
 
+    kwds = {}
     for name in NAMES:
-        d[name] = locals()[name]
-#   print("d =")
-#   print(d)
-    return d
+        kwds[name] = locals()[name]
+    eca = EmitterCommonAmp(**kwds)
+    return eca
 
 def brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series):
     resistors = get_resistors(e_series)
@@ -63,9 +67,9 @@ def brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series):
     i = 0
     for Rc in resistors:
         for Re in resistors:
-            d = _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series)
-            if d:
-                parameters[i] = d
+            eca = _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series)
+            if eca:
+                parameters[i] = eca
                 i += 1
 
     return parameters[:i]
@@ -129,40 +133,24 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
 
         ibias = Vcc / Radd
 
+        kwds = {}
         for name in NAMES:
-            d[name] = locals()[name]
-#       print("d =")
-#       print(d)
-        parameters.append(d)
+            kwds[name] = locals()[name]
+        eca = EmitterCommonAmp(**kwds)
 
-    parameters.sort(key=_most)
+        parameters.append(eca)
+
+    parameters.sort(key=lambda parameter: math.fabs(gain_ - parameter.gain))
 #   print("parameters =")
 #   print(parameters)
     return parameters
-
-def _most(d):
-#   if True:
-#       return -math.fabs(d["gain"])
-#   if True:
-#       gain = 100
-#       return math.fabs(gain-d["gain"])
-#   if True:
-#       Vin = EngineerNumber("1m")
-#       return abs(Vin - d["Ve"])
-#       return abs(d["Ve"])
-    if True:
-        Vout = EngineerNumber("0.1")
-        return math.fabs(Vout - d["Vc"])
-    if True:
-        return -math.fabs(d["Pce"])
-        return math.fabs(d["Pce"])
 
 def view_apmlifiered(gained, top=-1):
     fmt = ", ".join(["{!s:>8s}"] * len(NAMES))
 
     print(fmt.format(*NAMES))
-    for d in gained[:top]:
-        tup = (d[name] for name in NAMES)
+    for eca in gained[:top]:
+        tup = (getattr(eca, name) for name in NAMES)
         print(fmt.format(*tup))
 
 def parse_args():
@@ -199,9 +187,16 @@ if __name__ == '__main__':
     hfe = args.hfe
     e_series = args.e_series
 
-    parameters = brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series)
-#   parameters = look_for_optimized_gain(gain, ic, Vcc, hfe, e_series)
-    parameters.sort(key=_most)
+  # parameters = brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series)
+  # parameters.sort(key=lambda parameter: parameter.gain, reverse=True)
+  # parameters.sort(key=lambda parameter: abs(10 - parameter.gain))
+  # parameters.sort(key=lambda parameter: parameter.Pce)
+  # parameters.sort(key=lambda parameter: \
+  #     math.fabs(EngineerNumber("1m") - parameter.Ve))
+  # parameters.sort(key=lambda parameter: \
+  #     math.fabs(EngineerNumber("100m") - parameter.Vc))
+
+    parameters = look_for_optimized_gain(gain, ic, Vcc, hfe, e_series)
 
     view_apmlifiered(parameters, top)
 
