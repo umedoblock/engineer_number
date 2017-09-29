@@ -15,6 +15,17 @@ from engineer_number.lib import get_resistors
 # 3.0 # 2 ** 3 = 8, pow(2, 3)
 CONST = math.log(2, math.e)
 
+class LMC555(object):
+    def __init__(self, **kwds):
+        for key, value in kwds.items():
+            setattr(self, key, value)
+
+        self._calc_duty()
+
+    def _calc_duty(self):
+        self.dutyL = self.tL / self.t
+        self.dutyH = self.tH / self.t
+
 def lmc555(Ra, Rb, C=EngineerNumber('0.1u')):
     tH = CONST * (Ra + Rb) * C
     tL = CONST * Rb * C
@@ -44,19 +55,25 @@ def look_for_optimized_duty(Hz, c=EngineerNumber('0.1u'), duty=EngineerNumber(0.
     len_combination = len(Rs) ** 2
   # print('len_combination =', len_combination)
 
-    tf = []
+    tf = [None] * len_combination
+    i = 0
     for r2 in Rs:
         for r1 in Rs:
             rb = EngineerNumber(r2, ONE)
             ra = EngineerNumber(r1, ONE)
             tL, tH, t, f = lmc555(ra, rb, c)
-            dutyL = tL / t
-            dutyH = tH / t
-            tup = (dutyL, dutyH, t, f, ra, rb, c)
-            tf.append(tup)
 
+            kwds = {}
+            for name in NAMES:
+                kwds[name] = locals()[name]
+            l555 = LMC555(**kwds)
+            tf[i] = l555
+            i += 1
+    tf = tf[:i]
+
+    duty = EngineerNumber("0.1")
     # dutyL を優先して sort。
-    tf.sort(key=lambda x: math.fabs(0.5 - x[0]))
+    tf.sort(key=lambda l5: math.fabs(duty - l5.dutyL))
     return tf
 
 NAMES = ("tL", "tH", "t", "f", "ra", "rb", "c")
@@ -69,22 +86,18 @@ def look_for_optimized_Hz(Hz, c=EngineerNumber('0.1u')):
     tf = []
     for r2 in Rs:
         for r1 in Rs:
-            d = {}
+            kwds = {}
             rb = EngineerNumber(r2, ONE)
             ra = EngineerNumber(r1, ONE)
             tL, tH, t, f = lmc555(ra, rb, c)
 
             for name in NAMES:
-                d[name] = locals()[name]
-            tf.append(d)
+                kwds[name] = locals()[name]
+            l555 = LMC555(**kwds)
+            tf.append(l555)
 
-    # Hz を優先して sort。
-    tf.sort(key=_most)
+    tf.sort(key=lambda l5: math.fabs(l5.f - EngineerNumber(Hz)))
     return tf
-
-Hz=1000
-def _most(d, f=Hz):
-    return math.fabs(f - d["f"])
 
 def parse_args():
     parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
@@ -105,8 +118,8 @@ def view_tf(tf, top=-1):
     fmt = ", ".join(["{!s:>8s}"] * len(NAMES))
 
     print(fmt.format(*NAMES))
-    for d in tf[:top]:
-        tup = (d[name] for name in NAMES)
+    for lmc555 in tf[:top]:
+        tup = (getattr(lmc555, name) for name in NAMES)
         print(fmt.format(*tup))
 
 if __name__ == '__main__':
@@ -114,8 +127,8 @@ if __name__ == '__main__':
 
     c = EngineerNumber(args.c_str)
     Hz = EngineerNumber(args.Hz)
-    tf = look_for_optimized_Hz(Hz, c)
-#   tf = look_for_optimized_duty(Hz, c)
+#   tf = look_for_optimized_Hz(Hz, c)
+    tf = look_for_optimized_duty(Hz, c)
 
   # print('len(tf)=', len(tf))
   # print()
