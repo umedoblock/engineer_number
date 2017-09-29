@@ -84,10 +84,10 @@ class TestEngineerNumberUtil(unittest.TestCase):
         self.assertEqual(r820, close_e_series(k094, "down", "E12"))
 
     def test_close_e_series_out_of_range(self):
-        r900 = EngineerNumber(0.9, ONE)
+        r0_9 = EngineerNumber(0.9, ONE)
         M101 = EngineerNumber(10.1, MEGA)
 
-        self.assertIsNone(close_e_series(r900, "down", "E12"))
+        self.assertIsNone(close_e_series(r0_9, "down", "E12"))
         self.assertIsNone(close_e_series(M101, "up", "E12"))
 
 if __name__ == '__main__':
