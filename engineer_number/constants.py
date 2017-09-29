@@ -4,7 +4,9 @@ import collections
 __all__ = [
     "GROUP_OF_DIGITS", "TOLERANCE_ERROR",
     "YOTTA", "ZETTA", "EXA", "PETA", "TERA", "GIGA", "MEGA", "KILO",
+    "HECTO", "DECA",
     "ONE",
+    "DECI", "CENTI",
     "MILLI", "MICRO", "NANO", "PICO", "FEMTO", "ATTO", "ZEPTO", "YOCTO",
     "EXPONENTS", "d_SYMBOL_EXPONENT", "d_EXPONENT_SYMBOL",
     "E_SERIES_NAMES", "E_SERIES_VALUES",
@@ -22,7 +24,11 @@ TERA = 12
 GIGA = 9
 MEGA = 6
 KILO = 3
+HECTO = 2
+DECA = 1
 ONE = 0
+DECI = -1
+CENTI = -2
 MILLI = -3
 MICRO = -6
 NANO = -9
@@ -32,8 +38,8 @@ ATTO = -18
 ZEPTO = -21
 YOCTO = -24
 
-EXPONENT_BIG = (YOTTA, ZETTA, EXA, PETA, TERA, GIGA, MEGA, KILO)
-EXPONENT_SMALL = (MILLI, MICRO, NANO, PICO, FEMTO, ATTO, ZEPTO, YOCTO)
+EXPONENT_BIG = (YOTTA, ZETTA, EXA, PETA, TERA, GIGA, MEGA, KILO, HECTO, DECA)
+EXPONENT_SMALL = (DECI, CENTI, MILLI, MICRO, NANO, PICO, FEMTO, ATTO, ZEPTO, YOCTO)
 EXPONENTS = EXPONENT_BIG + (ONE,) + EXPONENT_SMALL
 
 d_SYMBOL_EXPONENT = collections.OrderedDict((
@@ -45,7 +51,11 @@ d_SYMBOL_EXPONENT = collections.OrderedDict((
     ("G", GIGA),
     ("M", MEGA),
     ("k", KILO),
+    ("h", HECTO),
+    ("da", DECA),
      ("", ONE),
+    ("d", DECI),
+    ("c", CENTI),
     ("m", MILLI),
     ("u", MICRO),
     ("n", NANO),
