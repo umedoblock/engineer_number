@@ -141,8 +141,21 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
     return parameters
 
 def _most(d):
-    return -math.fabs(d["gain"])
-    return math.fabs(d["Pce"])
+#   if True:
+#       return -math.fabs(d["gain"])
+#   if True:
+#       gain = 100
+#       return math.fabs(gain-d["gain"])
+#   if True:
+#       Vin = EngineerNumber("1m")
+#       return abs(Vin - d["Ve"])
+#       return abs(d["Ve"])
+    if True:
+        Vout = EngineerNumber("0.1")
+        return math.fabs(Vout - d["Vc"])
+    if True:
+        return -math.fabs(d["Pce"])
+        return math.fabs(d["Pce"])
 
 def view_apmlifiered(gained, top=-1):
     fmt = ", ".join(["{!s:>8s}"] * len(NAMES))
