@@ -55,8 +55,8 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12"):
 
         Rb2 = Vb / ibias # 12
         Rb1 = Vcb / ibias # 13
-        Rb2_ = close_e_series(Rb2, "up", e_series)
-        Rb1_ = close_e_series(Rb1, "up", e_series)
+        Rb2_ = close_e_series(Rb2, "down", e_series)
+        Rb1_ = close_e_series(Rb1, "down", e_series)
         Rb2, Rb1 = Rb2_, Rb1_
         if (not Rb2) or (not Rb1):
 #           print("--")
