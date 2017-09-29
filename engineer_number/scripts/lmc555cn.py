@@ -5,7 +5,7 @@ import lib
 lib.init_engineer_number()
 from engineer_number import *
 from engineer_number.constants import *
-from engineer_number.lib import get_resistors
+from engineer_number.lib import get_resistors, get_capacitors
 
 # >>> math.log(2)
 # 0.6931471805599453
@@ -24,11 +24,11 @@ class LMC555(object):
 
     def _calc_duty(self):
         self.dutyL = self.tL / self.t
-        self.dutyH = self.tH / self.t
+        self.dutyH = 1 - self.dutyL
 
 def lmc555(Ra, Rb, C=EngineerNumber('0.1u')):
-    tH = CONST * (Ra + Rb) * C
     tL = CONST * Rb * C
+    tH = tL + CONST * Ra * C
     t = tL + tH
     f = 1 / t
 
@@ -50,66 +50,56 @@ def check_Hz_in_range(r_min, r_max, c):
 
     return tf
 
-def look_for_optimized_duty(Hz, c=EngineerNumber('0.1u'), duty=EngineerNumber(0.5)):
-    Rs = get_resistors('E12')
-    len_combination = len(Rs) ** 2
-  # print('len_combination =', len_combination)
+# esn means e_series_name
+def brute_force_LMC555(resistor_esn, capacitor_esn):
+    Rs = get_resistors(resistor_esn)
+    Cs = get_capacitors(capacitor_esn)
+    len_combination = len(Rs) ** 2 * len(Cs)
+    print('len(Rs) ** 2 =', len(Rs) ** 2)
+    print('len(Cs) =', len(Cs))
+    print('len_combination =', len_combination)
 
     tf = [None] * len_combination
     i = 0
-    for r2 in Rs:
-        for r1 in Rs:
-            rb = EngineerNumber(r2, ONE)
-            ra = EngineerNumber(r1, ONE)
-            tL, tH, t, f = lmc555(ra, rb, c)
+    for c in Cs:
+        print("i = {}".format(i))
+        for rb in Rs:
+            for ra in Rs:
+                tL, tH, t, f = lmc555(ra, rb, c)
 
-            kwds = {}
-            for name in NAMES:
-                kwds[name] = locals()[name]
-            l555 = LMC555(**kwds)
-            tf[i] = l555
-            i += 1
+                kwds = {}
+                for name in NAMES:
+                    kwds[name] = locals()[name]
+                l555 = LMC555(**kwds)
+                tf[i] = l555
+                i += 1
     tf = tf[:i]
 
-    duty = EngineerNumber("0.1")
-    # dutyL を優先して sort。
-    tf.sort(key=lambda l5: math.fabs(duty - l5.dutyL))
     return tf
+
+def look_for_optimized_duty(parameters, duty):
+    # dutyL を優先して sort。
+    parameters.sort(key=lambda parameter: math.fabs(duty - parameter.dutyL))
+    return parameters
 
 NAMES = ("tL", "tH", "t", "f", "ra", "rb", "c")
 
-def look_for_optimized_Hz(Hz, c=EngineerNumber('0.1u')):
-    Rs = get_resistors('E12')
-    len_combination = len(Rs) ** 2
-  # print('len_combination =', len_combination)
-
-    tf = []
-    for r2 in Rs:
-        for r1 in Rs:
-            kwds = {}
-            rb = EngineerNumber(r2, ONE)
-            ra = EngineerNumber(r1, ONE)
-            tL, tH, t, f = lmc555(ra, rb, c)
-
-            for name in NAMES:
-                kwds[name] = locals()[name]
-            l555 = LMC555(**kwds)
-            tf.append(l555)
-
-    tf.sort(key=lambda l5: math.fabs(l5.f - EngineerNumber(Hz)))
-    return tf
+def look_for_optimized_Hz(parameters, Hz):
+    # 周波数を優先して sort
+    parameters.sort(key=lambda parameter: math.fabs(Hz - parameter.f))
+    return parameters
 
 def parse_args():
     parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
 
-    parser.add_argument('--Hz', metavar='N', dest='Hz',
-                       nargs='?', default=1000,
+    parser.add_argument('--Hz', metavar='f', dest='Hz',
+                       default=1000,
                        help='frequency default: 1000')
-    parser.add_argument('--capacita', metavar='N', dest='c_str',
-                       nargs='?', default='0.1u',
-                       help='capacita default: 0.1u')
-    parser.add_argument('--top', metavar='N', dest='top',
-                       type=int, nargs='?', default=10,
+    parser.add_argument('--duty', metavar='d', dest='duty',
+                       type=float, default='0.5',
+                       help='duty default: 0.5')
+    parser.add_argument('--top', metavar='t', dest='top',
+                       type=int, default=10,
                        help='ranking default: 10')
     args = parser.parse_args()
     return args
@@ -125,10 +115,10 @@ def view_tf(tf, top=-1):
 if __name__ == '__main__':
     args = parse_args()
 
-    c = EngineerNumber(args.c_str)
-    Hz = EngineerNumber(args.Hz)
-#   tf = look_for_optimized_Hz(Hz, c)
-    tf = look_for_optimized_duty(Hz, c)
+    parameters = brute_force_LMC555("E12", "E6")
+
+    tf = look_for_optimized_Hz(parameters, EngineerNumber(args.Hz))
+#   tf = look_for_optimized_duty(parameters, EngineerNumber(args.duty))
 
   # print('len(tf)=', len(tf))
   # print()
