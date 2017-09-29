@@ -90,5 +90,12 @@ class TestEngineerNumberUtil(unittest.TestCase):
         self.assertIsNone(close_e_series(r0_9, "down", "E12"))
         self.assertIsNone(close_e_series(M101, "up", "E12"))
 
+    def test_close_e_series_at_limit(self):
+        r0_9 = EngineerNumber(0.9, ONE)
+        M101 = EngineerNumber(10.1, MEGA)
+
+        self.assertEqual(EngineerNumber(1), close_e_series(r0_9, "up", "E12"))
+        self.assertEqual(EngineerNumber("10M"), close_e_series(M101, "down", "E12"))
+
 if __name__ == '__main__':
     unittest.main()
