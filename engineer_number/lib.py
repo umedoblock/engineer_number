@@ -18,12 +18,19 @@ def make_all_combinations(e_series_name, exponent10s):
 def close_e_series(value, to, e_series_name, tolerance_error=-1.0):
     resistors = get_resistors(e_series_name)
     index = bisect.bisect(resistors, value)
+#   print("resistors[index-1]={}".format(resistors[index-1]))
+#   print("resistors[index]={}".format(resistors[index]))
+#   print("resistors[index+1]={}".format(resistors[index+1]))
+
     if to == "up":
         # value is up
         if index >= len(resistors):
           return None
           # raise ValueError("cannot choise greater than {}.".format(resistors[index]))
-        candidate = resistors[index]
+        if value == resistors[index-1]:
+            candidate = resistors[index-1]
+        else:
+            candidate = resistors[index]
     elif to == "down":
         # value is down
         if index == 0:

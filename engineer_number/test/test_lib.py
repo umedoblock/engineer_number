@@ -58,6 +58,14 @@ class TestEngineerNumberUtil(unittest.TestCase):
 
         self.assertEqual(expected, resistors_)
 
+    def test_close_e_series_eq_up(self):
+        k15 = EngineerNumber(15, 3)
+        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "up", "E24"))
+
+    def test_close_e_series_eq_down(self):
+        k15 = EngineerNumber(15, 3)
+        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "down", "E24"))
+
     def test_close_e_series_same_exponent(self):
         k47 = EngineerNumber(47, 3)
         k50 = EngineerNumber(50, 3)
