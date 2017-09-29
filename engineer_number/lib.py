@@ -49,36 +49,35 @@ def close_e_series(value, to, e_series_name, tolerance_error=-1.0):
         return None
 
 _resistors = {}
-def _make_resistors():
-    if _resistors:
-        return _resistors
+def _make_resistors(e_series_name):
+    if hasattr(_resistors, e_series_name):
+        return _resistor[e_series_name]
     # exponent10s must be asc order.
     exponent10s_ = range(ONE, MEGA + 1)
-    for e_series_name in E_SERIES_VALUES.keys():
-        _resistors[e_series_name] = \
-            make_all_combinations(e_series_name, exponent10s_)
-        _resistors[e_series_name].append(EngineerNumber("10M"))
+    _resistors[e_series_name] = \
+        make_all_combinations(e_series_name, exponent10s_)
+    _resistors[e_series_name].append(EngineerNumber("10M"))
+
     return _resistors
 
 def get_resistors(e_series_name):
-    if not _resistors:
-        _make_resistors()
+    if not hasattr(_resistors, e_series_name):
+        _make_resistors(e_series_name)
 
     return _resistors[e_series_name]
 
 _capacitors = {}
-def _make_capacitors():
-    if _capacitors:
-        return _capacitors
-    exponent10s_ = range(PICO, MICRO + 1)
+def _make_capacitors(e_series_name):
+    if hasattr(_capacitors, e_series_name):
+        return _capacitors[e_series_name]
+    exponent10s_ = range(PICO, PICO + 1)
     # Max capacitance is 6.8 uF in e_series_name="E6"
-    for e_series_name in E_SERIES_VALUES.keys():
-        _capacitors[e_series_name] = \
-            make_all_combinations(e_series_name, exponent10s_)
+    _capacitors[e_series_name] = \
+        make_all_combinations(e_series_name, exponent10s_)
     return _capacitors
 
 def get_capacitors(e_series_name):
-    if not _capacitors:
-        _make_capacitors()
+    if not hasattr(_capacitors, e_series_name):
+        _make_capacitors(e_series_name)
 
     return _capacitors[e_series_name]
