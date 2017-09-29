@@ -65,3 +65,20 @@ def get_resistors(e_series_name):
         _make_resistors()
 
     return _resistors[e_series_name]
+
+_capacitors = {}
+def _make_capacitors():
+    if _capacitors:
+        return _capacitors
+    # exponent10s must be asc order.
+    exponent10s_ = range(PICO, MILLI + 1)
+    for e_series_name in E_SERIES_VALUES.keys():
+        _capacitors[e_series_name] = \
+            make_all_combinations(e_series_name, exponent10s_)
+    return _capacitors
+
+def get_capacitors(e_series_name):
+    if not _capacitors:
+        _make_capacitors()
+
+    return _capacitors[e_series_name]
