@@ -11,62 +11,64 @@
 5. 抵抗のカラーコードが、黄紫赤金で、数字にすると472xだから、、、
    47 * (10 ** 2) でえっと、、、
 
-ええーい、ややこしいんじゃーいっ！
+ええーい、ややこしい！
 
 などなど、工学的な数値計算にお悩みのあなた。
 そこで、EngineerNumber class の出番です。
-簡単に計算しちゃいましょう。
+簡単に計算しましょう。
 
 0.
 >>> from engineer_number import EngineerNumber
+>>> from engineer_number import EngineerNumber as ENM # stands for
 
 1.
->>> nano470 = EngineerNumber('470n')
+>>> nano470 = EngineerNumber("470n")
 >>> nano470
-470.000n
->>> nano470['u']
+EngineerNumber("470.000n")
+>>> nano470["u"]
 '0.470u'
 
 2.
->>> c104 = EngineerNumber('10p') * 10 ** 4
->>> c104 = EngineerNumber('10p', 4) # equal to above line
->>> c104['u']
+>>> c104 = EngineerNumber("10p") * 10 ** 4
+>>> c104 = EngineerNumber("10p", 4) # equal to above line
+>>> c104
+EngineerNumber("100.000n")
+>>> c104["u"]
 '0.100u'
->>> c104['n']
+>>> c104["n"]
 '100.000n'
 
 3.
 >>> G1 = EngineerNumber('1G')
 >>> M103 = EngineerNumber('103M')
 >>> G1 / M103
-9.709
+EngineerNumber("9.709")
 
 4.
 >>> Vcc = 5
->>> k47 = EngineerNumber('47k')
+>>> k47 = EngineerNumber("47k")
 >>> Ibeo = Vcc / k47
 >>> Ibeo
-106.383u
->>> Ibeo['m']
+EngineerNumber("106.383u")
+>>> Ibeo["m"]
 '0.106m'
 >>> Iceo = Ibeo * 140
->>> Iceo['m']
+>>> Iceo["m"]
 '14.894m'
 >>> Io = Ibeo + Iceo
 >>> Io
-15.000m
->>> Io['']
+EngineerNumber("15.000m")
+>>> Io[""]
 '0.015'
 
 5.
->>> kx = EngineerNumber('47', 2)
+>>> kx = EngineerNumber("47", 2)
 >>> kx
-4.700k
->>> kx['']
+EngineerNumber("4.700k")
+>>> kx[""]
 '4700.000'
 
-ほーら？どうです？
-EngineerNumber() 使いたくなっちゃった〜♪
+このように，計算がとても楽になります。
 
 how to make pot file.
 $ pygettext.py -d engineer_number \
