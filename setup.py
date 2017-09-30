@@ -14,7 +14,7 @@ setup(
                         'locale/engineer_number.*.po',
                         'locale/*/LC_MESSAGES/engineer_number.mo'
                    ]},
-    author='梅どぶろく(umedoblock)',
+    author='梅濁酒(umedoblock)',
     author_email='umedoblock@gmail.com',
     url='http://pypi.python.org/pypi/engineer_number/',
     download_url='',
