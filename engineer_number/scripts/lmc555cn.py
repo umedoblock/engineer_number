@@ -26,7 +26,7 @@ class LMC555(object):
         self.dutyL = self.tL / self.t
         self.dutyH = 1 - self.dutyL
 
-def lmc555(Ra, Rb, C=EngineerNumber('0.1u')):
+def lmc555(Ra, Rb, C=EngineerNumber("0.1u")):
     tL = CONST * Rb * C
     tH = tL + CONST * Ra * C
     t = tL + tH
@@ -55,9 +55,9 @@ def brute_force_LMC555(resistor_esn, capacitor_esn):
     Rs = get_resistors(resistor_esn)
     Cs = get_capacitors(capacitor_esn)
     len_combination = len(Rs) ** 2 * len(Cs)
-    print('len(Rs) ** 2 =', len(Rs) ** 2)
-    print('len(Cs) =', len(Cs))
-    print('len_combination =', len_combination)
+    print("len(Rs) ** 2 =", len(Rs) ** 2)
+    print("len(Cs) =", len(Cs))
+    print("len_combination =", len_combination)
 
     tf = [None] * len_combination
     i = 0
@@ -90,17 +90,17 @@ def look_for_optimized_Hz(parameters, Hz):
     return parameters
 
 def parse_args():
-    parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
+    parser = argparse.ArgumentParser(description=_("look for optimized Hz."))
 
-    parser.add_argument('--Hz', metavar='f', dest='Hz',
+    parser.add_argument("--Hz", metavar="f", dest="Hz",
                        default=1000,
-                       help='frequency default: 1000')
-    parser.add_argument('--duty', metavar='d', dest='duty',
-                       type=float, default='0.5',
-                       help='duty default: 0.5')
-    parser.add_argument('--top', metavar='t', dest='top',
+                       help="frequency default: 1000")
+    parser.add_argument("--duty", metavar="d", dest="duty",
+                       type=float, default="0.5",
+                       help="duty default: 0.5")
+    parser.add_argument("--top", metavar="t", dest="top",
                        type=int, default=10,
-                       help='ranking default: 10')
+                       help="ranking default: 10")
     args = parser.parse_args()
     return args
 
@@ -112,7 +112,7 @@ def view_tf(tf, top=-1):
         tup = (getattr(lmc555, name) for name in NAMES)
         print(fmt.format(*tup))
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = parse_args()
 
     parameters = brute_force_LMC555("E12", "E6")
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     tf = look_for_optimized_Hz(parameters, EngineerNumber(args.Hz))
 #   tf = look_for_optimized_duty(parameters, EngineerNumber(args.duty))
 
-  # print('len(tf)=', len(tf))
+  # print("len(tf)=", len(tf))
   # print()
     top = args.top
     view_tf(tf, top)

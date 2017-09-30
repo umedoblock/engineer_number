@@ -154,30 +154,30 @@ def view_apmlifiered(gained, top=-1):
         print(fmt.format(*tup))
 
 def parse_args():
-    parser = argparse.ArgumentParser(description=_('look for optimized Hz.'))
+    parser = argparse.ArgumentParser(description=_("look for optimized Hz."))
 
-    parser.add_argument('--gain', metavar='N', dest='gain',
-                       type=float, nargs='?', default=5,
-                       help='gain default: 5')
-    parser.add_argument('--Vcc', metavar='N', dest='Vcc',
-                       type=float, nargs='?', default=5.0,
-                       help='Vcc default: 5.0')
-    parser.add_argument('--ic', metavar='N', dest='ic',
-                       nargs='?', default=EngineerNumber("0.8m"),
-                       help='collect i default: 0.8m')
+    parser.add_argument("--gain", metavar="N", dest="gain",
+                       type=float, nargs="?", default=5,
+                       help="gain default: 5")
+    parser.add_argument("--Vcc", metavar="N", dest="Vcc",
+                       type=float, nargs="?", default=5.0,
+                       help="Vcc default: 5.0")
+    parser.add_argument("--ic", metavar="N", dest="ic",
+                       nargs="?", default=EngineerNumber("0.8m"),
+                       help="collect i default: 0.8m")
     parser.add_argument("--e_series", metavar="N", dest="e_series",
                        nargs="?", default="E12",
                        help="e_series default: E12")
-    parser.add_argument('--hfe', metavar='N', dest='hfe',
-                       type=int, nargs='?', default=200,
-                       help='hfe default: 200')
-    parser.add_argument('--top', metavar='N', dest='top',
-                       type=int, nargs='?', default=10,
-                       help='ranking default: 10')
+    parser.add_argument("--hfe", metavar="N", dest="hfe",
+                       type=int, nargs="?", default=200,
+                       help="hfe default: 200")
+    parser.add_argument("--top", metavar="N", dest="top",
+                       type=int, nargs="?", default=10,
+                       help="ranking default: 10")
     args = parser.parse_args()
     return args
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = parse_args()
 
     ic = EngineerNumber(args.ic)

@@ -4,7 +4,7 @@ from . import EngineerNumber
 from engineer_number.constants import *
 
 def make_all_combinations(e_series_name, exponent10s):
-    if e_series_name in ("E6", 'E12', "E24"):
+    if e_series_name in ("E6", "E12", "E24"):
         adjust = 0
     else:
         adjust = 1

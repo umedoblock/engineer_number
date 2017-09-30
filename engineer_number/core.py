@@ -160,9 +160,13 @@ class EngineerNumber(numbers.Real):
           # message = \
           #     ("SI prefix symbol must be in "
           #      "{}".format(tuple(d_SYMBOL_EXPONENT)))
+            tup = tuple(d_SYMBOL_EXPONENT)
+            fmt = ", ".join(['"{}"'] * len(tup))
+            fmt = "({})".format(fmt)
+            symbols = fmt.format(*tup)
             message = \
                _("SI 接頭辞の記号は、次のいずれかでなければなりません。"
-                 "{}").format(tuple(d_SYMBOL_EXPONENT))
+                 "{}").format(symbols)
             raise KeyError(message)
         return exponent10
 
