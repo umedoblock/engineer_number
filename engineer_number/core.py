@@ -25,7 +25,7 @@ class EngineerNumber(numbers.Real):
     10 kilo の値を得る方法です。
     >>> r1 = EngineerNumber("10k")       # No.1
     >>> r1
-    10.000k
+    EngineerNumber("10.000k")
 
     10 kilo を Mega で計算し、SI 接頭辞変換を行います。
     >>> r1["M"]
