@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import math, numbers, warnings
+import math, numbers, warnings, re
 
 from .constants import *
 
@@ -109,7 +109,11 @@ class EngineerNumber(numbers.Real):
     ("G", GIGA),
     ("M", MEGA),
     ("k", KILO),
+    ("h", HECTO),
+    ("da", DECA),
      ("", ONE),
+    ("d", DECI),
+    ("c", CENTI),
     ("m", MILLI),
     ("u", MICRO),
     ("n", NANO),
@@ -130,9 +134,11 @@ class EngineerNumber(numbers.Real):
     @classmethod
     def _parse_string(cls, ss):
         "有効数字の数値と 10 の乗数値を、tuple に詰めて返します。"
-        if ss[-1].isalpha():
-            si = ss[-1]
+        parts = re.findall(r'([0-9]*\.?[0-9]+|[a-zA-Z]+)', ss)
+        if len(parts) > 1:
+            numerical_part, si = parts
         else:
+            numerical_part = parts[0]
             si = ""
         if si == "K":
           # message = ("cannot accept "K" as SI prefix symbol. "
@@ -147,7 +153,7 @@ class EngineerNumber(numbers.Real):
                        '単位記号だからです。')
             raise KeyError(message)
 
-        value = float(ss.replace(si, ""))
+        value = float(numerical_part)
       # print("si =", si, "value =", value)
         exponent10 = cls._si2exponent10(si)
 

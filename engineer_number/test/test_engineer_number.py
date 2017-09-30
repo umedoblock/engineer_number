@@ -230,9 +230,9 @@ class TestEngineerNumber(unittest.TestCase):
         expected_header_ja = \
             "SI 接頭辞の記号は、次のいずれかでなければなりません。("
         symbols = (\
-             "'Y', 'Z', 'E', 'P', 'T', 'G', 'M', 'k', "
+             "'Y', 'Z', 'E', 'P', 'T', 'G', 'M', 'k', 'h', 'da', "
              "'', "
-             "'m', 'u', 'n', 'p', 'f', 'a', 'z', 'y')"
+             "'d', 'c', 'm', 'u', 'n', 'p', 'f', 'a', 'z', 'y')"
         )
         expected_message = \
             expected_header_en + symbols
@@ -325,6 +325,22 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual('1.535m', str(m1534567))
         self.assertEqual('1534.567u', m1534567._force('u'))
         self.assertEqual('1534.567u', m1534567['u'])
+
+    def test_si_units(self):
+        # base
+        one_meter = EngineerNumber('1')
+        one_deca = EngineerNumber('1da')
+        one_hecto_pascal = EngineerNumber('1h')
+
+        one_little = EngineerNumber('1')
+        one_deci_little = EngineerNumber('1d')
+        one_centi_meter = EngineerNumber('1c')
+
+        self.assertEqual(one_meter, 100 * one_centi_meter)
+        self.assertEqual(one_little, 10 * one_deci_little)
+
+        self.assertEqual(EngineerNumber("0.1k"), one_hecto_pascal)
+        self.assertEqual(1, one_deca / 10)
 
     def test_error_and_warning(self):
         self.assertRaises(IndexError, EngineerNumber, '')
