@@ -9,20 +9,7 @@ gettext.install("engineer_number", "")
 
 class EngineerNumber(numbers.Real):
     """EngineerNumber class は、SI接頭辞の変換・異なるSI接頭辞同士の
-    計算を容易にします。使用可能なSI接頭辞は、最後に説明します。
-
-    EngineerNumber instance(インスタンス) に対し、
-    任意のSI接頭辞を KEY にすることで、
-    任意のSI接頭辞に換算した値を知ることが出来ます。
-    SI 接頭辞変換結果として返される文字列を EngineerNumber() に渡し、
-    新たな EngineerNumber instance を生成出来ます。
-
-    EngineerNumber.num 属性は、数値型 object です。
-    EngineerNumber class に、__add__() 等の method を定義し、
-    演算の対象を EngineerNumber.num とすることで、
-    EngineerNumber instance は、数値型 object 互換になっています。
-    数値型 object 互換にする方法は、
-    PEP 3141, numbers class 等をご覧下さい。
+    計算を容易にします。
 
     以下、使うための手順を簡単に紹介します。
     >>> from engineer_number import EngineerNumber
@@ -45,10 +32,12 @@ class EngineerNumber(numbers.Real):
     "0.010M"
 
     No.2: 有効値と、SI 接頭辞名で 10 kilo の値を得る方法です。
+    >>> r2 = EngineerNumber("10k")       # No.3
+    >>> r2 = EngineerNumber(10, 3)       # No.3
     >>> r2 = EngineerNumber(10, KILO)    # No.2
     >>> r2 = EngineerNumber("10", KILO)  # No.2
     >>> r2
-    10.000k
+    EngineerNumber("10.000k")
 
     10 kilo に SI 接頭辞変換を行い、数値に変換します。
     10 の乗数が 0 の場合、
@@ -58,10 +47,9 @@ class EngineerNumber(numbers.Real):
 
     No.3: 有効値と 10 の乗数で 10 kilo の値を得る方法です。
     抵抗のカラーコードから抵抗値を求める事を想定しています。
-    >>> r3 = EngineerNumber(10, 3)       # No.3
     >>> r3 = EngineerNumber("10", 3)     # No.3
     >>> r3
-    10.000k
+    EngineerNumber("10.000k")
 
     10 kilo を kilo で計算する、なんちゃって SI 接頭辞変換を行います。
     自分でも必要ないとは思うんですけれど、流れ上、書きました。
@@ -75,7 +63,7 @@ class EngineerNumber(numbers.Real):
     No.4: コンデンサの表示 "104" から容量値を求めます。
     >>> c4 = EngineerNumber("10p", 4)    # No.4
     >>> c4
-    100.000n
+    EngineerNumber("100.000n")
 
     マイクロ・ナノ・ピコを計算する時など、
     よく頭がこんがらがりますよね。
@@ -85,10 +73,7 @@ class EngineerNumber(numbers.Real):
     No.5: コンデンサの表示 "202" から容量値を求めます。
     >>> c5 = EngineerNumber("20p", 2)    # No.5
     >>> c5
-    2.000n
-
-    マイクロ・ナノ・ピコを計算する時など、
-    よく頭がこんがらがりますよね。
+    EngineerNumber("2.000n")
     >>> c5["p"]
     "2000.000p"
 
@@ -99,6 +84,13 @@ class EngineerNumber(numbers.Real):
     本当に便利だなー。と自分でも思いました
 
     使用例を、もう少し知りたい方は "README.txt" をご覧下さい。
+
+    EngineerNumber.num 属性は、数値型 object です。
+    EngineerNumber class に、__add__() 等の method を定義し、
+    演算の対象を EngineerNumber.num とすることで、
+    EngineerNumber instance は、数値型 object 互換になっています。
+    数値型 object 互換にする方法は、
+    PEP 3141, numbers class 等をご覧下さい。
 
     SI 接頭辞として用意しているのは、以下の通りです。
     ("Y", YOTTA),
@@ -280,10 +272,6 @@ class EngineerNumber(numbers.Real):
 
     def _detail(self):
         """主に debug 用。
-        本当は非公開にしたかったが、公開としてしまった為、
-        今更、非公開に出来なくて困っている。
-        出来ることなら、今からでも非公開にしたい。。。
-
         github への移行を期に，非公開とした。"""
         print(self)
         print("        num =", self.num)
