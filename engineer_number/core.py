@@ -255,10 +255,10 @@ class EngineerNumber(numbers.Real):
         exponent *= sign_exponent
         exponent10 = div * GROUP_OF_DIGITS
         factor = 10 ** exponent10
-        value = num / factor
-        value *= sign_num
+        _num = num / factor
+        _num *= sign_num
 
-        self._num = value
+        self._num = _num
         self._exponent10 = exponent10
         return self
 
