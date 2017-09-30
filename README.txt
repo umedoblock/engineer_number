@@ -1,3 +1,7 @@
+This software is released under the MIT License, see LICENSE.txt.
+（このソフトウェアは、MITライセンスのもとで公開されています。
+  LICENSE.txt or LICENSE.ja.txt をご覧下さい。）
+
 本 module では、工学的な数値の計算を容易に行うことを目的としています。
 例えば、 以下のような場合に役に立ちます。
 
