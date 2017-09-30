@@ -6,7 +6,7 @@ setup(
     name='engineer_number',
     packages=
         ['engineer_number', 'engineer_number.test', 'engineer_number.scripts'],
-    version='1.0.4',
+    version='1.0.5',
     description='Engineer Number calculate',
     package_dir={'engineer_number': 'engineer_number'},
     package_data={'engineer_number': [
@@ -19,10 +19,8 @@ setup(
     url='http://pypi.python.org/pypi/engineer_number/',
     download_url='',
     keywords=['engineer', 'SI'],
-    license='BSD License',
+    license='MIT License',
     platforms=['unix', 'linux', 'osx', 'cygwin', 'win32'],
-    # see
-    # http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers = [
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
@@ -38,8 +36,10 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     options = {
-        'sdist': {                                                                          'formats': ['gztar','zip'],
-            'force_manifest': True,                                                     },
+        'sdist': {
+            'formats': ['gztar','zip'],
+            'force_manifest': True,
+        },
     },
 
     long_description = '''\
@@ -57,48 +57,50 @@ setup(
 | >>> from engineer_number import EngineerNumber
 | 
 | 1.
-| >>> nano470 = EngineerNumber('470n')
+| >>> nano470 = EngineerNumber("470n")
 | >>> nano470
-| 470.000n
-| >>> nano470['u']
+| EngineerNumber("470.000n")
+| >>> nano470["u"]
 | '0.470u'
 | 
 | 2.
-| >>> c104 = EngineerNumber('10p') * 10 ** 4
-| >>> c104 = EngineerNumber('10p', 4) # equal to above line
-| >>> c104['u']
+| >>> c104 = EngineerNumber("10p") * 10 ** 4
+| >>> c104 = EngineerNumber("10p", 4) # equal to above line
+| >>> c104
+| EngineerNumber("0.100u")
+| >>> c104["u"]
 | '0.100u'
-| >>> c104['n']
+| >>> c104["n"]
 | '100.000n'
 | 
 | 3.
-| >>> G1 = EngineerNumber('1G')
-| >>> M103 = EngineerNumber('103M')
+| >>> G1 = EngineerNumber("1G")
+| >>> M103 = EngineerNumber("103M")
 | >>> G1 / M103
-| 9.709
+| '9.709'
 | 
 | 4.
 | >>> Vcc = 5
-| >>> k47 = EngineerNumber('47k')
+| >>> k47 = EngineerNumber("47k")
 | >>> Ibeo = Vcc / k47
 | >>> Ibeo
-| 106.383u
-| >>> Ibeo['m']
+| EngineerNumber("106.383u")
+| >>> Ibeo["m"]
 | '0.106m'
 | >>> Iceo = Ibeo * 140
-| >>> Iceo['m']
+| >>> Iceo["m"]
 | '14.894m'
 | >>> Io = Ibeo + Iceo
 | >>> Io
-| 15.000m
-| >>> Io['']
+| EngineerNumber("15.000m")
+| >>> Io[""]
 | '0.015'
 | 
 | 5.
-| >>> kx = EngineerNumber('47', 2)
+| >>> kx = EngineerNumber("47", 2)
 | >>> kx
-| 4.700k
-| >>> kx['']
+| EngineerNumber("4.700k")
+| >>> kx[""]
 | '4700.000'
 ''',
      )
