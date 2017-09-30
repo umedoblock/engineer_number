@@ -22,6 +22,10 @@ def decide_languages_order(hope=[]):
 
     return languages
 
+# LANG=en_US.UTF-8
+# LANGUAGE=en_US:en
+# echo ${LANG}
+# echo ${LANGUAGE}
 print(get_default_languages())
 print(decide_languages_order())
 print(decide_languages_order(hope=['lower-important', 'higher-important']))
