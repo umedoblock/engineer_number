@@ -304,6 +304,11 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual("121.488p", str(EngineerNumber(121.488, PICO)))
         self.assertEqual("121.488p", str(EngineerNumber(0.121488, NANO)))
 
+    def test_num_dived_by_enm(self):
+        self.assertIsInstance(math.sqrt(EngineerNumber("150p")), float)
+        self.assertIsInstance(2 * math.pi * math.sqrt(EngineerNumber("150p")), float)
+        self.assertIsInstance(EngineerNumber(1) / (2 * math.pi * math.sqrt(EngineerNumber("150p") * EngineerNumber("600u"))), EngineerNumber)
+
     def test_equal_different_value_and_factor(self):
         self.assertEqual(EngineerNumber(121.484, KILO), EngineerNumber(0.121484, MEGA))
         self.assertEqual(EngineerNumber(121.484, MILLI), EngineerNumber(0.121484, ONE))
