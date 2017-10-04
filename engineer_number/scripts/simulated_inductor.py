@@ -76,20 +76,7 @@ if __name__ == "__main__":
     args = parse_args()
 
     e_series = args.e_series
-#   le = args.le
     c2 = ENM(args.c)
-# # c2, r1, r3, r5, r4 = ENM("0.1u"), ENM("1k"), ENM("10k"), ENM("10k"), ENM("1k")
-# # le = c2 * (r1 * r3 * r5) / r4
-# # print("le =", le)
-  # c2 = ENM("0.1u")
-  # le = ENM("530u")
-# # 530u = 0.1u * (r1 * r3 * r5) / r4
-# # 530u / 0.u = (r1 * r3 * r5) / r4
-  # x = ENM("530u") / c2
-
-# r1 * r3 * r5 / r4 =
-# >>> ENM("530u") / ENM("0.1u")
-# EngineerNumber("5.300k")
 
     parameters = brute_force_to_look_for_rc(c2, "E12", "E6", ORDERS_KILO, ORDERS_NANO)
     parameters.sort(key=lambda parameter: math.fabs(args.le - parameter.le))
