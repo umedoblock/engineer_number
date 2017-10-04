@@ -5,7 +5,8 @@
 # This software is released under the MIT License.
 # https://github.com/umedoblock/engineer_number
 
-import math, argparse, itertools
+import math, argparse
+from itertools import *
 
 import lib
 lib.init_engineer_number()
@@ -21,20 +22,24 @@ class SimlatedInductor(object):
         for key, value in kwds.items():
             setattr(self, key, value)
 
-def brute_force_to_look_for_resistors(c2, e_series_name="E12", orders=ORDERS_RESISTOR):
-    resistors = get_resistors(e_series_name, orders)
-    r_combinations_with_replacement = list(itertools.combinations_with_replacement(resistors, 3))
-    parameters = [None] * (len(r_combinations_with_replacement) * len(resistors))
+def brute_force_to_look_for_rc(c2=None, e_series_resistors="E12", e_series_capacitors="E6", orders_resistor=ORDERS_RESISTOR, orders_capacitor=ORDERS_CAPASITOR):
+    resistors = get_resistors(e_series_resistors, orders_resistor)
+    if not c2:
+        capacitors = get_capacitors(e_series_capacitors, orders_capacitor)
+    else:
+        capacitors = (c2,)
+    r_combinations_with_replacement = list(combinations_with_replacement(resistors, 3))
+    parameters = [None] * (len(r_combinations_with_replacement) * len(resistors) * len(capacitors))
 
     i = 0
-    for r4 in resistors:
+    for c2, r4 in product(capacitors, resistors):
         for r5, r3, r1 in r_combinations_with_replacement:
             le = c2 * (r1 * r3 * r5) / r4
             kwds = {}
             for name in NAMES:
                 kwds[name] = locals()[name]
             si = SimlatedInductor(**kwds)
-#           print("i =", i)
+    #       print("i =", i)
             parameters[i] = si
             i += 1
 
@@ -86,8 +91,7 @@ if __name__ == "__main__":
 # >>> ENM("530u") / ENM("0.1u")
 # EngineerNumber("5.300k")
 
-    parameters = brute_force_to_look_for_resistors(c2, "E12", ORDERS_KILO)
-  # parameters = brute_force_to_look_for_resistors(c2, "E12", ORDERS_RESISTOR)
+    parameters = brute_force_to_look_for_rc(c2, "E12", "E6", ORDERS_KILO, ORDERS_NANO)
     parameters.sort(key=lambda parameter: math.fabs(args.le - parameter.le))
 
     view_parameters(parameters, args.top)
