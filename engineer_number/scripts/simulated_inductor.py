@@ -21,8 +21,8 @@ class SimlatedInductor(object):
         for key, value in kwds.items():
             setattr(self, key, value)
 
-def brute_force_to_look_for_resistors(c2, e_series_name="E12", exponent10s=(range(KILO, MEGA+1))):
-    resistors = get_resistors(e_series_name, exponent10s)
+def brute_force_to_look_for_resistors(c2, e_series_name="E12", orders=ORDERS_RESISTOR):
+    resistors = get_resistors(e_series_name, orders)
     r_combinations_with_replacement = list(itertools.combinations_with_replacement(resistors, 3))
     parameters = [None] * (len(r_combinations_with_replacement) * len(resistors))
 
@@ -86,8 +86,8 @@ if __name__ == "__main__":
 # >>> ENM("530u") / ENM("0.1u")
 # EngineerNumber("5.300k")
 
-    parameters = brute_force_to_look_for_resistors(c2, "E12", RANGE_KILO)
-  # parameters = brute_force_to_look_for_resistors(c2, "E12", RANGE_RESISTORS)
+    parameters = brute_force_to_look_for_resistors(c2, "E12", ORDERS_KILO)
+  # parameters = brute_force_to_look_for_resistors(c2, "E12", ORDERS_RESISTOR)
     parameters.sort(key=lambda parameter: math.fabs(args.le - parameter.le))
 
     view_parameters(parameters, args.top)
