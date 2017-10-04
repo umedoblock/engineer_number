@@ -59,7 +59,7 @@ def view_parameters(parameters, top=-1):
         print(fmt.format(*tup))
 
 def parse_args():
-    parser = argparse.ArgumentParser(description=_("look for simulated inductor."))
+    parser = argparse.ArgumentParser(description=_("look for capacitance multiplier."))
 
     parser.add_argument("--ce", metavar="N", dest="ce",
                        default=EngineerNumber("0.1u"),
