@@ -57,7 +57,7 @@ def check_Hz_in_range(r_min, r_max, c):
 # esn means e_series_name
 def brute_force_LMC555(resistor_e_sesires, capacitor_e_sesires):
     resistors = get_resistors(resistor_e_sesires, ORDERS_RESISTOR)
-    capacitors = get_capacitors(capacitor_e_sesires, ORDERS_CAPASITOR)
+    capacitors = get_capacitors(capacitor_e_sesires, ORDERS_CAPACITOR)
 
     combi_rbra = tuple(product(resistors, resistors))
     len_combinations = len(combi_rbra) * len(capacitors)

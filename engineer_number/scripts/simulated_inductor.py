@@ -22,7 +22,7 @@ class SimlatedInductor(object):
         for key, value in kwds.items():
             setattr(self, key, value)
 
-def brute_force_to_look_for_rc(c2=None, e_series_resistors="E12", e_series_capacitors="E6", orders_resistor=ORDERS_RESISTOR, orders_capacitor=ORDERS_CAPASITOR):
+def brute_force_to_look_for_rc(c2=None, e_series_resistors="E12", e_series_capacitors="E6", orders_resistor=ORDERS_RESISTOR, orders_capacitor=ORDERS_CAPACITOR):
     resistors = get_resistors(e_series_resistors, orders_resistor)
     if not c2:
         capacitors = get_capacitors(e_series_capacitors, orders_capacitor)
