@@ -58,11 +58,12 @@ def parse_args():
 
     parser.add_argument("--c", metavar="N", dest="c",
                        default=ENM("0.1u"),
+                       type=ENM,
                        help='capasitance default: ENM("0.1u")')
     parser.add_argument("--le", metavar="N", dest="le",
                        default=ENM("530u"),
                        type=ENM,
-                       help='Henly default: ENM("530u"')
+                       help='Henly default: ENM("530u")')
     parser.add_argument("--e_series", metavar="N", dest="e_series",
                        nargs="?", default="E12",
                        help="e_series default: E12")
@@ -76,7 +77,7 @@ if __name__ == "__main__":
     args = parse_args()
 
     e_series = args.e_series
-    c2 = ENM(args.c)
+    c2 = args.c
 
     parameters = brute_force_to_look_for_rc(c2, "E12", "E6", ORDERS_KILO, ORDERS_NANO)
     parameters.sort(key=lambda parameter: math.fabs(args.le - parameter.le))
