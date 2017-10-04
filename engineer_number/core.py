@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from decimal import Decimal, getcontext
 import math, numbers, warnings, re
 
 from .constants import *
@@ -193,8 +194,8 @@ class EngineerNumber(numbers.Real):
         更なる情報は、少しだけ、"README.txt" に書いています。
         """
         if isinstance(value, str):
-            value, parsed_exponent10 = EngineerNumber._parse_string(value)
-            exponent10 += parsed_exponent10
+            value, adjust_exponent10 = EngineerNumber._parse_string(value)
+            exponent10 += adjust_exponent10
         # value is None
         if value is None:
             print("value={}, exponent10={}".format(value, exponent10))
