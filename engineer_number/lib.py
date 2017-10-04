@@ -65,13 +65,12 @@ def get_resistors(e_series_name, orders):
     return _resistors[e_series_name]
 
 _capacitors = {}
-def _make_capacitors(e_series_name):
+def _make_capacitors(e_series_name, orders):
     if hasattr(_capacitors, e_series_name):
         return _capacitors[e_series_name]
-    orders_ = range(PICO, PICO + 1)
-    # Max capacitance is 6.8 uF in e_series_name="E6"
+
     _capacitors[e_series_name] = \
-        make_all_combinations(e_series_name, orders_)
+        make_all_combinations(e_series_name, orders)
     return _capacitors
 
 def get_capacitors(e_series_name, orders):
