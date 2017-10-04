@@ -49,20 +49,20 @@ def close_e_series(value, to, e_series_name, tolerance_error=-1.0):
         return None
 
 _resistors = {}
-def _make_resistors(e_series_name):
+def _make_resistors(e_series_name, exponent10s):
     if hasattr(_resistors, e_series_name):
         return _resistor[e_series_name]
     # exponent10s must be asc order.
-    exponent10s_ = range(ONE, MEGA + 1)
     _resistors[e_series_name] = \
-        make_all_combinations(e_series_name, exponent10s_)
-    _resistors[e_series_name].append(EngineerNumber("10M"))
+        make_all_combinations(e_series_name, exponent10s)
+    if exponent10s[-1] == MEGA:
+        _resistors[e_series_name].append(EngineerNumber("10M"))
 
     return _resistors
 
-def get_resistors(e_series_name):
+def get_resistors(e_series_name, exponent10s):
     if not hasattr(_resistors, e_series_name):
-        _make_resistors(e_series_name)
+        _make_resistors(e_series_name, exponent10s)
 
     return _resistors[e_series_name]
 
@@ -76,8 +76,8 @@ def _make_capacitors(e_series_name):
         make_all_combinations(e_series_name, exponent10s_)
     return _capacitors
 
-def get_capacitors(e_series_name):
+def get_capacitors(e_series_name, exponent10s):
     if not hasattr(_capacitors, e_series_name):
-        _make_capacitors(e_series_name)
+        _make_capacitors(e_series_name, exponent10s)
 
     return _capacitors[e_series_name]

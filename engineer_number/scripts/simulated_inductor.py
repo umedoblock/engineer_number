@@ -86,9 +86,8 @@ if __name__ == "__main__":
 # >>> ENM("530u") / ENM("0.1u")
 # EngineerNumber("5.300k")
 
-    exponent10s = range(KILO, MEGA + 1)
-#   exponent10s = range(KILO, KILO + 1)
-    parameters = brute_force_to_look_for_resistors(c2, "E12", exponent10s)
+    parameters = brute_force_to_look_for_resistors(c2, "E12", RANGE_KILO)
+  # parameters = brute_force_to_look_for_resistors(c2, "E12", RANGE_RESISTORS)
     parameters.sort(key=lambda parameter: math.fabs(args.le - parameter.le))
 
     view_parameters(parameters, args.top)
