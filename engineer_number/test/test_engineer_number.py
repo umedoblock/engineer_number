@@ -513,7 +513,6 @@ class TestEngineerNumber(unittest.TestCase):
         k1100 = EngineerNumber("1.100k")
         k2000 = EngineerNumber("2.000k")
 
-
         self.assertTrue(k1000.in_tolerance_error(k1000, TOLERANCE_ERROR))
         self.assertTrue(k1000.in_tolerance_error(k1010, TOLERANCE_ERROR))
 
