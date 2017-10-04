@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     e_series = args.e_series
     if args.c3:
-        print("args.c3 =", args.c3.split())
+      # print("args.c3 =", args.c3.split())
         c3 = [EngineerNumber(c) for c in args.c3.split()]
     else:
         c3 = None
