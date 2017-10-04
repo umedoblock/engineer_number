@@ -12,7 +12,7 @@ lib.init_engineer_number()
 
 from engineer_number import EngineerNumber as ENM
 from engineer_number.constants import *
-from engineer_number.lib import get_resistors, close_e_series
+from engineer_number.lib import get_resistors, close_values
 
 NAMES = ("le", "r1", "c2", "r3", "r4", "r5")
 
