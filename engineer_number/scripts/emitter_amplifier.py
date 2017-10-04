@@ -68,8 +68,8 @@ def _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, resistors):
     eca = EmitterCommonAmp(**kwds)
     return eca
 
-def brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series):
-    resistors = get_resistors(e_series, ORDERS_RESISTOR)
+def brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series, orders=ORDERS_RESISTOR):
+    resistors = get_resistors(e_series, orders)
     combi_RcRe = tuple(combinations_with_replacement(resistors, 2))
     parameters = [None] * len(combi_RcRe)
   # print("len(resistors)={}".format(len(resistors)))
@@ -86,8 +86,8 @@ def brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series):
 
     return parameters[:i]
 
-def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12", orders=ORDERS_KILO):
-    resistors = get_resistors(e_series, ORDERS_RESISTOR)
+def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12", orders=ORDERS_RESISTOR):
+    resistors = get_resistors(e_series, orders)
 
     gain_ = gain
     parameters = []
@@ -199,8 +199,8 @@ if __name__ == "__main__":
     hfe = args.hfe
     e_series = args.e_series
 
-  # parameters = brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series)
-  # parameters.sort(key=lambda parameter: parameter.gain, reverse=True)
+    parameters = brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series)
+    parameters.sort(key=lambda parameter: parameter.gain, reverse=True)
   # parameters.sort(key=lambda parameter: abs(10 - parameter.gain))
   # parameters.sort(key=lambda parameter: parameter.Pce)
   # parameters.sort(key=lambda parameter: \
@@ -208,7 +208,7 @@ if __name__ == "__main__":
   # parameters.sort(key=lambda parameter: \
   #     math.fabs(EngineerNumber("100m") - parameter.Vc))
 
-    parameters = look_for_optimized_gain(gain, ic, Vcc, hfe, e_series)
+  # parameters = look_for_optimized_gain(gain, ic, Vcc, hfe, e_series)
 
     view_apmlifiered(parameters, top)
 

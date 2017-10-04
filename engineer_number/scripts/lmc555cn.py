@@ -123,7 +123,6 @@ def view_tf(tf, top=-1):
 if __name__ == "__main__":
     args = parse_args()
 
-    print("args.duty =", args.duty)
     parameters = brute_force_LMC555("E12", "E6")
 
 #   tf = look_for_optimized_Hz(parameters, EngineerNumber(args.Hz))
