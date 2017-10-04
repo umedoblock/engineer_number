@@ -222,12 +222,12 @@ class EngineerNumber(numbers.Real):
         """EngineerNumber.num の値から、_num, _exponent10 を正規化する。
         num, _num, _exponent10 の計算方法は、簡単に以下の通り。
 
-        _exponent10 = log10(num) // group_of_digits(=3)
+        _exponent10 = (log10(num) // GROUP_OF_DIGITS(=3)) * GROUP_OF_DIGITS
         _num = num // (10 ** _exponent10)
         num =(大体同じ、approximately equal to) _num * 10 ** _exponent10
 
         _exponent10 は SI 接頭辞と連動するため、
-        group_of_digits(=3) の整数倍になっていることに注意。"""
+        GROUP_OF_DIGITS(=3) の整数倍になっていることに注意。"""
 
         num = self.num
         while isinstance(num, EngineerNumber):
