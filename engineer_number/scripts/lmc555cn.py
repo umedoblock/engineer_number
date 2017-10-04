@@ -102,9 +102,10 @@ def parse_args():
 
     parser.add_argument("--Hz", metavar="f", dest="Hz",
                        default=1000,
+                       type=EngineerNumber,
                        help="frequency default: 1000")
     parser.add_argument("--duty", metavar="d", dest="duty",
-                       type=float, default="0.5",
+                       type=EngineerNumber, default="0.5",
                        help="duty default: 0.5")
     parser.add_argument("--top", metavar="t", dest="top",
                        type=int, default=10,
@@ -125,8 +126,8 @@ if __name__ == "__main__":
 
     parameters = brute_force_LMC555("E12", "E6")
 
-#   tf = look_for_optimized_Hz(parameters, EngineerNumber(args.Hz))
-    tf = look_for_optimized_duty(parameters, EngineerNumber(args.duty))
+    tf = look_for_optimized_Hz(parameters, EngineerNumber(args.Hz))
+#   tf = look_for_optimized_duty(parameters, EngineerNumber(args.duty))
 
   # print("len(tf)=", len(tf))
   # print()

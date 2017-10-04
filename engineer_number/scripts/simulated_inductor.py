@@ -11,7 +11,7 @@ from itertools import *
 import lib
 lib.init_engineer_number()
 
-from engineer_number import EngineerNumber as ENM
+from engineer_number import EngineerNumber
 from engineer_number.constants import *
 from engineer_number.lib import get_resistors, close_values
 
@@ -57,18 +57,18 @@ def parse_args():
     parser = argparse.ArgumentParser(description=_("look for simulated inductor."))
 
     parser.add_argument("--c", metavar="N", dest="c",
-                       default=ENM("0.1u"),
-                       type=ENM,
-                       help='capasitance default: ENM("0.1u")')
+                       default=EngineerNumber("0.1u"),
+                       type=EngineerNumber,
+                       help='capasitance default: EngineerNumber("0.1u")')
     parser.add_argument("--le", metavar="N", dest="le",
-                       default=ENM("530u"),
-                       type=ENM,
-                       help='Henly default: ENM("530u")')
+                       default=EngineerNumber("530u"),
+                       type=EngineerNumber,
+                       help='Henly default: EngineerNumber("530u")')
     parser.add_argument("--e_series", metavar="N", dest="e_series",
-                       nargs="?", default="E12",
+                       default="E12",
                        help="e_series default: E12")
     parser.add_argument("--top", metavar="N", dest="top",
-                       type=int, nargs="?", default=10,
+                       type=int, default=10,
                        help="ranking default: 10")
     args = parser.parse_args()
     return args
