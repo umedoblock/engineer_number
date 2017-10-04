@@ -40,7 +40,7 @@ class TestEngineerNumberUtil(unittest.TestCase):
         self.assertEqual(expected, tup_combs)
 
     def test_make_resistors(self):
-        resistors = get_resistors("E12")
+        resistors = get_resistors("E12", ORDERS_RESISTOR)
 
         resistors_ = tuple(str(x) for x in resistors)
         expected = (
@@ -67,42 +67,42 @@ class TestEngineerNumberUtil(unittest.TestCase):
 
     def test_close_e_series_eq_up(self):
         k15 = EngineerNumber(15, 3)
-        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "up", "E24"))
+        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "up", "E24", ORDERS_RESISTOR))
 
     def test_close_e_series_eq_down(self):
         k15 = EngineerNumber(15, 3)
-        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "down", "E24"))
+        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "down", "E24", ORDERS_RESISTOR))
 
     def test_close_e_series_same_exponent(self):
         k47 = EngineerNumber(47, 3)
         k50 = EngineerNumber(50, 3)
         k56 = EngineerNumber(56, 3)
 
-        self.assertEqual(k56, close_e_series(k50, "up", "E12"))
-        self.assertEqual(k47, close_e_series(k50, "down", "E12"))
+        self.assertEqual(k56, close_e_series(k50, "up", "E12", ORDERS_RESISTOR))
+        self.assertEqual(k47, close_e_series(k50, "down", "E12", ORDERS_RESISTOR))
 
     def test_close_e_series_transfer_next_exponent(self):
         r83  = EngineerNumber(8.3, 1)
         r100 = EngineerNumber(1.0, 2)
-        self.assertEqual(r100, close_e_series(r83, "up", "E12"))
+        self.assertEqual(r100, close_e_series(r83, "up", "E12", ORDERS_RESISTOR))
 
         k094 = EngineerNumber(0.94, 3)
         r820 = EngineerNumber(8.2,  2)
-        self.assertEqual(r820, close_e_series(k094, "down", "E12"))
+        self.assertEqual(r820, close_e_series(k094, "down", "E12", ORDERS_RESISTOR))
 
     def test_close_e_series_out_of_range(self):
         r0_9 = EngineerNumber(0.9, ONE)
         M101 = EngineerNumber(10.1, MEGA)
 
-        self.assertIsNone(close_e_series(r0_9, "down", "E12"))
-        self.assertIsNone(close_e_series(M101, "up", "E12"))
+        self.assertIsNone(close_e_series(r0_9, "down", "E12", ORDERS_RESISTOR))
+        self.assertIsNone(close_e_series(M101, "up", "E12", ORDERS_RESISTOR))
 
     def test_close_e_series_at_limit(self):
         r0_9 = EngineerNumber(0.9, ONE)
         M101 = EngineerNumber(10.1, MEGA)
 
-        self.assertEqual(EngineerNumber(1), close_e_series(r0_9, "up", "E12"))
-        self.assertEqual(EngineerNumber("10M"), close_e_series(M101, "down", "E12"))
+        self.assertEqual(EngineerNumber(1), close_e_series(r0_9, "up", "E12", ORDERS_RESISTOR))
+        self.assertEqual(EngineerNumber("10M"), close_e_series(M101, "down", "E12", ORDERS_RESISTOR))
 
 if __name__ == "__main__":
     unittest.main()
