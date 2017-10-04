@@ -7,6 +7,7 @@
 
 import os, sys, math
 import argparse, gettext
+from itertools import *
 
 import lib
 lib.init_engineer_number()
@@ -22,16 +23,12 @@ from engineer_number.lib import get_resistors, get_capacitors
 # 3.0 # 2 ** 3 = 8, pow(2, 3)
 CONST = math.log(2, math.e)
 
+NAMES = ("tL", "tH", "t", "dutyL", "dutyH", "f", "ra", "rb", "c")
+
 class LMC555(object):
     def __init__(self, **kwds):
         for key, value in kwds.items():
             setattr(self, key, value)
-
-        self._calc_duty()
-
-    def _calc_duty(self):
-        self.dutyL = self.tL / self.t
-        self.dutyH = 1 - self.dutyL
 
 def lmc555(Ra, Rb, C=EngineerNumber("0.1u")):
     tL = CONST * Rb * C
@@ -58,28 +55,34 @@ def check_Hz_in_range(r_min, r_max, c):
     return tf
 
 # esn means e_series_name
-def brute_force_LMC555(resistor_esn, capacitor_esn):
-    Rs = get_resistors(resistor_esn)
-    Cs = get_capacitors(capacitor_esn)
-    len_combination = len(Rs) ** 2 * len(Cs)
-    print("len(Rs) ** 2 =", len(Rs) ** 2)
-    print("len(Cs) =", len(Cs))
-    print("len_combination =", len_combination)
+def brute_force_LMC555(resistor_e_sesires, capacitor_e_sesires):
+    resistors = get_resistors(resistor_e_sesires, ORDERS_RESISTOR)
+    capacitors = get_capacitors(capacitor_e_sesires, ORDERS_CAPASITOR)
 
-    tf = [None] * len_combination
+    combi_rbra = tuple(product(resistors, resistors))
+    len_combinations = len(combi_rbra) * len(capacitors)
+
+  # print("len(resistors) ** 2 =", len(resistors) ** 2)
+  # print("len(combi_rbra) =", len(combi_rbra))
+  # print("len(capacitors) =", len(capacitors))
+  # print("len_combinations =", len_combinations)
+  # print("len(resistors) ** 2 * len(capacitors) / len_combinations =", len(resistors) ** 2 * len(capacitors) / len_combinations)
+
+    tf = [None] * len_combinations
     i = 0
-    for c in Cs:
-        print("i = {}".format(i))
-        for rb in Rs:
-            for ra in Rs:
-                tL, tH, t, f = lmc555(ra, rb, c)
+    for rbra, c in product(combi_rbra, capacitors):
+        rb, ra = rbra
+        tL, tH, t, f = lmc555(ra, rb, c)
 
-                kwds = {}
-                for name in NAMES:
-                    kwds[name] = locals()[name]
-                l555 = LMC555(**kwds)
-                tf[i] = l555
-                i += 1
+        dutyL = tL / t
+        dutyH = 1 - dutyL
+
+        kwds = {}
+        for name in NAMES:
+            kwds[name] = locals()[name]
+        l555 = LMC555(**kwds)
+        tf[i] = l555
+        i += 1
     tf = tf[:i]
 
     return tf
@@ -88,8 +91,6 @@ def look_for_optimized_duty(parameters, duty):
     # dutyL を優先して sort。
     parameters.sort(key=lambda parameter: math.fabs(duty - parameter.dutyL))
     return parameters
-
-NAMES = ("tL", "tH", "t", "f", "ra", "rb", "c")
 
 def look_for_optimized_Hz(parameters, Hz):
     # 周波数を優先して sort
@@ -122,10 +123,11 @@ def view_tf(tf, top=-1):
 if __name__ == "__main__":
     args = parse_args()
 
+    print("args.duty =", args.duty)
     parameters = brute_force_LMC555("E12", "E6")
 
-    tf = look_for_optimized_Hz(parameters, EngineerNumber(args.Hz))
-#   tf = look_for_optimized_duty(parameters, EngineerNumber(args.duty))
+#   tf = look_for_optimized_Hz(parameters, EngineerNumber(args.Hz))
+    tf = look_for_optimized_duty(parameters, EngineerNumber(args.duty))
 
   # print("len(tf)=", len(tf))
   # print()
