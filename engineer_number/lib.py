@@ -15,30 +15,29 @@ def make_all_combinations(e_series_name, orders):
         combination.extend(values)
     return combination
 
-def close_e_series(value, to, e_series_name, orders, tolerance_error=-1.0):
-    resistors = get_resistors(e_series_name, orders)
-    index = bisect.bisect(resistors, value)
-#   print("resistors[index-1]={}".format(resistors[index-1]))
-#   print("resistors[index]={}".format(resistors[index]))
-#   print("resistors[index+1]={}".format(resistors[index+1]))
+def close_values(value, updown, values, tolerance_error=-1.0):
+    index = bisect.bisect(values, value)
+#   print("values[index-1]={}".format(values[index-1]))
+#   print("values[index]={}".format(values[index]))
+#   print("values[index+1]={}".format(values[index+1]))
 
-    if to == "up":
+    if updown == "up":
         # value is up
-        if index >= len(resistors):
+        if index >= len(values):
           return None
-          # raise ValueError("cannot choise greater than {}.".format(resistors[index]))
-        if value == resistors[index-1]:
-            candidate = resistors[index-1]
+          # raise ValueError("cannot choise greater than {}.".format(values[index]))
+        if value == values[index-1]:
+            candidate = values[index-1]
         else:
-            candidate = resistors[index]
-    elif to == "down":
+            candidate = values[index]
+    elif updown == "down":
         # value is down
         if index == 0:
           return None
-          # raise ValueError("cannot choise lesser than {}.".format(resistors[0]))
-        candidate = resistors[index-1]
+          # raise ValueError("cannot choise lesser than {}.".format(values[0]))
+        candidate = values[index-1]
     else:
-        raise ValueError("unknown to={}".format(to))
+        raise ValueError("unknown updown={}".format(updown))
 
     if tolerance_error < 0:
         return candidate

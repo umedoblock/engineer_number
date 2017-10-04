@@ -8,13 +8,14 @@
 import os
 import sys
 import math, argparse
+from itertools import *
 
 import lib
 lib.init_engineer_number()
 
 from engineer_number import EngineerNumber
 from engineer_number.constants import *
-from engineer_number.lib import get_resistors, close_e_series
+from engineer_number.lib import get_resistors, close_values
 
 NAMES = ("Rb1", "Rb2", "Rc", "Re", "gain", "Vcc", "Vcb", "Vb", "Vc", "Ve", "Vce", "ie", "ic", "ib", "ibias", "Pce")
 
@@ -23,7 +24,7 @@ class EmitterCommonAmp(object):
         for key, value in kwds.items():
             setattr(self, key, value)
 
-def _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series):
+def _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, resistors):
     ib = ic / hfe # ?
     ie = ic + ib
     Vc = Rc * ic   # 6
@@ -50,8 +51,8 @@ def _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series):
     ibias = 10 * ib # 11
     Rb2 = Vb / ibias # 12
     Rb1 = Vcb / ibias # 13
-    Rb2_ = close_e_series(Rb2, "down", e_series)
-    Rb1_ = close_e_series(Rb1, "down", e_series)
+    Rb2_ = close_values(Rb2, "down", resistors)
+    Rb1_ = close_values(Rb1, "down", resistors)
     Rb2, Rb1 = Rb2_, Rb1_
     if (not Rb2) or (not Rb1):
 #       print("--")
@@ -68,16 +69,20 @@ def _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series):
     return eca
 
 def brute_force_to_look_for_gain_and_Pce(Vcc, ic, hfe, e_series):
-    resistors = get_resistors(e_series)
-    parameters = [None] * len(resistors) ** 2
+    resistors = get_resistors(e_series, ORDERS_RESISTOR)
+    combi_RcRe = tuple(combinations_with_replacement(resistors, 2))
+    parameters = [None] * len(combi_RcRe)
+  # print("len(resistors)={}".format(len(resistors)))
+  # print("len(resistors) ** 2 ={}".format(len(resistors) ** 2))
+  # print("len(combi_RcRe)={}".format(len(combi_RcRe)))
+  # print("len(resistors) ** 2 / len(combi_RcRe) ={}".format(len(resistors) ** 2 / len(combi_RcRe)))
 
     i = 0
-    for Rc in resistors:
-        for Re in resistors:
-            eca = _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, e_series)
-            if eca:
-                parameters[i] = eca
-                i += 1
+    for Rc, Re in combi_RcRe:
+        eca = _emitter_common_amplifier(Vcc, ic, hfe, Rc, Re, resistors)
+        if eca:
+            parameters[i] = eca
+            i += 1
 
     return parameters[:i]
 
@@ -94,7 +99,7 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12", orders=ORDER
         Vc = Rc * ic   # 6
         Re = Rc / gain_
 
-        Re_ = close_e_series(Re, "up", e_series, orders)
+        Re_ = close_values(Re, "up", resistors)
         if not Re_:
             continue
 
@@ -126,8 +131,8 @@ def look_for_optimized_gain(gain, ic, Vcc, hfe=200, e_series="E12", orders=ORDER
 
         Rb2 = Vb / ibias # 12
         Rb1 = Vcb / ibias # 13
-        Rb2_ = close_e_series(Rb2, "down", e_series, orders)
-        Rb1_ = close_e_series(Rb1, "down", e_series, orders)
+        Rb2_ = close_values(Rb2, "down", resistors)
+        Rb1_ = close_values(Rb1, "down", resistors)
         Rb2, Rb1 = Rb2_, Rb1_
         if (not Rb2) or (not Rb1):
 #           print("--")
