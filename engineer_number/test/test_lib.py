@@ -13,7 +13,7 @@ from test import support
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from engineer_number import *
 from engineer_number.constants import *
-from engineer_number.lib import get_resistors, make_all_combinations, close_e_series
+from engineer_number.lib import get_resistors, make_all_combinations, close_values
 
 class TestEngineerNumberUtil(unittest.TestCase):
     def test_make_all_combinations(self):
@@ -65,44 +65,52 @@ class TestEngineerNumberUtil(unittest.TestCase):
 
         self.assertEqual(expected, resistors_)
 
-    def test_close_e_series_eq_up(self):
-        k15 = EngineerNumber(15, 3)
-        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "up", "E24", ORDERS_RESISTOR))
+    def test_close_values_eq_up(self):
+        resistors = get_resistors("E24", ORDERS_RESISTOR)
 
-    def test_close_e_series_eq_down(self):
         k15 = EngineerNumber(15, 3)
-        self.assertEqual(EngineerNumber(15, 3), close_e_series(k15, "down", "E24", ORDERS_RESISTOR))
+        self.assertEqual(EngineerNumber(15, 3), close_values(k15, "up", resistors))
 
-    def test_close_e_series_same_exponent(self):
+    def test_close_values_eq_down(self):
+        resistors = get_resistors("E24", ORDERS_RESISTOR)
+        k15 = EngineerNumber(15, 3)
+        self.assertEqual(EngineerNumber(15, 3), close_values(k15, "down", resistors))
+
+    def test_close_values_same_exponent(self):
         k47 = EngineerNumber(47, 3)
         k50 = EngineerNumber(50, 3)
         k56 = EngineerNumber(56, 3)
 
-        self.assertEqual(k56, close_e_series(k50, "up", "E12", ORDERS_RESISTOR))
-        self.assertEqual(k47, close_e_series(k50, "down", "E12", ORDERS_RESISTOR))
+        resistors = get_resistors("E12", ORDERS_RESISTOR)
+        self.assertEqual(k56, close_values(k50, "up", resistors))
+        self.assertEqual(k47, close_values(k50, "down", resistors))
 
-    def test_close_e_series_transfer_next_exponent(self):
+    def test_close_values_transfer_next_exponent(self):
+        resistors = get_resistors("E12", ORDERS_RESISTOR)
+
         r83  = EngineerNumber(8.3, 1)
         r100 = EngineerNumber(1.0, 2)
-        self.assertEqual(r100, close_e_series(r83, "up", "E12", ORDERS_RESISTOR))
+        self.assertEqual(r100, close_values(r83, "up", resistors))
 
         k094 = EngineerNumber(0.94, 3)
         r820 = EngineerNumber(8.2,  2)
-        self.assertEqual(r820, close_e_series(k094, "down", "E12", ORDERS_RESISTOR))
+        self.assertEqual(r820, close_values(k094, "down", resistors))
 
-    def test_close_e_series_out_of_range(self):
+    def test_close_values_out_of_range(self):
+        resistors = get_resistors("E12", ORDERS_RESISTOR)
         r0_9 = EngineerNumber(0.9, ONE)
         M101 = EngineerNumber(10.1, MEGA)
 
-        self.assertIsNone(close_e_series(r0_9, "down", "E12", ORDERS_RESISTOR))
-        self.assertIsNone(close_e_series(M101, "up", "E12", ORDERS_RESISTOR))
+        self.assertIsNone(close_values(r0_9, "down", resistors))
+        self.assertIsNone(close_values(M101, "up", resistors))
 
-    def test_close_e_series_at_limit(self):
+    def test_close_values_at_limit(self):
+        resistors = get_resistors("E12", ORDERS_RESISTOR)
         r0_9 = EngineerNumber(0.9, ONE)
         M101 = EngineerNumber(10.1, MEGA)
 
-        self.assertEqual(EngineerNumber(1), close_e_series(r0_9, "up", "E12", ORDERS_RESISTOR))
-        self.assertEqual(EngineerNumber("10M"), close_e_series(M101, "down", "E12", ORDERS_RESISTOR))
+        self.assertEqual(EngineerNumber(1), close_values(r0_9, "up", resistors))
+        self.assertEqual(EngineerNumber("10M"), close_values(M101, "down", resistors))
 
 if __name__ == "__main__":
     unittest.main()
