@@ -13,12 +13,16 @@ tup = (48, 96, 192)
 for n in tup:
   L = []
   for i in range(n):
-    v = round(10 * round(pow(10, i / n), 2), 1)
+  # v = round(10 * round(pow(10, i / n), 2), 1)
+  # v = 10 * round(pow(10, i / n), 1)
+    v = round(pow(10, i / n + 1), 1)
     L.append(v)
   e_series_name = "E{}".format(n)
   bool_ = set(esv[e_series_name]) == set(L)
   print("set[esv[{}]] == set(L) is {}".format(e_series_name, bool_))
-  if n == 192:
+  if not bool_:
+    print(set(esv[e_series_name]) - set(L))
+    print(set(L) - set(esv[e_series_name]))
     st_L = set(L)
     st_L.remove(91.9)
     st_L.add(92.0)
