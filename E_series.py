@@ -1,3 +1,5 @@
+import bisect
+
 import engineer_number
 
 esv = engineer_number.constants.E_SERIES_VALUES
@@ -18,18 +20,20 @@ for n in tup:
     v = round(pow(10, i / n + 1), 1)
     L.append(v)
   e_series_name = "E{}".format(n)
-  bool_ = set(esv[e_series_name]) == set(L)
-  print("set[esv[{}]] == set(L) is {}".format(e_series_name, bool_))
+  bool_ = esv[e_series_name] == tuple(L)
+  print("esv[{}] == L is {}".format(e_series_name, bool_))
   if not bool_:
     print(set(esv[e_series_name]) - set(L))
     print(set(L) - set(esv[e_series_name]))
-    st_L = set(L)
-    st_L.remove(91.9)
-    st_L.add(92.0)
-    bool_ = set(esv[e_series_name]) == st_L
-    print("set[esv[{}]] == st_L is {}".format(e_series_name, bool_))
-    print(set(esv[e_series_name]) - st_L)
-    print(st_L - set(esv[e_series_name]))
+    _L = L[:]
+    L.remove(91.9)
+    v = 92.0
+    index = bisect.bisect(L, v)
+    L.insert(index, v)
+    bool_ = esv[e_series_name] == tuple(L)
+    print("esv[{}] == L is {}".format(e_series_name, bool_))
+    print(set(esv[e_series_name]) - set(L))
+    print(set(L) - set(esv[e_series_name]))
 # set[esv[E48]] == set(L) is True
 # set[esv[E96]] == set(L) is True
 # set[esv[E192]] == set(L) is False
