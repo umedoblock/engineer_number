@@ -10,8 +10,8 @@ esv = engineer_number.constants.E_SERIES_VALUES
 #   print()
 
 tup = (48, 96, 192)
-L = []
 for n in tup:
+  L = []
   for i in range(n):
     v = round(10 * round(pow(10, i / n), 2), 1)
     L.append(v)
