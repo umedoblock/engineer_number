@@ -522,6 +522,30 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertFalse(k1000.in_tolerance_error(k1100, TOLERANCE_ERROR))
         self.assertFalse(k1000.in_tolerance_error(k2000, TOLERANCE_ERROR))
 
+    def test_wire_instance_as_tuple(self):
+        self.assertIsInstance(WIRE["0000"], tuple)
+
+    def test_wire_instance_as_EngineerNumber(self):
+        self.assertIsInstance(SWG["0"], EngineerNumber)
+        self.assertIsInstance(AWG["10"], EngineerNumber)
+        self.assertIsInstance(BWG["20"], EngineerNumber)
+
+    def test_wire_as_EngineerNumber(self):
+        self.assertEqual(EngineerNumber("10.16m"), WIRE["0000"][SWG_])
+        self.assertEqual(EngineerNumber("1.02m"), WIRE["18"][AWG_])
+        self.assertEqual(EngineerNumber("0.102m"), WIRE["36"][BWG_])
+        self.assertEqual(EngineerNumber("8.23m"), SWG["0"])
+        self.assertEqual(EngineerNumber("2.59m"), AWG["10"])
+        self.assertEqual(EngineerNumber("0.89m"), BWG["20"])
+
+    def test_wire_as_float(self):
+        self.assertAlmostEqual(0.01016, WIRE["0000"][SWG_])
+        self.assertAlmostEqual(0.00102, WIRE["18"][AWG_])
+        self.assertAlmostEqual(0.000102, WIRE["36"][BWG_])
+        self.assertAlmostEqual(0.00823, SWG["0"])
+        self.assertAlmostEqual(0.00259, AWG["10"])
+        self.assertAlmostEqual(0.00089, BWG["20"])
+
 if __name__ == "__main__":
   # gc.set_debug(gc.DEBUG_LEAK)
     unittest.main()
