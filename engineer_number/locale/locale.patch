@@ -1,0 +1,26 @@
+diff -r 5f455581a259 py/engineer_number/engineer_number/locale/engineer_number.pot
+--- a/py/engineer_number/engineer_number/locale/engineer_number.pot	Fri Nov 03 15:59:21 2017 +0900
++++ b/py/engineer_number/engineer_number/locale/engineer_number.pot	Fri Nov 03 16:03:33 2017 +0900
+@@ -1,14 +1,14 @@
+-# EngineerNumber
+-# Copyright (C) 2013-2017 梅濁酒(umedoblock)
+-# 梅濁酒(umedoblock) umedoblock@gmail.com, 2013-2017
++# SOME DESCRIPTIVE TITLE.
++# Copyright (C) YEAR ORGANIZATION
++# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+ #
+ msgid ""
+ msgstr ""
+-"Project-Id-Version: 1.0.5\n"
+-"POT-Creation-Date: 2013-02-17 08:02+JST\n"
+-"PO-Revision-Date: 2017-11-03 11:35+0900\n"
+-"Last-Translator: 梅濁酒(umedoblock) umedoblock@gmail.com\n"
+-"Language-Team: Japanese umedoblock@gmail.com\n"
++"Project-Id-Version: PACKAGE VERSION\n"
++"POT-Creation-Date: 2017-11-03 15:59+0900\n"
++"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
++"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
++"Language-Team: LANGUAGE <LL@li.org>\n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
