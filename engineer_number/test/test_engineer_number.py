@@ -355,20 +355,20 @@ class TestEngineerNumber(unittest.TestCase):
     def test__si2exponent10_wrong(self):
         expected_header_en = "SI prefix symbol must be in ("
         expected_header_ja = \
-            "SI 接頭辞の記号は、次のいずれかでなければなりません。("
+            "SI 接頭辞の記号は、次のいずれかでなければなりません。{}"
         symbols = (\
-             '"Y", "Z", "E", "P", "T", "G", "M", "k", "h", "da", '
+             '("Y", "Z", "E", "P", "T", "G", "M", "k", "h", "da", '
              '"", '
              '"d", "c", "m", "u", "n", "p", "f", "a", "z", "y")'
         )
         expected_message = \
-            expected_header_en + symbols
+            expected_header_en + symbols + "."
         expected_message = \
-            expected_header_ja + symbols
+            _(expected_header_ja).format(symbols)
 
         with self.assertRaises(KeyError) as raiz:
             EngineerNumber._si2exponent10("Q")
-        self.assertEqual(expected_message, raiz.exception.args[0])
+        self.assertEqual(_(expected_message), raiz.exception.args[0])
 
         with self.assertRaises(KeyError) as raiz:
             EngineerNumber._si2exponent10("K")
@@ -413,11 +413,14 @@ class TestEngineerNumber(unittest.TestCase):
       # message = ("cannot accept "K" as SI prefix symbol. "
       #            "please use "k" as prefix if you hope to describe kilo."
       #            "Because "K" means Kelbin celcius.")
-        message = ('"K" を SI 接頭辞の記号として使用することは出来ません。\n'
+        message = _('"K" を SI 接頭辞の記号として使用することは出来ません。\n'
                    'kilo を表現したい場合、 "K" ではなく、小文字の "k" を'
                    'お使い下さい。\n'
                    'なぜならば、"K" は、Kelvin 温度を表現するための'
                    '単位記号だからです。')
+#       print("message =", message)
+#       msgstr = _(message)
+#       print("msgstr =", msgstr)
         self.assertEqual(message, raiz.exception.args[0])
 
     def test_force(self):
@@ -474,18 +477,20 @@ class TestEngineerNumber(unittest.TestCase):
 
         n1 = EngineerNumber("0.1m")
       # message = "abs\(number\(={}\)\) in range\(0, 1\) convert to int.".format(n1)
-        message = (r"0 < abs\(number\(={}\)\) < 1 を満たす数字を "
-                    "int に変換しようとしました。".format(n1))
+        message = _("0 < abs(number(={})) < 1 を満たす数字を "
+                    "int に変換しようとしました。").format(n1)
 
-        with self.assertWarnsRegex(UserWarning, message) as warn:
+        with self.assertRaises(UserWarning) as warn1:
             int(n1)
+        self.assertEqual(message, warn1.exception.args[0])
 
         n2 = EngineerNumber("-0.1m")
       # message = "abs\(number\(={}\)\) in range\(0, 1\) convert to int.".format(n2)
-        message = (r"0 < abs\(number\(={}\)\) < 1 を満たす数字を "
-                    "int に変換しようとしました。".format(n2))
-        with self.assertWarnsRegex(UserWarning, message) as warn:
+        message = _("0 < abs(number(={})) < 1 を満たす数字を "
+                    "int に変換しようとしました。").format(n2)
+        with self.assertRaises(UserWarning) as warn2:
             int(n2)
+        self.assertEqual(message, warn2.exception.args[0])
 
       # with support.captured_stderr() as stderr_:
       #     int(n2)

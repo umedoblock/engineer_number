@@ -24,10 +24,8 @@ def _get_default_languages():
     return languages
 
 def _decide_languages_order(hope=[]):
-    # first is overwrited by second.
-    # so should be hope=["lower-important", "higher-important"]
     languages = _get_default_languages()
-    if not re.search(r'ja', ",".join(languages)) or languages[0].startswith("en_"):
+    if (not re.search('ja', ",".join(languages))) or languages[0].startswith("en_"):
         languages.insert(0, "zannenenglish")
     languages.extend(hope)
 

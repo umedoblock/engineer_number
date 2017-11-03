@@ -252,7 +252,7 @@ class EngineerNumber(numbers.Real):
           # message = "abs(number(={})) in range(0, 1) convert to int.".format(self)
             message = _("0 < abs(number(={})) < 1 を満たす数字を "
                         "int に変換しようとしました。").format(self)
-            warnings.warn("{}".format(message), UserWarning)
+            raise UserWarning(message)
         return int(self.num)
 
     def __float__(self):
