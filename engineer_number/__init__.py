@@ -13,7 +13,7 @@ __author__ = "umedoblock <umedoblock@gmail.com>"
 
 def _get_default_languages():
     languages = []
-    for language in ("LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG"):
+    for language in ("LANG", "LANGUAGE"):
         env = os.environ.get(language)
         if not env:
             continue
