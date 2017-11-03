@@ -24,9 +24,6 @@ class EngineerNumber(numbers.Real):
     の計算結果を EngineerNumber object の値とします。
     """
 
-    # I18N
-    __doc__ = _(__doc__) # for gettext
-
     # EngineerNumber instance を __str__() にて
     # 文字列表現した時の、小数点以下の有効桁数。
     round_ndigits = 3
