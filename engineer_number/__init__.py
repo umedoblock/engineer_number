@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import os
+import os, re
 import gettext
 
 from engineer_number import constants
@@ -27,7 +27,7 @@ def _decide_languages_order(hope=[]):
     # first is overwrited by second.
     # so should be hope=["lower-important", "higher-important"]
     languages = _get_default_languages()
-    if "ja" not in languages:
+    if not re.search(r'ja', ",".join(languages)) or languages[0].startswith("en_"):
         languages.insert(0, "zannenenglish")
     languages.extend(hope)
 
@@ -68,6 +68,7 @@ def _I18N(attr):
         setattr(attr, "__doc__", msgstr)
 
 _I18N(_I18N)
+_I18N(EngineerNumber)
 for attr in EngineerNumber.__dict__.values():
     _I18N(attr)
 
