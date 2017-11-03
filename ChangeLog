@@ -1,3 +1,16 @@
+Changes in 1.0.5 (03 Nov 2017)
+- change LICENSE from BSD to MIT.
+- add engineer_number/constants.py
+    here works some constants for engineer.
+    please see one time.
+- add engineer_number/si_units.py
+    The International System of Units (SI) - 8th edition - 2006
+    please see one time.
+- split __init__.py module to core.py and initialze part.
+- add some python scripts under scripts directory.
+    capacitance_multiplier.py  emitter_amplifier.py  lib.py
+    simulated_inductor.py
+
 Changes in 1.0.4 (17 Feb 2013)
 - extends range to -24(=yocto) exponent <= 24(=YOTTA).
 - you can write "from engineer.constants import *"
