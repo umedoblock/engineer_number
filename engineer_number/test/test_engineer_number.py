@@ -355,7 +355,7 @@ class TestEngineerNumber(unittest.TestCase):
     def test__si2exponent10_wrong(self):
         expected_header_en = "SI prefix symbol must be in ("
         expected_header_ja = \
-            "SI 接頭辞の記号は、次のいずれかでなければなりません。{}"
+            _("SI 接頭辞の記号は、次のいずれかでなければなりません。{}")
         symbols = (\
              '("Y", "Z", "E", "P", "T", "G", "M", "k", "h", "da", '
              '"", '
@@ -364,11 +364,11 @@ class TestEngineerNumber(unittest.TestCase):
         expected_message = \
             expected_header_en + symbols + "."
         expected_message = \
-            _(expected_header_ja).format(symbols)
+            expected_header_ja.format(symbols)
 
         with self.assertRaises(KeyError) as raiz:
             EngineerNumber._si2exponent10("Q")
-        self.assertEqual(_(expected_message), raiz.exception.args[0])
+        self.assertEqual(expected_message, raiz.exception.args[0])
 
         with self.assertRaises(KeyError) as raiz:
             EngineerNumber._si2exponent10("K")
