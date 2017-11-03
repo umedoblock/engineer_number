@@ -62,8 +62,8 @@ WIRE = {
            25: ["0.508m", "0.455m"],    50: ["0.025m"],
 }
 
-# WIRE["0000"][SWG_] == 10.2
-# WIRE[18][AWG_] == 1.024
+# WIRE["0000"][SWG_] == 0.0102
+# WIRE[18][AWG_] == 0.001024
 
 SWG = {}
 AWG = {}
@@ -71,15 +71,15 @@ AWG = {}
 #  AWG[10] == 0.002588
 
 def _build_up_to_EngineerNumber():
-    for wire_name, wire_value_ in WIRE_NAMES.items():
+    for wire_name, wire_value in WIRE_NAMES.items():
         d = globals()[wire_name]
         for No, L in WIRE.items():
             try:
-                v = L[wire_value_]
+                v = L[wire_value]
             except IndexError as e:
                 continue
             enm = EngineerNumber(v)
-            WIRE[No][wire_value_] = enm
+            WIRE[No][wire_value] = enm
             d[No] = enm
 
     for No, L in WIRE.items():
