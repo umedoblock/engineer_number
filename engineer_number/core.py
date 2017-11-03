@@ -81,21 +81,11 @@ class EngineerNumber(numbers.Real):
         一つ目は、有効数値を整数値、浮動小数値として指定する方法です。
         二つ目は、有効数値の文字列と SI 接頭辞を連結し、文字列として
         指定する方法です。
-
         exponent10 は、無指定であれば、0 として取り扱います。
+
         以下の計算式により、value, exponent10 の値から、
         EngineerNumber.num 属性の値を計算します。
         num = value * 10 ** exponent10
-
-        つまり、exponent10 を指定しなければ、
-        num 属性の値として、value の値を、そのまま代入することになります。
-        num = value * 10 ** 0 = value * 1 = value
-        num 属性の値の範囲は、 -24 <= num <= 24 であり、かつ、
-        num 属性の値は、3 の整数倍となります。
-
-        詳しい使い方は、EngineerNumber class の docstring をご覧下さい。
-        例 1 〜 5 等が分かりやすいかと思います。
-        更なる情報は、少しだけ、"README.txt" に書いています。
         """
         if isinstance(value, str):
             value, adjust_exponent10 = EngineerNumber._parse_string(value)
