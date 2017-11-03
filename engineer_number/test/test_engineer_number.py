@@ -113,6 +113,9 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual("123.456z", str(EngineerNumber("123.456z")))
         self.assertEqual("123.456y", str(EngineerNumber("123.456y")))
 
+    def test_feed_empty_value(self):
+        self.assertEqual(EngineerNumber("0"), EngineerNumber())
+
     def test_as_abnormal_number(self):
         self.assertEqual(1.0, EngineerNumber("1."))
         self.assertEqual(0.1, EngineerNumber(".1"))

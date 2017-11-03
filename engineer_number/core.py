@@ -9,116 +9,23 @@ import gettext
 gettext.install("engineer_number", "")
 
 class EngineerNumber(numbers.Real):
-    """EngineerNumber class は、SI接頭辞の変換・異なるSI接頭辞同士の
-    計算を容易にします。
+    """新しい EngineerNumber object を作ります。
+    EngineerNumber object の精度は，単純には Python3 の float object
+    に依存します。Python3 では float object を C 言語の double
+    型の変数(=ob_fval) として定義しています。よって， EngineerNumber object
+    の精度は，正確には C 言語の double 型に依存します。
 
-    以下、使うための手順を簡単に紹介します。
-    >>> from engineer_number import EngineerNumber
+    'value' は，浮動小数点数，整数，文字列，または他の EngineerNumber object
+    を引数に出来ます。何らの値も与えられなければ， EngineerNumber('0') を返し
+    ます。
+    'exponent10' が引数と出来るのは整数のみです。
 
-    KILO, MEGA, ...等々の SI 接頭辞名を使わない場合、
-    以下の行は必要ありません。
-    >>> from engineer_number.constants import *
-
-    以下の、No.1, 2, 3 では、 10 * 1000 の値を得る方法と、
-    SI 接頭辞変換の方法を説明します。
-
-    No.1: 有効値の文字列と、SI 接頭辞を連結し、
-    10 kilo の値を得る方法です。
-    >>> r1 = EngineerNumber("10k")       # No.1
-    >>> r1
-    EngineerNumber("10.000k")
-
-    10 kilo を Mega で計算し、SI 接頭辞変換を行います。
-    >>> r1["M"]
-    "0.010M"
-
-    No.2: 有効値と、SI 接頭辞名で 10 kilo の値を得る方法です。
-    >>> r2 = EngineerNumber("10k")       # No.3
-    >>> r2 = EngineerNumber(10, 3)       # No.3
-    >>> r2 = EngineerNumber(10, KILO)    # No.2
-    >>> r2 = EngineerNumber("10", KILO)  # No.2
-    >>> r2
-    EngineerNumber("10.000k")
-
-    10 kilo に SI 接頭辞変換を行い、数値に変換します。
-    10 の乗数が 0 の場合、
-    空文字列を SI 接頭辞としていることに注意して下さい。
-    >>> r2[""]
-    "10000.000"
-
-    No.3: 有効値と 10 の乗数で 10 kilo の値を得る方法です。
-    抵抗のカラーコードから抵抗値を求める事を想定しています。
-    >>> r3 = EngineerNumber("10", 3)     # No.3
-    >>> r3
-    EngineerNumber("10.000k")
-
-    10 kilo を kilo で計算する、なんちゃって SI 接頭辞変換を行います。
-    自分でも必要ないとは思うんですけれど、流れ上、書きました。
-    >>> r3["k"]
-    "10.000k"
-
-    以下の、No.4, 5 では、コンデンサ上の表示から、
-    コンデンサの容量値を求める方法を紹介します。
-    "p" を有効数値の後に付けていることに注意して下さい。
-
-    No.4: コンデンサの表示 "104" から容量値を求めます。
-    >>> c4 = EngineerNumber("10p", 4)    # No.4
-    >>> c4
-    EngineerNumber("100.000n")
-
-    マイクロ・ナノ・ピコを計算する時など、
-    よく頭がこんがらがりますよね。
-    >>> c4["u"]
-    "0.100u"
-
-    No.5: コンデンサの表示 "202" から容量値を求めます。
-    >>> c5 = EngineerNumber("20p", 2)    # No.5
-    >>> c5
-    EngineerNumber("2.000n")
-    >>> c5["p"]
-    "2000.000p"
-
-    ここだけの話：
-    マイクロ・ナノ・ピコの変換が大変でややこしくて、
-    よく間違えて困るので、この EngineerNumber を作成しました。
-    抵抗のカラーコードにも使えると分かった時には、
-    本当に便利だなー。と自分でも思いました
-
-    使用例を、もう少し知りたい方は "README.txt" をご覧下さい。
-
-    EngineerNumber.num 属性は、数値型 object です。
-    EngineerNumber class に、__add__() 等の method を定義し、
-    演算の対象を EngineerNumber.num とすることで、
-    EngineerNumber instance は、数値型 object 互換になっています。
-    数値型 object 互換にする方法は、
-    PEP 3141, numbers class 等をご覧下さい。
-
-    SI 接頭辞として用意しているのは、以下の通りです。
-    ("Y", YOTTA),
-    ("Z", ZETTA),
-    ("E", EXA),
-    ("P", PETA),
-    ("T", TERA),
-    ("G", GIGA),
-    ("M", MEGA),
-    ("k", KILO),
-    ("h", HECTO),
-    ("da", DECA),
-     ("", ONE),
-    ("d", DECI),
-    ("c", CENTI),
-    ("m", MILLI),
-    ("u", MICRO),
-    ("n", NANO),
-    ("p", PICO),
-    ("f", FEMTO),
-    ("a", ATTO),
-    ("z", ZEPTO),
-    ("y", YOCTO),
+    value * 10 ** exponent10
+    の計算結果を EngineerNumber object の値とします。
     """
 
     # I18N
-    __doc__ = _(__doc__)
+    __doc__ = _(__doc__) # for gettext
 
     # EngineerNumber instance を __str__() にて
     # 文字列表現した時の、小数点以下の有効桁数。
@@ -171,7 +78,7 @@ class EngineerNumber(numbers.Real):
             raise KeyError(message)
         return exponent10
 
-    def __init__(self, value, exponent10=0):
+    def __init__(self, value='0', exponent10=0):
         """有効数値と 10 の乗数値を指定します。
         value を、二つの方法により指定できます。
         一つ目は、有効数値を整数値、浮動小数値として指定する方法です。
