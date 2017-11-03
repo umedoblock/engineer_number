@@ -17,15 +17,14 @@ def _get_default_languages():
         env = os.environ.get(language)
         if not env:
             continue
-        sp = env.split(":")
-        languages.extend(sp)
+        languages.append(env)
     if not languages:
         languages.append("C")
     return languages
 
 def _decide_languages_order(hope=[]):
     languages = _get_default_languages()
-    if (not re.search('ja', ",".join(languages))) or languages[0].startswith("en_"):
+    if languages[0].startswith("en_"):
         languages.insert(0, "zannenenglish")
     languages.extend(hope)
 
