@@ -12,6 +12,7 @@ from test import support
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from engineer_number import *
 from engineer_number.constants import *
+from engineer_number.wire import *
 
 class TestEngineerNumber(unittest.TestCase):
     def test_as_number(self):
