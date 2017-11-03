@@ -10,10 +10,10 @@ gettext.install("engineer_number", "")
 
 class EngineerNumber(numbers.Real):
     """新しい EngineerNumber object を作ります。
-    EngineerNumber object の精度は，単純には Python3 の float object
-    に依存します。Python3 では float object を C 言語の double
-    型の変数(=ob_fval) として定義しています。よって， EngineerNumber object
-    の精度は，正確には C 言語の double 型に依存します。
+    EngineerNumber object の精度は，Python3 の float object に依存します。
+    Python3 では float object を C 言語の double 型の変数(=ob_fval) として定義
+    しています。よって， EngineerNumber object の精度は，C 言語の double 型に
+    依存します。
 
     'value' は，浮動小数点数，整数，文字列，または他の EngineerNumber object
     を引数に出来ます。何らの値も与えられなければ， EngineerNumber('0') を返し
