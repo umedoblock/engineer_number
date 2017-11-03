@@ -4,6 +4,10 @@
 # 原書コード ： ISBN 92-822-2213-6
 # page 38
 
+# copied by 梅濁酒(umedoblock)
+
+from .core import EngineerNumber
+
 # SI との併用が認められている 単位
 # エネルギー 電子ボルト eV
 eV = EngineerNumber(1.60217653, -19)
