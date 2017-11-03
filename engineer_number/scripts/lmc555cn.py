@@ -105,8 +105,8 @@ def parse_args():
                        type=EngineerNumber,
                        help="frequency default: 1000")
     parser.add_argument("--duty", metavar="d", dest="duty",
-                       type=EngineerNumber, default="0.5",
-                       help="duty default: 0.5")
+                       type=EngineerNumber, default="0.1",
+                       help="duty default: 0.1")
     parser.add_argument("--top", metavar="t", dest="top",
                        type=int, default=10,
                        help="ranking default: 10")
