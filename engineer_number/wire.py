@@ -22,15 +22,10 @@ AWG = {}
 SWG_ = 0
 AWG_ = 1
 
-WIRE_NAMES = {
-    "SWG": SWG_,
-    "AWG": AWG_,
-}
-
 # WIRE["0000"][SWG_] == 0.0102
 # WIRE[18][AWG_] == 0.001024
 
-_build_up_to_EngineerNumber(WIRE, (SWG, AWG), WIRE_NAMES)
+_build_up_to_EngineerNumber(WIRE, (SWG, AWG), (SWG_, AWG_))
 
 # print("WIRE = {}".format(WIRE))
 # print("SWG = {}".format(SWG))

@@ -86,15 +86,15 @@ def get_capacitors(e_series_name, orders):
 
     return _capacitors[e_series_name]
 
-def _build_up_to_EngineerNumber(regulation, muscles, muscles_names):
+def _build_up_to_EngineerNumber(regulation, muscles, indexes):
     print("regulation={}".format(regulation))
     print("muscles={}".format(muscles))
-    print("muscles_names={}".format(muscles_names))
-    for name, index in muscles_names.items():
-        print("name={}, index={}".format(name, index))
+    print("indexes={}".format(indexes))
+    for index in indexes:
+        print("index={}".format(index))
         d = muscles[index]
         for No, L in regulation.items():
-            print("No={}, L={}, name={}, index={}".format(No, L, name, index))
+            print("No={}, L={}, index={}".format(No, L, index))
             try:
                 v = L[index]
             except IndexError as e:
