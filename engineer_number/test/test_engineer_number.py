@@ -249,10 +249,6 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual("249.000", str(div))
         self.assertEqual("4.000n", str(mod))
 
-#   def test_e_expression(self):
-#       self.assertAlmostEqual(float("4e-28"), EngineerNumber("4e-28"))
-#       self.assertAlmostEqual(float("4e-28"), EngineerNumber("4E-28"))
-
     def test_round(self):
         self.assertEqual( "999.999m", str(EngineerNumber("0.9999994")))
                                                         #      123
@@ -383,6 +379,12 @@ class TestEngineerNumber(unittest.TestCase):
         with self.assertRaises(KeyError) as raiz:
             EngineerNumber._si2exponent10(" ")
         self.assertEqual(expected_message, raiz.exception.args[0])
+
+    def test_e_expression(self):
+        self.assertAlmostEqual(float("4e-28"), EngineerNumber("4e-28"))
+        self.assertAlmostEqual(float("4e-28"), EngineerNumber("4E-28"))
+        self.assertEqual("4e-28", str(EngineerNumber("4e-28")))
+        self.assertEqual("4e-28", str(EngineerNumber("4E-28")))
 
     def test_unknown_symbol(self):
         unknown_symbols = """!@#$^&*(){}[]+-=|_~`'"?<>,/\;:"""

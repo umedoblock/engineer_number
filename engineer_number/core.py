@@ -80,7 +80,7 @@ class EngineerNumber(numbers.Real):
 #       m = pattern.search(ss)
 #       parts = m.groups()
 
-#       if ss.startswith("10"):
+#       if True or ss.startswith("10"):
 #           print("ss=\"{}\"".format(ss))
 #           print("ss[-1]=\"{}\"".format(ss[-1]))
 #           print("parts=\"{}\"".format(parts))
@@ -155,6 +155,17 @@ class EngineerNumber(numbers.Real):
             value = 0.0
 
         sign = 1
+
+        if not isinstance(value, int) and not isinstance(value, float):
+            _value = None
+            try:
+                _value = float(value)
+            except ValueError as e:
+                expression = "could not convert string to float: "
+                if not e.args[0].startswith(expression):
+                    raise e
+            if isinstance(_value, float) and _value <= 1.0:
+                value = _value
 
         if isinstance(value, str):
             if not value:
