@@ -47,19 +47,7 @@ class EngineerNumber(numbers.Real):
 #       parts = re.findall(pattern, ss)
         L = list(d_SYMBOL_EXPONENT)
         L.append("K")
-        fmt = "|".join(["{}"] * len(L))
-        fmt = fmt.format(*L)
-    #   print("fmt =", fmt)
 
-      # symbol_pattern = re.compile(r'([+\-0-9eE\.]*)({})$'.format(fmt))
-      # symbol_pattern = re.compile(r'([+\-\deE.]*)(\D)$'.format(fmt))
-      # m = symbol_pattern.search(ss)
-      # print("m={}".format(m))
-
-      # parts = m.groups()
-      # parts = re.search(r'([+\-]?[0-9\.]*)({})$'.format(fmt), ss).groups()
-        pattern = re.compile(r'([+\-]?)([0-9\.]*)({})$'.format(fmt))
-        pattern = re.compile(r'([+\-]?)([0-9\.]*)(\D+)$')
         pattern = re.compile(r'([+\-]?)([0-9\.]*)(\D*)$')
         parts = pattern.search(ss).groups()
         _sign, numerical_part, suffix = parts
@@ -71,31 +59,7 @@ class EngineerNumber(numbers.Real):
             si = suffix
         if parts == ('', ''):
             si = ss[-1]
-#       print("numerical_part={}, si={}".format(numerical_part, si))
-#       raise()
-#       pattern = re.compile(r'([+\-0-9\.]*)([a-zA-Z]*|%)$')
-#       pattern = re.compile(r'([+\-]?)([0-9\.]*)([^+\-0-9\.]*)$')
-#       pattern = re.compile(r'([+\-]?)([0-9eE\.]*)([^+\-0-9\.]*)$')
-#       pattern = re.compile(r'([+\-]?)([0-9eE\.]*)([^+\-0-9\.]*)$')
-#       m = pattern.search(ss)
-#       parts = m.groups()
-
-#       if True or ss.startswith("10"):
-#           print("ss=\"{}\"".format(ss))
-#           print("ss[-1]=\"{}\"".format(ss[-1]))
-#           print("parts=\"{}\"".format(parts))
-#           print("parts==\"{}\"".format(parts == ('', '')))
-#           print("numerical_part=\"{}\"".format(numerical_part))
-#           print("suffix=\"{}\"".format(suffix))
-#           print("si=\"{}\"".format(si))
         inappropriate = ss.replace("".join(parts), "")
-      # if len(parts) > 1:
-      #     sign, numerical_part, si = parts
-      # else:
-      #     numerical_part = parts[0]
-      #     si = ""
-#       if inappropriate and inappropriate != "." and not si in d_SYMBOL_EXPONENT:
-#           si = inappropriate
         if si == "K":
           # message = ("cannot accept "K" as SI prefix symbol. "
           #            "please use "k" as prefix if you hope to describe kilo."
@@ -108,7 +72,6 @@ class EngineerNumber(numbers.Real):
                        'なぜならば、"K" は、Kelvin 温度を表現するための'
                        '単位記号だからです。')
             raise KeyError(message)
-      # print("si =", si, "value =", value)
         exponent10 = cls._si2exponent10(si)
 
       # print("numerical_part = '{}'".format(numerical_part))
