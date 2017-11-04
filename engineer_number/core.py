@@ -38,12 +38,47 @@ class EngineerNumber(numbers.Real):
     @classmethod
     def _parse_string(cls, ss):
         "有効数字の数値と 10 の乗数値を、tuple に詰めて返します。"
-        parts = re.findall(r'([0-9]*\.?[0-9]+|[a-zA-Z]+)', ss)
-        if len(parts) > 1:
-            numerical_part, si = parts
-        else:
-            numerical_part = parts[0]
+
+#       print("ss=\"{}\"".format(ss))
+#       pattern = r'([+\-]?[0-9\.]*|[a-zA-Z%]+)'
+#       pattern = '([+\-]?)([0-9\.]*)([a-zA-Z%]*)'
+#       pattern = '[+\-]?|[0-9\.]*|[a-zA-Z%]*'
+#       parts = re.findall(pattern, ss)
+        L = list(d_SYMBOL_EXPONENT)
+        L.append("K")
+        fmt = "|".join(["{}"] * len(L))
+        fmt = fmt.format(*L)
+    #   print("fmt =", fmt)
+
+      # symbol_pattern = re.compile(r'([+\-0-9eE\.]*)({})$'.format(fmt))
+      # symbol_pattern = re.compile(r'([+\-\deE.]*)(\D)$'.format(fmt))
+      # m = symbol_pattern.search(ss)
+      # print("m={}".format(m))
+
+      # parts = m.groups()
+        parts = re.search(r'([+\-0-9\.]*)({})$'.format(fmt), ss).groups()
+
+        numerical_part, suffix = parts
+        if suffix == ".":
             si = ""
+        else:
+            si = suffix
+#       print("numerical_part={}, si={}".format(numerical_part, si))
+#       raise()
+#       pattern = re.compile(r'([+\-0-9\.]*)([a-zA-Z]*|%)$')
+#       pattern = re.compile(r'([+\-]?)([0-9\.]*)([^+\-0-9\.]*)$')
+#       pattern = re.compile(r'([+\-]?)([0-9eE\.]*)([^+\-0-9\.]*)$')
+#       pattern = re.compile(r'([+\-]?)([0-9eE\.]*)([^+\-0-9\.]*)$')
+#       m = pattern.search(ss)
+#       parts = m.groups()
+        inappropriate = ss.replace("".join(parts), "")
+      # if len(parts) > 1:
+      #     sign, numerical_part, si = parts
+      # else:
+      #     numerical_part = parts[0]
+      #     si = ""
+#       if inappropriate and inappropriate != "." and not si in d_SYMBOL_EXPONENT:
+#           si = inappropriate
         if si == "K":
           # message = ("cannot accept "K" as SI prefix symbol. "
           #            "please use "k" as prefix if you hope to describe kilo."
@@ -56,10 +91,11 @@ class EngineerNumber(numbers.Real):
                        'なぜならば、"K" は、Kelvin 温度を表現するための'
                        '単位記号だからです。')
             raise KeyError(message)
-
-        value = float(numerical_part)
       # print("si =", si, "value =", value)
         exponent10 = cls._si2exponent10(si)
+
+      # print("numerical_part = '{}'".format(numerical_part))
+        value = float(numerical_part)
 
         return (value, exponent10)
 
@@ -82,7 +118,7 @@ class EngineerNumber(numbers.Real):
             raise KeyError(message)
         return exponent10
 
-    def __init__(self, value='0', exponent10=0):
+    def __init__(self, value=0.0, exponent10=0):
         """有効数値と 10 の乗数値を指定します。
         value を、二つの方法により指定できます。
         一つ目は、有効数値を整数値、浮動小数値として指定する方法です。
@@ -94,7 +130,11 @@ class EngineerNumber(numbers.Real):
         EngineerNumber.num 属性の値を計算します。
         num = value * 10 ** exponent10
         """
+        if value == "":
+            value = 0.0
         if isinstance(value, str):
+            if not value:
+                value = "0"
             value, adjust_exponent10 = EngineerNumber._parse_string(value)
             exponent10 += adjust_exponent10
         # value is None

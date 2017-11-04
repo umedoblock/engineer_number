@@ -115,7 +115,8 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual("123.456y", str(EngineerNumber("123.456y")))
 
     def test_feed_empty_value(self):
-        self.assertEqual(EngineerNumber("0"), EngineerNumber())
+        self.assertAlmostEqual(0, EngineerNumber())
+        self.assertAlmostEqual(0, EngineerNumber(""))
 
     def test_as_abnormal_number(self):
         self.assertEqual(1.0, EngineerNumber("1."))
@@ -248,6 +249,10 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual("249.000", str(div))
         self.assertEqual("4.000n", str(mod))
 
+#   def test_e_expression(self):
+#       self.assertAlmostEqual(float("4e-28"), EngineerNumber("4e-28"))
+#       self.assertAlmostEqual(float("4e-28"), EngineerNumber("4E-28"))
+
     def test_round(self):
         self.assertEqual( "999.999m", str(EngineerNumber("0.9999994")))
                                                         #      123
@@ -360,7 +365,7 @@ class TestEngineerNumber(unittest.TestCase):
         symbols = (\
              '("Y", "Z", "E", "P", "T", "G", "M", "k", "h", "da", '
              '"", '
-             '"d", "c", "m", "u", "n", "p", "f", "a", "z", "y")'
+             '"d", "c", "%", "m", "u", "n", "p", "f", "a", "z", "y")'
         )
         expected_message = \
             expected_header_en + symbols + "."
@@ -382,6 +387,25 @@ class TestEngineerNumber(unittest.TestCase):
         with self.assertRaises(KeyError) as raiz:
             EngineerNumber._si2exponent10(" ")
         self.assertEqual(expected_message, raiz.exception.args[0])
+
+#   def test_unknown_symbol(self):
+#       unknown_symbols = """!@#$^&*(){}[]+-=|_~`'"?<>,/\;:"""
+#       for unknown_symbol in unknown_symbols:
+#           print("unknown_symbol =", unknown_symbol)
+#           with self.assertRaises(KeyError) as raiz:
+#               EngineerNumber("10{}".format(unknown_symbol))
+
+    def test_percent(self):
+        self.assertEqual(EngineerNumber(0.1), EngineerNumber("10%"))
+        self.assertEqual(EngineerNumber("0.1"), EngineerNumber("10%"))
+        self.assertEqual("100.000m", str(EngineerNumber("10%")))
+        self.assertAlmostEqual(0.1, EngineerNumber("10%"))
+
+    def test_over_100_percent(self):
+        self.assertEqual(EngineerNumber(1.1), EngineerNumber("110%"))
+        self.assertEqual(EngineerNumber("1.1"), EngineerNumber("110%"))
+        self.assertAlmostEqual(1.1, EngineerNumber("110%"))
+        self.assertEqual("1.100", str(EngineerNumber("110%")))
 
     def test_compare_with_number(self):
         # swap
@@ -474,8 +498,6 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual(1, one_deca / 10)
 
     def test_error_and_warning(self):
-        self.assertRaises(IndexError, EngineerNumber, "")
-
         n1 = EngineerNumber("0.1m")
       # message = "abs\(number\(={}\)\) in range\(0, 1\) convert to int.".format(n1)
         message = _("0 < abs(number(={})) < 1 を満たす数字を "
