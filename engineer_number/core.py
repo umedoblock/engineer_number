@@ -5,8 +5,6 @@
 # This software is released under the MIT License.
 # https://github.com/umedoblock/engineer_number
 
-# coding: utf-8
-
 from decimal import Decimal, getcontext
 import math, numbers, warnings, re
 
