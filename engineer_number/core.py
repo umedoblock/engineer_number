@@ -31,6 +31,8 @@ class EngineerNumber(numbers.Real):
     の計算結果を EngineerNumber object の値とします。
     """
 
+    SIGN_NUMERICAL_SUFFIX = re.compile(r'([+\-]?)([0-9\.]*)(\D*)$')
+
     # EngineerNumber instance を __str__() にて
     # 文字列表現した時の、小数点以下の有効桁数。
     round_ndigits = 3
@@ -48,8 +50,7 @@ class EngineerNumber(numbers.Real):
         L = list(d_SYMBOL_EXPONENT)
         L.append("K")
 
-        pattern = re.compile(r'([+\-]?)([0-9\.]*)(\D*)$')
-        parts = pattern.search(ss).groups()
+        parts = cls.SIGN_NUMERICAL_SUFFIX.search(ss).groups()
         _sign, numerical_part, suffix = parts
         if _sign == "-1":
             sign = -1
