@@ -7,8 +7,8 @@
 
 import bisect, collections
 
-from engineer_number.core import EngineerNumber
-from engineer_number._wire import WIRE
+from .core import EngineerNumber
+from ._wire import WIRE
 
 __all__ = [
     "SWG", "AWG", "SWG_", "AWG_", "WIRE",

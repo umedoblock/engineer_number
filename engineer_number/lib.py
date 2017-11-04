@@ -8,7 +8,7 @@
 import bisect
 
 from . import EngineerNumber
-from engineer_number.constants import *
+from .constants import *
 
 def make_all_combinations(e_series_name, orders):
     if e_series_name in ("E6", "E12", "E24"):
