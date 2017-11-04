@@ -93,6 +93,7 @@ def _build_up_to_EngineerNumber(regulation, muscles, indexes):
     for index in indexes:
       # print("index={}".format(index))
         d = muscles[index]
+      # print("d =", d)
         for No, L in regulation.items():
           # print("No={}, L={}, index={}".format(No, L, index))
             try:
@@ -100,9 +101,8 @@ def _build_up_to_EngineerNumber(regulation, muscles, indexes):
             except IndexError as e:
                 continue
             enm = EngineerNumber(v)
-            regulation[No][index] = enm # pump up
-          # print("d =", d)
             d[No] = enm # build up
+            regulation[No][index] = enm # pump up
 
     for No, L in regulation.items():
         tup = tuple(L)
