@@ -86,6 +86,7 @@ def get_capacitors(e_series_name, orders):
 
     return _capacitors[e_series_name]
 
+# NETA
 def _build_up_to_EngineerNumber(regulation, muscles, indexes):
   # print("regulation={}".format(regulation))
   # print("muscles={}".format(muscles))
@@ -97,13 +98,13 @@ def _build_up_to_EngineerNumber(regulation, muscles, indexes):
         for No, L in regulation.items():
           # print("No={}, L={}, index={}".format(No, L, index))
             try:
-                v = L[index]
+                v = L[index] # event
             except IndexError as e:
                 continue
-            enm = EngineerNumber(v)
+            enm = EngineerNumber(v) # training
             muscle[No] = enm # build up
             regulation[No][index] = enm # pump up
 
     for No, L in regulation.items():
-        tup = tuple(L)
-        regulation[No] = tup # pausing
+        tup = tuple(L) # tell pause
+        regulation[No] = tup # pausing and make smile
