@@ -80,14 +80,14 @@ class EngineerNumber(numbers.Real):
 #       m = pattern.search(ss)
 #       parts = m.groups()
 
-        if ss.startswith("10"):
-            print("ss=\"{}\"".format(ss))
-            print("ss[-1]=\"{}\"".format(ss[-1]))
-            print("parts=\"{}\"".format(parts))
-            print("parts==\"{}\"".format(parts == ('', '')))
-            print("numerical_part=\"{}\"".format(numerical_part))
-            print("suffix=\"{}\"".format(suffix))
-            print("si=\"{}\"".format(si))
+#       if ss.startswith("10"):
+#           print("ss=\"{}\"".format(ss))
+#           print("ss[-1]=\"{}\"".format(ss[-1]))
+#           print("parts=\"{}\"".format(parts))
+#           print("parts==\"{}\"".format(parts == ('', '')))
+#           print("numerical_part=\"{}\"".format(numerical_part))
+#           print("suffix=\"{}\"".format(suffix))
+#           print("si=\"{}\"".format(si))
         inappropriate = ss.replace("".join(parts), "")
       # if len(parts) > 1:
       #     sign, numerical_part, si = parts
