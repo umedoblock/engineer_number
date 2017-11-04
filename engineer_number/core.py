@@ -6,11 +6,10 @@
 # https://github.com/umedoblock/engineer_number
 
 from decimal import Decimal, getcontext
-import math, numbers, warnings, re
+import math, numbers, warnings, re, gettext
 
 from .constants import *
 
-import gettext
 gettext.install("engineer_number", "")
 
 class EngineerNumber(numbers.Real):
