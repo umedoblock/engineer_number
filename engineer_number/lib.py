@@ -100,10 +100,10 @@ def _build_up_to_EngineerNumber(regulation, muscles, indexes):
             except IndexError as e:
                 continue
             enm = EngineerNumber(v)
-            regulation[No][index] = enm
+            regulation[No][index] = enm # pump up
           # print("d =", d)
-            d[No] = enm
+            d[No] = enm # build up
 
     for No, L in regulation.items():
         tup = tuple(L)
-        regulation[No] = tup
+        regulation[No] = tup # pausing
