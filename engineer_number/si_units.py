@@ -7,7 +7,7 @@
 # NO COPYRIGHT
 # copied by 梅濁酒(umedoblock)
 
-from .core import EngineerNumber
+from . import EngineerNumber
 
 # SI との併用が認められている 単位
 # エネルギー 電子ボルト eV
