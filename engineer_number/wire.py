@@ -14,6 +14,11 @@ __all__ = [
     "SWG", "AWG", "SWG_", "AWG_", "WIRE",
 ]
 
+SWG = {}
+AWG = {}
+# SWG["0"] == 0.00823
+#  AWG[10] == 0.002588
+
 SWG_ = 0
 AWG_ = 1
 
@@ -24,11 +29,6 @@ WIRE_NAMES = {
 
 # WIRE["0000"][SWG_] == 0.0102
 # WIRE[18][AWG_] == 0.001024
-
-SWG = {}
-AWG = {}
-# SWG["0"] == 0.00823
-#  AWG[10] == 0.002588
 
 _build_up_to_EngineerNumber(WIRE, (SWG, AWG), WIRE_NAMES)
 
