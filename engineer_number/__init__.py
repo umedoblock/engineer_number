@@ -14,7 +14,7 @@ from . import constants
 from .core import EngineerNumber
 
 __version__ = "1.0.5"
-__all__ = ["EngineerNumber", "constants", "si_units"]
+__all__ = ["EngineerNumber", "constants", "si_units", "wire"]
 
 __author__ = "umedoblock <umedoblock@gmail.com>"
 
