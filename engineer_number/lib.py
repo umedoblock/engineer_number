@@ -85,3 +85,25 @@ def get_capacitors(e_series_name, orders):
         _make_capacitors(e_series_name, orders)
 
     return _capacitors[e_series_name]
+
+def _build_up_to_EngineerNumber(regulation, muscles, muscles_names):
+    print("regulation={}".format(regulation))
+    print("muscles={}".format(muscles))
+    print("muscles_names={}".format(muscles_names))
+    for name, index in muscles_names.items():
+        print("name={}, index={}".format(name, index))
+        d = muscles[index]
+        for No, L in regulation.items():
+            print("No={}, L={}, name={}, index={}".format(No, L, name, index))
+            try:
+                v = L[index]
+            except IndexError as e:
+                continue
+            enm = EngineerNumber(v)
+            regulation[No][index] = enm
+            print("d =", d)
+            d[No] = enm
+
+    for No, L in regulation.items():
+        tup = tuple(L)
+        regulation[No] = tup

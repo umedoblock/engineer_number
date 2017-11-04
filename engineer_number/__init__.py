@@ -10,8 +10,8 @@
 import os, re
 import gettext
 
-from engineer_number import constants
-from engineer_number.core import EngineerNumber
+from . import constants
+from .core import EngineerNumber
 
 __version__ = "1.0.5"
 __all__ = ["EngineerNumber", "constants", "si_units"]

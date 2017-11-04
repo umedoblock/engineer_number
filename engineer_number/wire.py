@@ -7,7 +7,7 @@
 
 import bisect, collections
 
-from .core import EngineerNumber
+from .lib import _build_up_to_EngineerNumber
 from ._wire import WIRE
 
 __all__ = [
@@ -30,23 +30,7 @@ AWG = {}
 # SWG["0"] == 0.00823
 #  AWG[10] == 0.002588
 
-def _build_up_to_EngineerNumber():
-    for wire_name, wire_value in WIRE_NAMES.items():
-        d = globals()[wire_name]
-        for No, L in WIRE.items():
-            try:
-                v = L[wire_value]
-            except IndexError as e:
-                continue
-            enm = EngineerNumber(v)
-            WIRE[No][wire_value] = enm
-            d[No] = enm
-
-    for No, L in WIRE.items():
-        tup = tuple(L)
-        WIRE[No] = tup
-
-_build_up_to_EngineerNumber()
+_build_up_to_EngineerNumber(WIRE, (SWG, AWG), WIRE_NAMES)
 
 # print("WIRE = {}".format(WIRE))
 # print("SWG = {}".format(SWG))
