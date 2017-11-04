@@ -17,7 +17,7 @@ __all__ = [
 SWG_ = 0
 AWG_ = 1
 
-WIRE_NAMES= {
+WIRE_NAMES = {
     "SWG": SWG_,
     "AWG": AWG_,
 }
