@@ -39,6 +39,7 @@ class EngineerNumber(numbers.Real):
     def _parse_string(cls, ss):
         "有効数字の数値と 10 の乗数値を、tuple に詰めて返します。"
 
+        sign = 1
 #       print("ss=\"{}\"".format(ss))
 #       pattern = r'([+\-]?[0-9\.]*|[a-zA-Z%]+)'
 #       pattern = '([+\-]?)([0-9\.]*)([a-zA-Z%]*)'
@@ -56,13 +57,20 @@ class EngineerNumber(numbers.Real):
       # print("m={}".format(m))
 
       # parts = m.groups()
-        parts = re.search(r'([+\-0-9\.]*)({})$'.format(fmt), ss).groups()
-
-        numerical_part, suffix = parts
+      # parts = re.search(r'([+\-]?[0-9\.]*)({})$'.format(fmt), ss).groups()
+        pattern = re.compile(r'([+\-]?)([0-9\.]*)({})$'.format(fmt))
+        pattern = re.compile(r'([+\-]?)([0-9\.]*)(\D+)$')
+        pattern = re.compile(r'([+\-]?)([0-9\.]*)(\D*)$')
+        parts = pattern.search(ss).groups()
+        _sign, numerical_part, suffix = parts
+        if _sign == "-1":
+            sign = -1
         if suffix == ".":
             si = ""
         else:
             si = suffix
+        if parts == ('', ''):
+            si = ss[-1]
 #       print("numerical_part={}, si={}".format(numerical_part, si))
 #       raise()
 #       pattern = re.compile(r'([+\-0-9\.]*)([a-zA-Z]*|%)$')
@@ -71,6 +79,15 @@ class EngineerNumber(numbers.Real):
 #       pattern = re.compile(r'([+\-]?)([0-9eE\.]*)([^+\-0-9\.]*)$')
 #       m = pattern.search(ss)
 #       parts = m.groups()
+
+        if ss.startswith("10"):
+            print("ss=\"{}\"".format(ss))
+            print("ss[-1]=\"{}\"".format(ss[-1]))
+            print("parts=\"{}\"".format(parts))
+            print("parts==\"{}\"".format(parts == ('', '')))
+            print("numerical_part=\"{}\"".format(numerical_part))
+            print("suffix=\"{}\"".format(suffix))
+            print("si=\"{}\"".format(si))
         inappropriate = ss.replace("".join(parts), "")
       # if len(parts) > 1:
       #     sign, numerical_part, si = parts
@@ -97,7 +114,7 @@ class EngineerNumber(numbers.Real):
       # print("numerical_part = '{}'".format(numerical_part))
         value = float(numerical_part)
 
-        return (value, exponent10)
+        return (sign, value, exponent10)
 
     @classmethod
     def _si2exponent10(cls, si):
@@ -130,18 +147,21 @@ class EngineerNumber(numbers.Real):
         EngineerNumber.num 属性の値を計算します。
         num = value * 10 ** exponent10
         """
-        if value == "":
-            value = 0.0
-        if isinstance(value, str):
-            if not value:
-                value = "0"
-            value, adjust_exponent10 = EngineerNumber._parse_string(value)
-            exponent10 += adjust_exponent10
         # value is None
         if value is None:
             print("value={}, exponent10={}".format(value, exponent10))
             raise ValueError()
-        self.num = value * (10 ** exponent10)
+        elif value == "":
+            value = 0.0
+
+        sign = 1
+
+        if isinstance(value, str):
+            if not value:
+                value = "0"
+            sign, value, adjust_exponent10 = EngineerNumber._parse_string(value)
+            exponent10 += adjust_exponent10
+        self.num = sign * value * (10 ** exponent10)
         # >>> 10 ** 0
         # 1
         self._normalize()

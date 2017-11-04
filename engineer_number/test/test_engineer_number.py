@@ -384,12 +384,14 @@ class TestEngineerNumber(unittest.TestCase):
             EngineerNumber._si2exponent10(" ")
         self.assertEqual(expected_message, raiz.exception.args[0])
 
-#   def test_unknown_symbol(self):
-#       unknown_symbols = """!@#$^&*(){}[]+-=|_~`'"?<>,/\;:"""
-#       for unknown_symbol in unknown_symbols:
-#           print("unknown_symbol =", unknown_symbol)
-#           with self.assertRaises(KeyError) as raiz:
-#               EngineerNumber("10{}".format(unknown_symbol))
+    def test_unknown_symbol(self):
+        unknown_symbols = """!@#$^&*(){}[]+-=|_~`'"?<>,/\;:"""
+        for unknown_symbol in unknown_symbols:
+            with self.assertRaises(KeyError) as raiz:
+                try:
+                    EngineerNumber("10{}".format(unknown_symbol))
+                except ValueError as e:
+                    print("unknown_symbol = \"{}\"".format(unknown_symbol))
 
     def test_percent(self):
         self.assertEqual(EngineerNumber(0.1), EngineerNumber("10%"))
