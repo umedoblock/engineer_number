@@ -44,7 +44,7 @@ def _build_up_to_EngineerNumber():
 
     for No, L in WIRE.items():
         tup = tuple(L)
-        WIRE[No] = tup # NEVER CHANGE PLEASE.
+        WIRE[No] = tup
 
 _build_up_to_EngineerNumber()
 
