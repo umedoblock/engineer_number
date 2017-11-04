@@ -322,7 +322,6 @@ class TestEngineerNumber(unittest.TestCase):
         self.assertEqual(EngineerNumber(121.484, KILO), EngineerNumber(0.121484, MEGA))
         self.assertEqual(EngineerNumber(121.484, MILLI), EngineerNumber(0.121484, ONE))
         self.assertEqual(EngineerNumber(121.484, PICO), EngineerNumber(0.121484, NANO))
-      # print(str(EngineerNumber(121.488, PICO)), str(EngineerNumber(0.121486, NANO)))
         self.assertEqual(str(EngineerNumber(121.488, PICO)), str(EngineerNumber(0.121488, NANO)))
 
     def test_equal_with_number(self):
@@ -340,9 +339,6 @@ class TestEngineerNumber(unittest.TestCase):
 
     def test_around_yotta(self):
         yotta999999 = EngineerNumber("999.999Y")
-      # print("e999999 =")
-      # yotta999999.detail()
-      # print()
         self.assertEqual("999.999Y", str(yotta999999))
 
         # over yotta a little
@@ -443,9 +439,6 @@ class TestEngineerNumber(unittest.TestCase):
                    'お使い下さい。\n'
                    'なぜならば、"K" は、Kelvin 温度を表現するための'
                    '単位記号だからです。')
-#       print("message =", message)
-#       msgstr = _(message)
-#       print("msgstr =", msgstr)
         self.assertEqual(message, raiz.exception.args[0])
 
     def test_force(self):
@@ -514,10 +507,6 @@ class TestEngineerNumber(unittest.TestCase):
         with self.assertRaises(UserWarning) as warn2:
             int(n2)
         self.assertEqual(message, warn2.exception.args[0])
-
-      # with support.captured_stderr() as stderr_:
-      #     int(n2)
-      # self.assertEqual(message, stderr_.getvalue())
 
     def test_math(self):
         two = EngineerNumber("2")
