@@ -4,6 +4,7 @@
 # 原書コード ： ISBN 92-822-2213-6
 # page 38
 
+# NO COPYRIGHT
 # copied by 梅濁酒(umedoblock)
 
 from .core import EngineerNumber

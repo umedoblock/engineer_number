@@ -3,6 +3,7 @@
 # AWG:   American Wire Gauge
 # https://en.wikibooks.org/wiki/Engineering_Tables/American_Wire_Gauge
 
+# NO COPYRIGHT
 # copied by 梅濁酒(umedoblock)
 
 #       GAUGE|  SWG    |  AWG    || GAUGE |  SWG     | AWG    |
