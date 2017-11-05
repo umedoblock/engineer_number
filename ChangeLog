@@ -1,7 +1,13 @@
 Changes in 1.0.5 (03 Nov 2017)
 - change LICENSE from BSD to MIT.
-- add engineer_number/constants.py
+- add engineer_number/_wire.py
+    SWG, AWG regulation
+- add engineer_number/_constants.py
     here works some constants for engineer.
+    E6, E12, E24, ...
+    KILO, MEGA, GIGA, ...
+    MILLI, MICRO, NANO, ...
+    PERCENT # special
     please see one time.
 - add engineer_number/si_units.py
     The International System of Units (SI) - 8th edition - 2006
