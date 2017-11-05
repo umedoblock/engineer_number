@@ -5,8 +5,7 @@
 # This software is released under the MIT License.
 # https://github.com/umedoblock/engineer_number
 
-import os, sys, math
-import argparse, gettext
+import math, argparse
 from itertools import *
 
 import lib

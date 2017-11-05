@@ -5,7 +5,7 @@
 # This software is released under the MIT License.
 # https://github.com/umedoblock/engineer_number
 
-import math, numbers, warnings, re, gettext
+import math, numbers, re, gettext
 
 from .constants import *
 
