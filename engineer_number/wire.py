@@ -5,8 +5,6 @@
 # This software is released under the MIT License.
 # https://github.com/umedoblock/engineer_number
 
-import bisect, collections
-
 from .lib import _build_up_to_EngineerNumber
 from ._wire import WIRE
 
