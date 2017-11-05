@@ -1,0 +1,40 @@
+I show you that how to move git from hg.
+I exclude and ignore some paths in hg repository.
+
+0. move to hg repository directory.
+
+1. make files list
+    $ hg log -v . | grep files | awk -F: '{ print $2 }' | awk '{ for (i = 1 ; i <= NF ; i++)  print $i; }' | sort | uniq > hg.files.list
+
+2. see hg.files.list and check moving files.
+
+3. write a filemap file like a below file
+=== filemap.engineer_number =====================
+include "py"
+rename "py/engineer_number" ""
+=================================================
+
+4. write "hgext.convert" setting to ~/.hgrc
+[extensions]
+hgext.convert =
+
+5. run convert command under mercurial repository directory.
+    $ hg convert --filemap=filemap.engineer_number . ~/hg/engineer_number
+    see: https://www.mercurial-scm.org/wiki/ConvertExtension
+
+6. get hg-fast-export.sh script to clone.
+    $ mkdir ~/git
+    $ cd ~/git
+    $ git clone git://repo.or.cz/fast-export.git
+
+7. make new git project directory.
+    $ mkdir -p ~/git/new_git_repo
+    $ cd ~/git/new_git_repo
+
+8. create git directory and convert.
+    $ git init
+    $ ~/git/fast-export/hg-fast-export.sh -r ~/hg/engineer_number/
+    $ ~/git/fast-export/hg-fast-export.sh -T -r ~/hg/engineer_number/
+    $ git checkout master
+
+9. start develop.
